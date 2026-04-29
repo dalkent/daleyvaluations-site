@@ -21,3 +21,17 @@ private/
 # Temporary files
 *.tmp
 *.bak
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+venv/
+.venv/
+
+# Build artefacts (the actual rendered HTML is intentionally tracked, but
+# half-rendered output from a failed local build should not be)
+build/
+dist/
+.cache/
