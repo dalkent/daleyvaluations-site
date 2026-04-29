@@ -50,7 +50,7 @@ git init
 git add .
 git commit -m "Initial commit: methodology page"
 git branch -M main
-git remote add origin https://github.com/<your-username>/daleyvaluations-site.git
+git remote add origin https://github.com/dalkent/daleyvaluations-site.git
 git push -u origin main
 ```
 
