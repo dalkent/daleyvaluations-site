@@ -16,7 +16,7 @@
 
 <header class="site-header">
   <div class="wrap-wide">
-    <a class="brand-row" href="index.html">
+    <a class="brand-row" href="/">
       <svg class="brand-mark" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M12 60 L12 20 L34 60 L34 20" stroke="#0f2a1d" stroke-width="4" stroke-linecap="square" fill="none"/>
         <line x1="38" y1="64" x2="50" y2="16" stroke="#0f2a1d" stroke-width="2"/>
@@ -28,8 +28,8 @@
       </span>
     </a>
     <nav class="site-nav">
-      <a href="index.html" class="active">Tracker</a>
-      <a href="methodology.html" >Methodology</a>
+      <a href="/" class="active">Tracker</a>
+      <a href="/methodology" >Methodology</a>
       <a href="https://dalkent13.substack.com" rel="noopener">Articles</a>
       <a href="https://www.etoro.com/people/dalkent13" rel="noopener">eToro</a>
     </nav>
@@ -41,14 +41,14 @@
   <div class="wrap-wide">
     <p class="eyebrow">FTSE Valuation Tracker</p>
     <h1>Three valuation models. One signal. 106 FTSE stocks.</h1>
-    <p class="lede">Every stock in the coverage universe is valued each week using DCF, DDM and EPV. The blended target is divided by the current price to give a Value Ratio, and a single signal: Strong Buy, Buy, Fair Value, Sell, or Strong Sell. <a href="methodology.html">Read the full methodology</a>.</p>
+    <p class="lede">Every stock in the coverage universe is valued each week using DCF, DDM and EPV. The blended target is divided by the current price to give a Value Ratio, and a single signal: Strong Buy, Buy, Fair Value, Sell, or Strong Sell. Methodology in full at <a href="/methodology">/methodology</a>.</p>
 
     <div class="signal-bar" aria-label="Current signal distribution">
       <div class="signal-bar-row">
         <span class="signal sb">Strong Buy</span><span class="signal-count">22</span>
         <span class="signal b">Buy</span><span class="signal-count">7</span>
         <span class="signal fv">Fair Value</span><span class="signal-count">27</span>
-        <span class="signal s">Sell</span><span class="signal-count">24</span>
+        <span class="signal s">Sell</span><span class="signal-count">25</span>
         <span class="signal ss">Strong Sell</span><span class="signal-count">25</span>
       </div>
     </div>
@@ -469,7 +469,7 @@
             <td>Compass Group PLC</td>
             <td>Consumer Cyclical</td>
             <td class="num">28.4p</td>
-            <td class="num">19.6p</td>
+            <td class="num">1,963.4p</td>
             <td class="num">0.69</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-down">Fair Value ↓ Strong Sell</span></td>
@@ -509,7 +509,7 @@
             <td>InterContinental Hotels Group PLC</td>
             <td>Consumer Cyclical</td>
             <td class="num">141.6p</td>
-            <td class="num">75.2p</td>
+            <td class="num">7,520.3p</td>
             <td class="num">0.53</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
@@ -864,14 +864,14 @@
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="BA.L" data-company="bae systems plc" data-sector="Industrials" data-signal="N/A" data-vr="0" data-price="0" data-target="16.2228">
+          <tr data-ticker="BA.L" data-company="bae systems plc" data-sector="Industrials" data-signal="Sell" data-vr="0.8081095890410959" data-price="2007.5" data-target="16.2228">
             <td class="ticker-cell"><a href="ticker/ba-l.html">BA.L</a></td>
             <td>BAE Systems plc</td>
             <td>Industrials</td>
-            <td class="num">—</td>
+            <td class="num">2,007.5p</td>
             <td class="num">1,622.3p</td>
-            <td class="num">—</td>
-            <td><span class="signal na">N/A</span></td>
+            <td class="num">0.81</td>
+            <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
           <tr data-ticker="BAB.L" data-company="babcock international group plc" data-sector="Industrials" data-signal="Strong Sell" data-vr="0.7346485171165695" data-price="1101.5880126953125" data-target="8.0928">
@@ -1129,7 +1129,7 @@
             <td>Metlen Energy &amp; Metals PLC</td>
             <td>Utilities</td>
             <td class="num">33.8p</td>
-            <td class="num">31.4p</td>
+            <td class="num">3,135.6p</td>
             <td class="num">0.93</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
@@ -1178,16 +1178,21 @@
       </table>
     </div>
 
-    <p class="table-note">VR = Value Ratio (blended target divided by current price). Click a column header to sort. Click a ticker to see the full per-stock breakdown.</p>
+    <p class="table-note">VR = Value Ratio (blended target ÷ current price). Click a column header to sort. Click a ticker to see the full per-stock breakdown.</p>
   </div>
 </section>
 
-<script src="tracker.js"></script>
-          
+<script src="tracker.js"></scrip
 </main>
 
 <footer class="site-footer">
   <div class="wrap-wide">
     <p><strong>Daley Valuations</strong> is an independent equity research site by Neil Daley, PhD, CFA. Twenty years in institutional finance, applied to public markets in plain English.</p>
-    <p class="stamp">Data last refreshed: 2026-04-29 14:21 (live). Site rebuilds weekly with the FTSE Valuation Tracker.</p>
-    <p class="stamp small">Not financial advice. These are systemat
+    <p class="stamp">Data last refreshed: 2026-04-29 14:09 (live). Site rebuilds weekly with the FTSE Valuation Tracker.</p>
+    <p class="stamp small">Not financial advice. These are systematic valuations, not recommendations. Always do your own research.</p>
+  </div>
+</footer>
+
+</body>
+</html>
+  

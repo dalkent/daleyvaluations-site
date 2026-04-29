@@ -1,0 +1,97 @@
+<section class="ticker-hero">
+  <div class="wrap">
+    <p class="breadcrumb">
+      <a href="../">Tracker</a>
+      <span class="sep">›</span>
+      <span>{{ ticker }}</span>
+    </p>
+
+    <p class="eyebrow">{{ sector }}</p>
+    <h1 class="ticker-h1">{{ company }}</h1>
+    <p class="ticker-sub">{{ ticker }} · last refreshed {{ data_refreshed_at }}</p>
+
+    <div class="signal-display">
+      <div class="signal-display-block">
+        <p class="signal-label-small">Signal</p>
+        <p><span class="signal {{ signal_class }} signal-large">{{ signal_label }}</span></p>
+      </div>
+      <div class="signal-display-block">
+        <p class="signal-label-small">Value Ratio</p>
+        <p class="big-number">{{ value_ratio_display }}</p>
+      </div>
+      <div class="signal-display-block">
+        <p class="signal-label-small">Live price</p>
+        <p class="big-number">{{ price_display }}</p>
+      </div>
+      <div class="signal-display-block">
+        <p class="signal-label-small">Blended target</p>
+        <p class="big-number">{{ target_display }}</p>
+      </div>
+    </div>
+
+    {% if signal_change_html %}
+    <p class="signal-change-note">{{ signal_change_html | safe }}</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="ticker-section">
+  <div class="wrap">
+
+    <h2>The three models</h2>
+    <p class="section-lede">Each model produces an independent estimate of fair value. The blended target above is the average of the surviving models after outlier removal. Read the methodology in full at <a href="../methodology.html">/methodology</a>.</p>
+
+    <table class="ticker-models">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th class="num">Output</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>DCF</strong> <span class="model-sub">Discounted Cash Flow</span></td>
+          <td class="num">{{ val_dcf_display }}</td>
+          <td>{{ val_dcf_note }}</td>
+        </tr>
+        <tr>
+          <td><strong>DDM</strong> <span class="model-sub">Dividend Discount Model</span></td>
+          <td class="num">{{ val_ddm_display }}</td>
+          <td>{{ val_ddm_note }}</td>
+        </tr>
+        <tr>
+          <td><strong>EPV</strong> <span class="model-sub">Earnings Power Value</span></td>
+          <td class="num">{{ val_epv_display }}</td>
+          <td>{{ val_epv_note }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="model-method-note">Method: <strong>{{ model_method }}</strong></p>
+
+    <h2>The assumptions</h2>
+    <table class="ticker-assumptions">
+      <tbody>
+        <tr><th>Beta (clamped)</th><td class="num">{{ beta_display }}</td></tr>
+        <tr><th>Cost of capital ({{ ke_or_wacc }})</th><td class="num">{{ wacc_display }}</td></tr>
+        <tr><th>Five-year growth (g1)</th><td class="num">{{ g1_display }}</td></tr>
+        <tr><th>Terminal growth (g2)</th><td class="num">{{ g2_display }}</td></tr>
+      </tbody>
+    </table>
+
+    <div class="ticker-ctas">
+      <a class="cta-block" href="https://dalkent13.substack.com" rel="noopener">
+        <span class="cta-eyebrow">The full thesis</span>
+        <span class="cta-line">Read this week's article on Substack →</span>
+      </a>
+      <a class="cta-block" href="https://www.etoro.com/people/dalkent13" rel="noopener">
+        <span class="cta-eyebrow">The live portfolio</span>
+        <span class="cta-line">Follow on eToro →</span>
+      </a>
+    </div>
+
+    <p class="ticker-disclaimer">These signals are systematic, data-driven valuations. They are not advice. They are not a substitute for your own judgement. Always do your own research before acting on anything written here.</p>
+
+  </div>
+</section>

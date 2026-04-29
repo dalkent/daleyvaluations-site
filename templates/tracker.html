@@ -1,0 +1,85 @@
+<section class="hero">
+  <div class="wrap-wide">
+    <p class="eyebrow">FTSE Valuation Tracker</p>
+    <h1>Three valuation models. One signal. {{ ticker_count }} FTSE stocks.</h1>
+    <p class="lede">Every stock in the coverage universe is valued each week using DCF, DDM and EPV. The blended target is divided by the current price to give a Value Ratio, and a single signal: Strong Buy, Buy, Fair Value, Sell, or Strong Sell. <a href="{{ path_prefix }}methodology.html">Read the full methodology</a>.</p>
+
+    <div class="signal-bar" aria-label="Current signal distribution">
+      <div class="signal-bar-row">
+        <span class="signal sb">Strong Buy</span><span class="signal-count">{{ signal_counts['Strong Buy'] }}</span>
+        <span class="signal b">Buy</span><span class="signal-count">{{ signal_counts['Buy'] }}</span>
+        <span class="signal fv">Fair Value</span><span class="signal-count">{{ signal_counts['Fair Value'] }}</span>
+        <span class="signal s">Sell</span><span class="signal-count">{{ signal_counts['Sell'] }}</span>
+        <span class="signal ss">Strong Sell</span><span class="signal-count">{{ signal_counts['Strong Sell'] }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tracker-section">
+  <div class="wrap-wide">
+
+    <div class="filters">
+      <label>
+        <span class="filter-label">Sector</span>
+        <select id="filter-sector">
+          <option value="">All sectors</option>
+          {% for sector in sectors %}
+          <option value="{{ sector }}">{{ sector }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span class="filter-label">Signal</span>
+        <select id="filter-signal">
+          <option value="">All signals</option>
+          <option value="Strong Buy">Strong Buy</option>
+          <option value="Buy">Buy</option>
+          <option value="Fair Value">Fair Value</option>
+          <option value="Sell">Sell</option>
+          <option value="Strong Sell">Strong Sell</option>
+        </select>
+      </label>
+      <label>
+        <span class="filter-label">Search</span>
+        <input id="filter-search" type="search" placeholder="Ticker or company">
+      </label>
+      <span id="row-count" class="row-count">{{ ticker_count }} stocks</span>
+    </div>
+
+    <div class="table-wrap">
+      <table id="tracker" class="tracker-table">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="ticker">Ticker</th>
+            <th class="sortable" data-sort="company">Company</th>
+            <th class="sortable" data-sort="sector">Sector</th>
+            <th class="sortable num" data-sort="price">Price</th>
+            <th class="sortable num" data-sort="target">Target</th>
+            <th class="sortable num" data-sort="vr">VR</th>
+            <th class="sortable" data-sort="signal">Signal</th>
+            <th>Change</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for r in rows %}
+          <tr data-ticker="{{ r.ticker }}" data-company="{{ r.company | lower }}" data-sector="{{ r.sector }}" data-signal="{{ r.signal_label }}" data-vr="{{ r.value_ratio_raw or 0 }}" data-price="{{ r.price_raw or 0 }}" data-target="{{ r.target_raw or 0 }}">
+            <td class="ticker-cell"><a href="{{ path_prefix }}ticker/{{ r.slug }}.html">{{ r.ticker }}</a></td>
+            <td>{{ r.company }}</td>
+            <td>{{ r.sector }}</td>
+            <td class="num">{{ r.price_display }}</td>
+            <td class="num">{{ r.target_display }}</td>
+            <td class="num">{{ r.value_ratio_display }}</td>
+            <td><span class="signal {{ r.signal_class }}">{{ r.signal_label }}</span></td>
+            <td class="change-cell">{{ r.change_display | safe }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="table-note">VR = Value Ratio (blended target divided by current price). Click a column header to sort. Click a ticker to see the full per-stock breakdown.</p>
+  </div>
+</section>
+
+<script src="{{ path_prefix }}tracker.js"></script>

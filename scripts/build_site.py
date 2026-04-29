@@ -1,230 +1,498 @@
 #!/usr/bin/env python3
-"""
-build_site.py
-─────────────
-Renders the Daley Valuations public site from etoro_master.json.
-
-Reads:
-  C:\\Users\\Neil\\ClaudeCode\\eToro\\data\\etoro_master.json (canonical valuation data)
-
-Writes (relative to repo root):
-  index.html           — homepage, the live FTSE Valuation Tracker
-  methodology.html     — methodology page (moves from / to /methodology when build runs)
-  ticker/<ticker>.html — one page per stock (114 expected)
-  sitemap.xml          — for SEO
-
-Run manually:
-  python scripts/build_site.py
-
-Run from scheduled task:
-  Wired into ftse-tracker-weekly (Mon 5pm) so the site rebuilds whenever new valuations land.
-
-Status:
-  STUB. Fill in step by step. See PLAN-STAGE-2.md for the build sequence.
-"""
-
-import json
-import sys
-from pathlib import Path
+"""build_site.py - Daley Valuations site builder."""
+import argparse, json, sys, time, os, shutil, re
+from collections import Counter
 from datetime import datetime
+from pathlib import Path
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-# ── Configuration ─────────────────────────────────────────────────────────────
-
-REPO_ROOT = Path(__file__).parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = REPO_ROOT / "templates"
-DATA_FILE = Path("C:/Users/Neil/ClaudeCode/eToro/data/etoro_master.json")
-OUTPUT_TICKER_DIR = REPO_ROOT / "ticker"
+DEFAULT_DATA_FILE = Path("C:/Users/Neil/ClaudeCode/eToro/data/etoro_master.json")
+PRICE_CACHE_FILE = REPO_ROOT / ".price_cache.json"
+PRICE_CACHE_TTL_HOURS = 1
 
-# Stale-data threshold: if etoro_master.json is older than this many days,
-# render the site with a "Data refresh in progress" banner instead of failing.
-STALE_DATA_DAYS = 14
-
-# Public vs private record sets in etoro_master.json
-PUBLIC_RECORD_PATHS = (
-    ("assumptions", "valuations"),       # ticker, three model values, blended target, signal
-    ("sheets", "watchlist", "objects"),   # live price, value ratio, daily change, range
-    ("sheets", "tickers", "objects"),     # asset metadata
-)
-PRIVATE_RECORD_PATHS = (
-    ("sheets", "portfolio", "objects"),       # holdings, P&L, units — never publish
-    ("sheets", "closed_positions", "objects"), # trade history — handle separately
+env = Environment(
+    loader=FileSystemLoader(str(TEMPLATES_DIR)),
+    autoescape=select_autoescape(["html"]),
+    trim_blocks=True,
+    lstrip_blocks=True,
 )
 
 
-def load_data() -> dict:
-    """Load etoro_master.json or fail loudly."""
-    if not DATA_FILE.exists():
-        sys.exit(f"ERROR: data file not found at {DATA_FILE}")
-    with open(DATA_FILE) as f:
-        return json.load(f)
+def to_float(v):
+    if v is None or v == "": return None
+    try: return float(v)
+    except (TypeError, ValueError): return None
 
 
-def get_records(data: dict, path: tuple) -> list:
-    """Walk a path tuple into the nested JSON. Returns the list of dicts at the end."""
+def get_records(data, path):
     obj = data
     for key in path:
-        obj = obj.get(key, {})
+        obj = obj.get(key, {}) if isinstance(obj, dict) else {}
     return obj if isinstance(obj, list) else []
 
 
-def join_valuations_with_prices(data: dict) -> list[dict]:
-    """
-    Merge assumptions.valuations (model outputs) with sheets.watchlist.objects (live prices).
-
-    Returns one dict per ticker with the full set of public fields needed to render
-    a tracker row and a per-ticker page.
-    """
-    valuations = get_records(data, ("assumptions", "valuations"))
-    watchlist = get_records(data, ("sheets", "watchlist", "objects"))
-    tickers = get_records(data, ("sheets", "tickers", "objects"))
-
-    # Build lookup by ticker
-    watch_by_ticker = {r.get("eToro Ticker", "").strip(): r for r in watchlist}
-    meta_by_ticker = {r.get("eToro Ticker", "").strip(): r for r in tickers}
-
-    merged = []
-    for v in valuations:
-        ticker = v.get("Ticker", "").strip()
-        if not ticker:
-            continue
-
-        watch = watch_by_ticker.get(ticker, {})
-        meta = meta_by_ticker.get(ticker, {})
-
-        merged.append({
-            "ticker": ticker,
-            "company": v.get("Company", "").strip(),
-            "sector": v.get("Sector", "").strip(),
-            "currency": meta.get("Currency", ""),
-            "beta": v.get("Beta"),
-            "wacc": v.get("WACC"),
-            "g1": v.get("g1 (5yr Growth)"),
-            "g2": v.get("g2 (Terminal)"),
-            "val_dcf": v.get("Val 1 (DCF / Banks:DDM)"),
-            "val_ddm": v.get("Val 2 (DDM / Banks:P/B / AM:P/B)"),
-            "val_epv": v.get("Val 3 (EPV / Fin:Earn Cap / GI:P/TB)"),
-            "blended_target": v.get("Blended Target (GBP / USD)"),
-            "model_method": v.get("Model / Method", ""),
-            "last_updated": v.get("Last Updated", ""),
-            "prev_signal": v.get("Prev Signal", ""),
-            "current_signal": v.get("Current Signal", ""),
-            "live_price": watch.get("Live Price (Local) ¹"),
-            "value_ratio": watch.get("Value Ratio"),
-            "daily_change_pct": watch.get("Daily Chg %"),
-            "high_52w": watch.get("52W High (Local) ¹"),
-            "low_52w": watch.get("52W Low (Local) ¹"),
-            "range_position": watch.get("Range Position"),
-        })
-
-    return merged
-
-
-def signal_for(value_ratio: float | None) -> tuple[str, str]:
-    """
-    Map a value ratio to (signal_label, css_class).
-    Matches the thresholds documented in the methodology page.
-    """
-    if value_ratio is None:
-        return "N/A", "na"
-    if value_ratio >= 1.25:
-        return "Strong Buy", "sb"
-    if value_ratio >= 1.10:
-        return "Buy", "b"
-    if value_ratio >= 0.90:
-        return "Fair Value", "fv"
-    if value_ratio >= 0.75:
-        return "Sell", "s"
+def signal_for(vr):
+    if vr is None: return "N/A", "na"
+    if vr >= 1.25: return "Strong Buy", "sb"
+    if vr >= 1.10: return "Buy", "b"
+    if vr >= 0.90: return "Fair Value", "fv"
+    if vr >= 0.75: return "Sell", "s"
     return "Strong Sell", "ss"
 
 
-def to_float(v) -> float | None:
-    """Coerce a value (which may be float, int, str, or empty) to float or None."""
-    if v is None or v == "":
-        return None
+def slug_for(ticker):
+    return ticker.lower().replace(".", "-").replace("/", "-")
+
+
+def fmt_price(v, currency=""):
+    if v is None: return "—"
+    if currency in ("GBp", "GBX"): return f"{v:,.1f}p"
+    if currency == "USD": return f"${v:,.2f}"
+    if currency == "GBP": return f"£{v:,.2f}"
+    return f"{v:,.2f}"
+
+
+def fmt_target(v, currency=""):
+    if v is None: return "—"
+    if currency in ("GBp", "GBX"): return f"{v * 100:,.1f}p"
+    if currency == "USD": return f"${v:,.2f}"
+    if currency == "GBP": return f"£{v:,.2f}"
+    return f"{v:,.2f}"
+
+
+def fmt_target_smart(v, currency, live_price):
+    """For ticker pages, use the same magnitude detection as apply_live_prices."""
+    if v is None: return "—"
+    if currency not in ("GBp", "GBX"):
+        return fmt_target(v, currency)
+    if live_price and live_price > 0:
+        # Pick whichever yields a plausible VR
+        as_decimal = v * 100
+        as_pence = v
+        if 0.2 <= as_decimal / live_price <= 5.0:
+            return f"{as_decimal:,.1f}p"
+        if 0.2 <= as_pence / live_price <= 5.0:
+            return f"{as_pence:,.1f}p"
+    return f"{v * 100:,.1f}p"
+
+
+def fmt_vr(v):
+    if v is None: return "—"
+    return f"{v:.2f}"
+
+
+def fmt_pct(v, decimals=2):
+    if v is None: return "—"
+    return f"{v * 100:.{decimals}f}%"
+
+
+def fmt_change(prev, current):
+    if not prev or not current or prev == current:
+        return '<span class="change-flat">—</span>'
+    order = ["Strong Sell", "Sell", "Fair Value", "Buy", "Strong Buy"]
     try:
-        return float(v)
-    except (TypeError, ValueError):
-        return None
+        prev_i = order.index(prev)
+        curr_i = order.index(current)
+    except ValueError:
+        return '<span class="change-flat">—</span>'
+    if curr_i > prev_i:
+        return f'<span class="change-up">{prev} ↑ {current}</span>'
+    return f'<span class="change-down">{prev} ↓ {current}</span>'
 
 
-def sanity_check(records: list[dict]) -> list[str]:
-    """
-    Flag suspicious records before rendering.
+def load_data(data_file):
+    if not data_file.exists():
+        sys.exit(f"ERROR: data file not found at {data_file}")
+    with open(data_file, encoding="utf-8") as f:
+        raw = f.read()
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        # Try repairing truncated trailing braces (a known issue when valuation.py errors mid-write)
+        for closer in ("}", "]}", "]}}", "}}"):
+            try:
+                data = json.loads(raw + closer)
+                print(f"  WARNING: data file truncated, recovered by appending '{closer}'")
+                return data
+            except json.JSONDecodeError:
+                continue
+        sys.exit("ERROR: data file is corrupt and could not be auto-repaired. Re-run valuation.py.")
 
-    Returns a list of warnings. If any returned, the build should still proceed
-    but the warnings get logged so Neil can review them.
-    """
+
+def join_records(data):
+    valuations = get_records(data, ("assumptions", "valuations"))
+    watchlist = get_records(data, ("sheets", "watchlist", "objects"))
+    tickers = get_records(data, ("sheets", "tickers", "objects"))
+    watch_by = {(r.get("eToro Ticker") or "").strip(): r for r in watchlist}
+    meta_by = {(r.get("eToro Ticker") or "").strip(): r for r in tickers}
+
+    merged = []
+    for v in valuations:
+        ticker = (v.get("Ticker") or "").strip()
+        if not ticker: continue
+        watch = watch_by.get(ticker, {})
+        meta = meta_by.get(ticker, {})
+        # Yahoo ticker - normalise to upper case
+        yt = (meta.get("Yahoo Finance Ticker") or ticker).strip().upper()
+        merged.append({
+            "ticker": ticker,
+            "yahoo_ticker": yt,
+            "company": (v.get("Company") or "").strip(),
+            "sector": (v.get("Sector") or "").strip(),
+            "currency": (watch.get("Currency") or meta.get("Currency") or ("GBp" if (meta.get("Market") or "") == "FTSE" else "")),
+            "market": meta.get("Market", ""),
+            "asset_type": meta.get("Asset Type", ""),
+            "beta": to_float(v.get("Beta")),
+            "wacc": to_float(v.get("WACC")),
+            "g1": to_float(v.get("g1 (5yr Growth)")),
+            "g2": to_float(v.get("g2 (Terminal)")),
+            "val_dcf": to_float(v.get("Val 1 (DCF / Banks:DDM)")),
+            "val_ddm": to_float(v.get("Val 2 (DDM / Banks:P/B / AM:P/B)")),
+            "val_epv": to_float(v.get("Val 3 (EPV / Fin:Earn Cap / GI:P/TB)")),
+            "blended_target": to_float(v.get("Blended Target (GBP / USD)")),
+            "model_method": v.get("Model / Method") or "",
+            "last_updated": v.get("Last Updated", ""),
+            "prev_signal": v.get("Prev Signal", ""),
+            "current_signal": v.get("Current Signal", ""),
+            "live_price": to_float(watch.get("Live Price (Local) ¹")),
+            "value_ratio": to_float(watch.get("Value Ratio")),
+        })
+    return merged
+
+
+def filter_public(records):
+    return [r for r in records if r.get("market") == "FTSE" and r.get("asset_type") == "Equity" and r.get("sector") != "Corp Bonds" and r.get("current_signal")]
+
+
+def fetch_live_prices(records, force_refresh=False):
+    if not force_refresh and PRICE_CACHE_FILE.exists():
+        try:
+            with open(PRICE_CACHE_FILE) as f:
+                cache = json.load(f)
+            cached_at = datetime.fromisoformat(cache.get("cached_at", "1970-01-01"))
+            age_hours = (datetime.now() - cached_at).total_seconds() / 3600
+            if age_hours < PRICE_CACHE_TTL_HOURS:
+                print(f"  Using price cache (age: {age_hours:.1f} hours)")
+                return cache.get("prices", {})
+        except Exception as e:
+            print(f"  Cache read failed: {e}, fetching fresh")
+
+    print(f"  Fetching live prices from Yahoo Finance...")
+    import yfinance as yf
+    tickers = [r["yahoo_ticker"] for r in records]
+    try:
+        data = yf.download(tickers, period="2d", interval="1d", progress=False, auto_adjust=False, threads=True)
+    except Exception as e:
+        print(f"  ERROR: yfinance batch download failed: {e}")
+        return {}
+
+    prices = {}
+    if not data.empty and "Close" in data.columns.get_level_values(0):
+        close = data["Close"]
+        latest = close.iloc[-1] if len(close) else None
+        if latest is not None:
+            for ticker in tickers:
+                if ticker in latest.index:
+                    val = latest[ticker]
+                    if val is not None and val == val:
+                        prices[ticker] = float(val)
+
+    missing = [t for t in tickers if t not in prices]
+    if missing:
+        print(f"  Retrying {len(missing)} missed ticker(s) individually: {missing[:5]}")
+        for t in missing:
+            try:
+                hist = yf.Ticker(t).history(period="2d")
+                if not hist.empty and "Close" in hist.columns:
+                    val = hist["Close"].iloc[-1]
+                    if val is not None and val == val:
+                        prices[t] = float(val)
+            except Exception as e:
+                print(f"    {t}: retry failed: {e}")
+
+    try:
+        with open(PRICE_CACHE_FILE, "w") as f:
+            json.dump({"cached_at": datetime.now().isoformat(), "prices": prices}, f, indent=2)
+    except Exception as e:
+        print(f"  Cache write failed (non-fatal): {e}")
+
+    print(f"  Fetched {len(prices)}/{len(tickers)} live prices")
+    return prices
+
+
+def apply_live_prices(records, live_prices):
+    for r in records:
+        live = live_prices.get(r["yahoo_ticker"])
+        if live is None:
+            continue
+        r["live_price"] = live
+        target = r.get("blended_target")
+        if target is None or live <= 0:
+            continue
+        currency = r.get("currency", "")
+        if currency in ("GBp", "GBX"):
+            vr_decimal = (target * 100) / live
+            vr_already_pence = target / live
+            if 0.2 <= vr_decimal <= 5.0:
+                r["value_ratio"] = vr_decimal
+            elif 0.2 <= vr_already_pence <= 5.0:
+                r["value_ratio"] = vr_already_pence
+            else:
+                r["value_ratio"] = vr_decimal
+        else:
+            r["value_ratio"] = target / live
+    return records
+
+
+def sanity_check(records):
     warnings = []
     for r in records:
-        vr = to_float(r.get("value_ratio"))
-        ticker = r.get("ticker")
+        vr = r["value_ratio"]
         if vr is not None:
-            if vr < 0.2:
-                warnings.append(f"{ticker}: value ratio {vr:.3f} is implausibly low, review")
-            if vr > 5.0:
-                warnings.append(f"{ticker}: value ratio {vr:.3f} is implausibly high, review")
-        if not r.get("company"):
-            warnings.append(f"{ticker}: missing company name")
+            if vr < 0.2: warnings.append(f"{r['ticker']}: VR {vr:.3f} implausibly low")
+            if vr > 5.0: warnings.append(f"{r['ticker']}: VR {vr:.3f} implausibly high")
+        if not r["company"]: warnings.append(f"{r['ticker']}: missing company name")
     return warnings
 
 
-def build_tracker_page(records: list[dict]) -> str:
-    """Render the homepage (the live tracker table). NOT YET IMPLEMENTED."""
-    # TODO: load templates/tracker.html, render with Jinja2
-    raise NotImplementedError("tracker page renderer pending")
+def shape_for_tracker(records):
+    out = []
+    for r in records:
+        signal_label, signal_class = signal_for(r["value_ratio"])
+        currency = r.get("currency", "")
+        out.append({
+            "ticker": r["ticker"],
+            "slug": slug_for(r["ticker"]),
+            "company": r["company"],
+            "sector": r["sector"],
+            "currency": currency,
+            "price_raw": r["live_price"],
+            "target_raw": r["blended_target"],
+            "value_ratio_raw": r["value_ratio"],
+            "price_display": fmt_price(r["live_price"], currency),
+            "target_display": fmt_target_smart(r["blended_target"], currency, r["live_price"]),
+            "value_ratio_display": fmt_vr(r["value_ratio"]),
+            "signal_label": signal_label,
+            "signal_class": signal_class,
+            "change_display": fmt_change(r["prev_signal"], signal_label),
+        })
+    return out
 
 
-def build_ticker_page(record: dict) -> str:
-    """Render one per-ticker page. NOT YET IMPLEMENTED."""
-    # TODO: load templates/ticker.html, render with Jinja2
-    raise NotImplementedError("ticker page renderer pending")
+def latest_data_timestamp(records):
+    stamps = [r.get("last_updated") for r in records if r.get("last_updated")]
+    if not stamps: return "(unknown)"
+    return max(stamps)
 
 
-def build_methodology_page() -> str:
-    """Render the methodology page. NOT YET IMPLEMENTED."""
-    # TODO: copy index.html content into a new methodology template,
-    # add navigation header, output as methodology.html
-    raise NotImplementedError("methodology page renderer pending")
+# ── Renderers ─────────────────────────────────────────────────────────────────
+
+def render_tracker(public_records, refreshed_at):
+    rows = shape_for_tracker(public_records)
+    rows.sort(key=lambda r: (r["sector"], r["ticker"]))
+    sectors = sorted(set(r["sector"] for r in rows if r["sector"]))
+    signal_counts = Counter(r["signal_label"] for r in rows)
+    for sig in ("Strong Buy", "Buy", "Fair Value", "Sell", "Strong Sell"):
+        signal_counts.setdefault(sig, 0)
+    body = env.get_template("tracker.html").render(
+        rows=rows, sectors=sectors, signal_counts=signal_counts,
+        ticker_count=len(rows), path_prefix="",
+    )
+    return env.get_template("_layout.html").render(
+        page_title="FTSE Valuation Tracker",
+        page_description=f"Three valuation models, one signal, {len(rows)} FTSE stocks, refreshed weekly.",
+        canonical_path="/",
+        active="tracker",
+        path_prefix="",
+        content=body,
+        data_refreshed_at=refreshed_at,
+    )
 
 
-def build_sitemap(records: list[dict]) -> str:
-    """Render sitemap.xml listing every page on the site."""
+def is_financial_sector(sector):
+    return sector in ("Banks", "General Insurance", "Life Insurance", "Asset Management",
+                      "PE/Alternatives", "Capital Markets", "Financial Services")
+
+
+def render_ticker(r, refreshed_at):
+    """Render one per-ticker page."""
+    signal_label, signal_class = signal_for(r["value_ratio"])
+    currency = r.get("currency", "")
+    is_fin = is_financial_sector(r["sector"])
+
+    # Model values - DCF is skipped for financials
+    if is_fin:
+        val_dcf_display = "Not used"
+        val_dcf_note = "DCF skipped for financial-sector stocks; sector-specific models used instead."
+    else:
+        val_dcf_display = fmt_target_smart(r["val_dcf"], currency, r["live_price"]) if r["val_dcf"] else "—"
+        val_dcf_note = "5-year FCF projection plus terminal value, discounted at WACC."
+
+    val_ddm_display = fmt_target_smart(r["val_ddm"], currency, r["live_price"]) if r["val_ddm"] else "—"
+    val_ddm_note = ("Sector-weighted blend." if is_fin
+                    else ("Gordon Growth: D₁ ÷ (WACC − g)." if r["val_ddm"]
+                    else "No dividend or WACC ≤ g."))
+
+    val_epv_display = fmt_target_smart(r["val_epv"], currency, r["live_price"]) if r["val_epv"] else "—"
+    val_epv_note = "Forward EPS × normalised P/E, capped at 22.5×."
+
+    # Signal change line
+    if r["prev_signal"] and r["current_signal"] and r["prev_signal"] != r["current_signal"]:
+        signal_change_html = f'Signal moved this week: <strong>{r["prev_signal"]}</strong> → <strong>{r["current_signal"]}</strong>'
+    else:
+        signal_change_html = ""
+
+    body = env.get_template("ticker.html").render(
+        ticker=r["ticker"],
+        company=r["company"],
+        sector=r["sector"],
+        signal_label=signal_label,
+        signal_class=signal_class,
+        value_ratio_display=fmt_vr(r["value_ratio"]),
+        price_display=fmt_price(r["live_price"], currency),
+        target_display=fmt_target_smart(r["blended_target"], currency, r["live_price"]),
+        signal_change_html=signal_change_html,
+        val_dcf_display=val_dcf_display,
+        val_dcf_note=val_dcf_note,
+        val_ddm_display=val_ddm_display,
+        val_ddm_note=val_ddm_note,
+        val_epv_display=val_epv_display,
+        val_epv_note=val_epv_note,
+        model_method=r["model_method"] or "—",
+        beta_display=f"{r['beta']:.3f}" if r["beta"] else "—",
+        ke_or_wacc="Ke" if is_fin else "WACC",
+        wacc_display=fmt_pct(r["wacc"], 2) if r["wacc"] else "—",
+        g1_display=fmt_pct(r["g1"]) if r["g1"] else "5.00%",
+        g2_display=fmt_pct(r["g2"]) if r["g2"] else "2.50%",
+        data_refreshed_at=refreshed_at,
+    )
+    return env.get_template("_layout.html").render(
+        page_title=f"{r['ticker']} — {r['company']} valuation",
+        page_description=f"{r['company']} ({r['ticker']}). Three-model DCF/DDM/EPV blend, current signal {signal_label}, by Neil Daley, PhD, CFA.",
+        canonical_path=f"/ticker/{slug_for(r['ticker'])}",
+        active="",
+        path_prefix="../",
+        content=body,
+        data_refreshed_at=refreshed_at,
+    )
+
+
+def render_methodology(methodology_source_path, refreshed_at):
+    """Wrap the existing methodology HTML body inside the new site layout."""
+    with open(methodology_source_path, encoding="utf-8") as f:
+        full = f.read()
+
+    # Extract the body between the existing <header>...</header> and <footer>...</footer>
+    # Simpler: extract between <div class="wrap"> and </div></body>
+    m = re.search(r'<div class="wrap">(.*?)</div>\s*</body>', full, re.DOTALL)
+    if m:
+        inner = m.group(1)
+    else:
+        # Fallback: extract everything inside <body>
+        m2 = re.search(r'<body>(.*?)</body>', full, re.DOTALL)
+        inner = m2.group(1) if m2 else "<p>Methodology content not found.</p>"
+
+    # Wrap in a prose-wrap div
+    body = f'<div class="prose-wrap">{inner}</div>'
+
+    return env.get_template("_layout.html").render(
+        page_title="Methodology",
+        page_description="The three-model valuation framework behind Daley Valuations: DCF, DDM and EPV blended into a single fair-value target for 106 FTSE stocks.",
+        canonical_path="/methodology",
+        active="methodology",
+        path_prefix="",
+        content=body,
+        data_refreshed_at=refreshed_at,
+    )
+
+
+def render_sitemap(public_records):
     base = "https://daleyvaluations.com"
     today = datetime.now().strftime("%Y-%m-%d")
-    lines = ['<?xml version="1.0" encoding="UTF-8"?>',
-             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-
-    # Static pages
-    for path in ["", "methodology"]:
-        lines.append(f"  <url><loc>{base}/{path}</loc><lastmod>{today}</lastmod></url>")
-
-    # Per-ticker pages
-    for r in records:
-        slug = r["ticker"].lower().replace(".", "-")
-        lines.append(f"  <url><loc>{base}/ticker/{slug}</loc><lastmod>{today}</lastmod></url>")
-
+    lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        f"  <url><loc>{base}/</loc><lastmod>{today}</lastmod><priority>1.0</priority></url>",
+        f"  <url><loc>{base}/methodology</loc><lastmod>{today}</lastmod><priority>0.8</priority></url>",
+    ]
+    for r in public_records:
+        slug = slug_for(r["ticker"])
+        lines.append(f"  <url><loc>{base}/ticker/{slug}</loc><lastmod>{today}</lastmod><priority>0.6</priority></url>")
     lines.append("</urlset>")
     return "\n".join(lines)
 
 
 def main():
-    print(f"[{datetime.now().isoformat()}] Building daleyvaluations.com")
-    data = load_data()
-    records = join_valuations_with_prices(data)
-    print(f"  Joined {len(records)} ticker records from valuations + watchlist")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--preview", action="store_true",
+                        help="Write tracker to index_preview.html instead of overwriting index.html")
+    parser.add_argument("--data", type=Path, default=DEFAULT_DATA_FILE)
+    parser.add_argument("--methodology-source", type=Path,
+                        default=REPO_ROOT / "methodology_source.html",
+                        help="Path to the existing methodology HTML body to migrate")
+    parser.add_argument("--no-prices", action="store_true")
+    parser.add_argument("--refresh-prices", action="store_true")
+    args = parser.parse_args()
 
-    warnings = sanity_check(records)
+    print(f"[{datetime.now().isoformat()}] Building daleyvaluations.com")
+    data = load_data(args.data)
+    all_records = join_records(data)
+    print(f"  Joined {len(all_records)} total records")
+    public = filter_public(all_records)
+    print(f"  Filtered to {len(public)} FTSE equities for public site")
+
+    if not args.no_prices:
+        live_prices = fetch_live_prices(public, force_refresh=args.refresh_prices)
+        public = apply_live_prices(public, live_prices)
+
+    warnings = sanity_check(public)
     if warnings:
         print(f"  WARNINGS ({len(warnings)}):")
-        for w in warnings:
-            print(f"    - {w}")
-        # In production, consider failing the build if warnings exceed a threshold
+        for w in warnings: print(f"    - {w}")
     else:
         print(f"  Sanity check passed")
 
-    # The actual rendering is not yet implemented. This stub validates the data
-    # pipeline and proves the join works.
-    print(f"  Render stages pending. See PLAN-STAGE-2.md for the build sequence.")
+    refreshed_at = datetime.now().strftime("%Y-%m-%d %H:%M") + " (live)"
+
+    # 1) Tracker (homepage)
+    tracker_html = render_tracker(public, refreshed_at)
+    out_index = REPO_ROOT / ("index_preview.html" if args.preview else "index.html")
+    with open(out_index, "w", encoding="utf-8") as f:
+        f.write(tracker_html)
+    print(f"  Wrote {out_index.name}")
+
+    # 2) Methodology
+    if args.methodology_source.exists():
+        methodology_html = render_methodology(args.methodology_source, refreshed_at)
+        out_method = REPO_ROOT / "methodology.html"
+        with open(out_method, "w", encoding="utf-8") as f:
+            f.write(methodology_html)
+        print(f"  Wrote methodology.html")
+    else:
+        print(f"  WARNING: methodology source not found at {args.methodology_source}, skipping methodology page")
+
+    # 3) Per-ticker pages
+    ticker_dir = REPO_ROOT / "ticker"
+    ticker_dir.mkdir(exist_ok=True)
+    count = 0
+    for r in public:
+        html = render_ticker(r, refreshed_at)
+        out = ticker_dir / f"{slug_for(r['ticker'])}.html"
+        with open(out, "w", encoding="utf-8") as f:
+            f.write(html)
+        count += 1
+    print(f"  Wrote {count} per-ticker pages to ticker/")
+
+    # 4) Sitemap (only on full build, not preview)
+    if not args.preview:
+        sitemap = render_sitemap(public)
+        with open(REPO_ROOT / "sitemap.xml", "w", encoding="utf-8") as f:
+            f.write(sitemap)
+        print(f"  Wrote sitemap.xml")
+
+    print(f"[{datetime.now().isoformat()}] Done")
 
 
 if __name__ == "__main__":
