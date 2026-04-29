@@ -6,12 +6,18 @@
 <title>Methodology | Daley Valuations</title>
 <meta name="description" content="The three-model valuation framework behind Daley Valuations: DCF, DDM and EPV blended into a single fair-value target for 114 FTSE stocks. Built and maintained by Neil Daley, PhD, CFA.">
 <link rel="canonical" href="https://daleyvaluations.com/methodology">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
 <style>
   :root {
-    --ink: #1a1a1a;
-    --paper: #fafaf7;
-    --accent: #166534;
-    --rule: #d4d4d0;
+    --ink: #0f2a1d;
+    --paper: #f4f0e6;
+    --paper-card: #faf7ee;
+    --accent: #0f2a1d;
+    --accent-2: #2a5d3f;
+    --rule: #d8d2c2;
     --muted: #5a5a55;
   }
   * { box-sizing: border-box; }
@@ -20,105 +26,146 @@
     margin: 0;
     background: var(--paper);
     color: var(--ink);
-    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    font-family: "Source Serif 4", Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
   }
   .wrap { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
   header { padding-bottom: 2rem; border-bottom: 1px solid var(--rule); margin-bottom: 2.5rem; }
-  .brand {
-    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
-    font-weight: 600;
-    font-size: 0.95rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 0 0 0.5rem;
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin: 0 0 1.25rem;
+    text-decoration: none;
+    color: inherit;
   }
-  .brand a { color: inherit; text-decoration: none; }
-  h1 {
-    font-size: 2.2rem;
-    line-height: 1.2;
-    margin: 0 0 1rem;
-    font-weight: 700;
+  .brand-row:hover { text-decoration: none; }
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .brand-name {
+    font-family: "Source Serif 4", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.15rem;
     letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .brand-tag {
+    font-family: "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  h1 {
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 2.4rem;
+    line-height: 1.15;
+    margin: 0 0 1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
   }
   .lede {
     font-size: 1.15rem;
     color: var(--muted);
     margin: 0;
+    font-style: italic;
   }
   h2 {
-    font-size: 1.5rem;
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 1.6rem;
     margin: 3rem 0 1rem;
-    font-weight: 700;
-    letter-spacing: -0.005em;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
   }
   h3 {
-    font-size: 1.15rem;
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 1.18rem;
     margin: 2rem 0 0.5rem;
-    font-weight: 700;
+    font-weight: 600;
+    color: var(--ink);
   }
   p { margin: 0 0 1.1rem; }
-  a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
-  a:hover { text-decoration-thickness: 2px; }
+  a { color: var(--accent-2); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   table {
     width: 100%;
     border-collapse: collapse;
     margin: 1.5rem 0;
     font-size: 0.95rem;
-    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-family: "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
+    background: var(--paper-card);
+    border: 1px solid var(--rule);
   }
   th, td {
     text-align: left;
-    padding: 0.65rem 0.5rem;
+    padding: 0.7rem 0.85rem;
     border-bottom: 1px solid var(--rule);
   }
+  tr:last-child td { border-bottom: none; }
   th {
     font-weight: 600;
     color: var(--muted);
     text-transform: uppercase;
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    background: rgba(15, 42, 29, 0.03);
   }
   .signal {
     display: inline-block;
-    padding: 0.15rem 0.55rem;
+    padding: 0.18rem 0.6rem;
     border-radius: 3px;
     font-weight: 600;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     color: white;
-    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-family: "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
+    letter-spacing: 0.02em;
   }
-  .sb { background: #166534; }
-  .b  { background: #22C55E; }
-  .fv { background: #FBBF24; color: #1a1a1a; }
-  .s  { background: #FB923C; }
-  .ss { background: #DC2626; }
+  .sb { background: #0f2a1d; }
+  .b  { background: #2a5d3f; }
+  .fv { background: #c9a227; color: #0f2a1d; }
+  .s  { background: #b85c2a; }
+  .ss { background: #962a2a; }
   blockquote {
     margin: 1.5rem 0;
-    padding: 0.75rem 1.25rem;
+    padding: 1rem 1.25rem;
     border-left: 3px solid var(--accent);
-    background: rgba(22, 101, 52, 0.04);
+    background: var(--paper-card);
     font-style: italic;
-    color: var(--muted);
+    color: var(--ink);
   }
   blockquote p { margin: 0; }
+  ul { margin: 0 0 1.1rem; padding-left: 1.5rem; }
+  li { margin-bottom: 0.5rem; }
   footer {
     margin-top: 4rem;
     padding-top: 2rem;
     border-top: 1px solid var(--rule);
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     color: var(--muted);
-    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-family: "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
   }
-  footer p { margin: 0 0 0.5rem; }
-  footer a { color: var(--muted); }
+  footer p { margin: 0 0 0.6rem; }
+  footer a { color: var(--accent-2); }
   .stamp {
-    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
-    font-size: 0.85rem;
+    font-family: "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 0.8rem;
     color: var(--muted);
     margin-top: 0.5rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 </style>
 </head>
@@ -126,7 +173,17 @@
 <div class="wrap">
 
 <header>
-  <p class="brand"><a href="/">Daley Valuations</a></p>
+  <a class="brand-row" href="/">
+    <svg class="brand-mark" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 60 L12 20 L34 60 L34 20" stroke="#0f2a1d" stroke-width="4" stroke-linecap="square" fill="none"/>
+      <line x1="38" y1="64" x2="50" y2="16" stroke="#0f2a1d" stroke-width="2"/>
+      <path d="M54 20 L54 60 L66 60 C74 60 78 52 78 40 C78 28 74 20 66 20 Z" fill="#0f2a1d"/>
+    </svg>
+    <span class="brand-text">
+      <span class="brand-name">Daley Valuations</span>
+      <span class="brand-tag">Neil Daley · Valuation Research</span>
+    </span>
+  </a>
   <h1>Methodology</h1>
   <p class="lede">The valuation framework behind every signal on this site. Three independent models, one blended target, applied weekly to 114 FTSE stocks.</p>
 </header>
