@@ -1,0 +1,56 @@
+Daley Valuations - Licence
+
+This repository contains two distinct types of work, each with its own terms.
+
+==============================================================================
+
+1. CODE (HTML, CSS, configuration files, build scripts)
+
+The code in this repository is licensed under the MIT Licence:
+
+Copyright (c) 2026 Neil Daley
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+==============================================================================
+
+2. CONTENT (written prose, methodology descriptions, valuation outputs,
+   article text, charts, tables, and any other non-code material on the site)
+
+All written content, methodology descriptions, valuation results, signal
+data, charts, tables, and any other non-code material on daleyvaluations.com
+or in this repository are:
+
+Copyright (c) 2026 Neil Daley. All rights reserved.
+
+The content may be quoted briefly with attribution under fair-use principles.
+It may not be copied, reproduced, republished, scraped, used to train machine
+learning models, or distributed in any form without prior written consent.
+
+This includes but is not limited to:
+  - The methodology documentation
+  - Per-stock valuation pages and signal data
+  - The blended target prices and value ratios
+  - Any charts, tables, or visualisations of the underlying data
+  - Article text published on or linked from the site
+
+==============================================================================
+
+For licensing enquiries, contact Neil Daley via the eToro profile or
+Substack publication linked from daleyvaluations.com.

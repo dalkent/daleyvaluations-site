@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Methodology | Daley Valuations</title>
+<meta name="description" content="The three-model valuation framework behind Daley Valuations: DCF, DDM and EPV blended into a single fair-value target for 114 FTSE stocks. Built and maintained by Neil Daley, PhD, CFA.">
+<link rel="canonical" href="https://daleyvaluations.com/methodology">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --paper: #fafaf7;
+    --accent: #166534;
+    --rule: #d4d4d0;
+    --muted: #5a5a55;
+  }
+  * { box-sizing: border-box; }
+  html { font-size: 17px; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+  header { padding-bottom: 2rem; border-bottom: 1px solid var(--rule); margin-bottom: 2.5rem; }
+  .brand {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.5rem;
+  }
+  .brand a { color: inherit; text-decoration: none; }
+  h1 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .lede {
+    font-size: 1.15rem;
+    color: var(--muted);
+    margin: 0;
+  }
+  h2 {
+    font-size: 1.5rem;
+    margin: 3rem 0 1rem;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+  }
+  h3 {
+    font-size: 1.15rem;
+    margin: 2rem 0 0.5rem;
+    font-weight: 700;
+  }
+  p { margin: 0 0 1.1rem; }
+  a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { text-decoration-thickness: 2px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.65rem 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  th {
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+  }
+  .signal {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    color: white;
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+  .sb { background: #166534; }
+  .b  { background: #22C55E; }
+  .fv { background: #FBBF24; color: #1a1a1a; }
+  .s  { background: #FB923C; }
+  .ss { background: #DC2626; }
+  blockquote {
+    margin: 1.5rem 0;
+    padding: 0.75rem 1.25rem;
+    border-left: 3px solid var(--accent);
+    background: rgba(22, 101, 52, 0.04);
+    font-style: italic;
+    color: var(--muted);
+  }
+  blockquote p { margin: 0; }
+  footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+  footer p { margin: 0 0 0.5rem; }
+  footer a { color: var(--muted); }
+  .stamp {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="brand"><a href="/">Daley Valuations</a></p>
+  <h1>Methodology</h1>
+  <p class="lede">The valuation framework behind every signal on this site. Three independent models, one blended target, applied weekly to 114 FTSE stocks.</p>
+</header>
+
+<p>Most stock commentary is opinion dressed up as analysis. The work here goes the other way. Every signal you see on this site comes from a systematic, data-driven valuation framework I have built and refined over the last decade. The methodology runs the same way on every stock, every week, with the inputs and assumptions written down so you can argue with them.</p>
+
+<p>This page explains how the framework works, why it is built that way, and where it falls short. If you are going to trust the signals on this site, you should know exactly what is producing them.</p>
+
+<h2>The three models</h2>
+
+<p>Each FTSE stock is valued using up to three independent methods. Three is the right number. One model is fragile. Two cannot resolve a disagreement. Three lets you spot when one is misbehaving and gives you a way to weight the rest.</p>
+
+<h3>1. Discounted Cash Flow (DCF)</h3>
+
+<p>Project the company's free cash flow forward five years, add a terminal value for everything beyond that, and discount the whole stream back to today using a cost of capital appropriate to the stock's risk. This is the textbook intrinsic-value model and the most theoretically pure of the three.</p>
+
+<p>It is also the most sensitive. A 1% move in the discount rate can swing a DCF target by 20-30%. Small changes in the growth assumption produce large changes in the answer. So I treat the DCF output as a directional signal, not a precise number.</p>
+
+<p>For banks, insurers and other financial firms, the DCF is unreliable because operating cash flow is dominated by lending and deposits rather than business cash generation. For these stocks the DCF is skipped entirely and a sector-specific model takes its place.</p>
+
+<h3>2. Dividend Discount Model (DDM)</h3>
+
+<p>Value the stock as the present value of every future dividend it will ever pay. The classic Gordon Growth formulation: next year's expected dividend divided by the gap between the discount rate and the long-run dividend growth rate.</p>
+
+<p>The DDM is best for mature, dividend-paying companies with stable payout policies. It produces no answer at all for stocks that pay nothing, and it produces a misleading answer for stocks whose dividend is variable or commodity-linked. Mining companies, in particular, break this model and are excluded from the DDM blend.</p>
+
+<h3>3. Earnings Power Value (EPV)</h3>
+
+<p>Forward earnings per share multiplied by a normalised price-to-earnings multiple. The third model deliberately ignores future growth, on the principle that if a business is genuinely worth what it earns today, anything more is gravy. The EPV typically produces the most conservative of the three numbers and acts as a floor.</p>
+
+<p>The P/E used is capped at 22.5x to stop a market price already inflated by growth expectations from feeding back into the model and producing a circular result.</p>
+
+<h3>What runs on what</h3>
+
+<p>Different sectors get different combinations:</p>
+
+<table>
+  <thead>
+    <tr><th>Sector</th><th>Models used</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Industrials, consumer, energy, utilities, healthcare, tech</td><td>DCF + DDM + EPV</td></tr>
+    <tr><td>Banks</td><td>Two-Stage DDM (45%) + P/B Excess Returns (35%) + Earnings Capitalisation (20%)</td></tr>
+    <tr><td>General insurance</td><td>Justified Price-to-Tangible-Book</td></tr>
+    <tr><td>Life insurance</td><td>Earnings Capitalisation</td></tr>
+    <tr><td>Asset management</td><td>Justified P/B (60%) + Earnings Capitalisation (40%)</td></tr>
+    <tr><td>Capital markets and exchanges</td><td>EV / EBITDA at 22x</td></tr>
+    <tr><td>Basic materials (miners)</td><td>EPV and primary-method DCF only; DDM excluded</td></tr>
+  </tbody>
+</table>
+
+<h2>The blend</h2>
+
+<p>Once each applicable model has produced a number, the framework reduces them to a single Target Price using two steps.</p>
+
+<p><strong>Step one is outlier removal.</strong> Any model value that lands more than three times above or below the median of the others is excluded. This catches the case where one model has clearly broken: a DCF coming in at 25p for a 500p stock, or an EPV running away because of a tech-sector P/E. The threshold is symmetric, so a model that is too low gets removed as readily as one that is too high.</p>
+
+<p><strong>Step two is an equal-weight average.</strong> All surviving model values are given the same weight. There is no attempt to weight by historical accuracy or analyst confidence. The models are treated as three independent estimates of the same underlying number, and their disagreement is itself information.</p>
+
+<p>The blended Target Price is then divided by the current market price to produce a Value Ratio. That ratio drives the signal.</p>
+
+<h2>The signal</h2>
+
+<p>Five signals, set by where the value ratio falls:</p>
+
+<table>
+  <thead>
+    <tr><th>Signal</th><th>Value ratio</th><th>Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="signal sb">Strong Buy</span></td><td>1.25 or higher</td><td>Target is at least 25% above current price</td></tr>
+    <tr><td><span class="signal b">Buy</span></td><td>1.10 to 1.24</td><td>Target is 10-24% above current price</td></tr>
+    <tr><td><span class="signal fv">Fair Value</span></td><td>0.90 to 1.09</td><td>Within 10% of current price either way</td></tr>
+    <tr><td><span class="signal s">Sell</span></td><td>0.75 to 0.89</td><td>Target is 10-25% below current price</td></tr>
+    <tr><td><span class="signal ss">Strong Sell</span></td><td>Below 0.75</td><td>Target is 25%+ below current price</td></tr>
+  </tbody>
+</table>
+
+<p>The thresholds put a 10% band of "close enough" around the current price. Inside that band, the model is not telling you anything actionable. Outside it, the size of the gap is itself the signal: a Strong Buy is more than just a Buy, and the model is committing to that view.</p>
+
+<h2>Where the model can see, and where it can't</h2>
+
+<p>I am open about what this framework does and does not do. A signal generated here is a starting point for research, not the end of it.</p>
+
+<p><strong>What the model sees:</strong> the company's reported earnings, dividends, cash flows, balance sheet, sector classification, and current market price. It values each stock against its own fundamentals, on the same set of rules every other stock in the universe is valued against. That consistency is the point.</p>
+
+<p><strong>What the model does not see:</strong> the quality of the management team, the durability of the competitive moat, the regulatory or geopolitical risks specific to the business, the credibility of forward guidance, or anything that requires judgement rather than calculation. These matter enormously, and I write about them in the deep dives. But they don't appear in the numbers on this page.</p>
+
+<p><strong>Where the model is least reliable:</strong></p>
+
+<ul>
+  <li><strong>Mining and commodity traders</strong> (Glencore, Anglo American, Rio Tinto). Free cash flow is cyclical, dividends are variable, and reported earnings can swing on a single year of commodity prices. Treat signals here as low confidence and lean on analyst consensus and sector multiples instead.</li>
+  <li><strong>Pre-profit growth stocks.</strong> If there are no earnings and no dividend, two of the three models go silent and the EPV is doing all the work. The framework was not built for this and the signal will reflect that.</li>
+  <li><strong>Companies in transition.</strong> Spin-offs, large acquisitions, and major restructurings all break the assumption that historical financials predict future ones. The model will value the past; the price is reacting to the future.</li>
+</ul>
+
+<h2>The assumptions, written down</h2>
+
+<p>The framework runs on a set of hardcoded inputs. They are reviewed quarterly and updated when they drift far enough to affect the answers. As of the latest review:</p>
+
+<table>
+  <tbody>
+    <tr><td>UK risk-free rate (10-year gilt)</td><td>4.9%</td></tr>
+    <tr><td>US risk-free rate (10-year Treasury)</td><td>4.5%</td></tr>
+    <tr><td>Equity risk premium</td><td>5.0%</td></tr>
+    <tr><td>Beta clamp range</td><td>0.5 to 2.5</td></tr>
+    <tr><td>Five-year FCF growth assumption (DCF)</td><td>5.0%</td></tr>
+    <tr><td>Terminal growth rate (DCF and DDM)</td><td>2.5%</td></tr>
+    <tr><td>Normalised P/E multiple (EPV)</td><td>15x</td></tr>
+    <tr><td>Forward P/E cap (EPV)</td><td>22.5x</td></tr>
+    <tr><td>Outlier filter (blend)</td><td>median ÷ 3 to median × 3</td></tr>
+  </tbody>
+</table>
+
+<p>Every change to these inputs is logged with a reason and an effect on at least one example stock. That log is the audit trail behind the numbers you see on this site.</p>
+
+<h2>Not financial advice</h2>
+
+<blockquote>
+<p>The signals on this site are a systematic, data-driven starting point for investment research. They do not account for management quality, competitive position, regulatory risk, or any of the qualitative judgements that separate a working thesis from a number on a screen. Always do your own research before acting on any signal you see here.</p>
+</blockquote>
+
+<p>For the live tracker covering all 114 stocks, see the <a href="/">homepage</a>. For the deep-dive analysis behind individual signals, the weekly articles are at <a href="https://dalkent13.substack.com">dalkent13.substack.com</a>. To follow the live portfolio with real positions and entry prices, see my <a href="https://www.etoro.com/people/dalkent13">eToro profile</a>.</p>
+
+<footer>
+  <p><strong>Daley Valuations</strong> is an independent equity research site by Neil Daley, PhD, CFA. Twenty years in institutional finance, now applied to public markets in plain English.</p>
+  <p class="stamp">Last reviewed: 29 April 2026. The methodology is a living document and is updated when the underlying assumptions change.</p>
+</footer>
+
+</div>
+</body>
+</html>

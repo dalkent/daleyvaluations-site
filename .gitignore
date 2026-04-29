@@ -1,0 +1,23 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local data files (must never be committed)
+*.json
+data/
+private/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
