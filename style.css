@@ -232,8 +232,8 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
 }
 .tracker-table td.ticker-cell a:hover { color: var(--accent-2); text-decoration: underline; }
 .change-cell { font-size: 0.85rem; color: var(--muted); white-space: nowrap; }
-.change-up { color: #2a5d3f; font-weight: 600; }
-.change-down { color: #962a2a; font-weight: 600; }
+.change-up { color: #0f5132; font-weight: 600; }
+.change-down { color: #7a1518; font-weight: 600; }
 
 .table-note {
   margin-top: 1rem;
@@ -254,11 +254,11 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
-.sb { background: #0f2a1d; }
-.b  { background: #2a5d3f; }
+.sb { background: #0f5132; }
+.b  { background: #2e8b57; }
 .fv { background: #c9a227; color: #0f2a1d; }
-.s  { background: #b85c2a; }
-.ss { background: #962a2a; }
+.s  { background: #dc3545; }
+.ss { background: #7a1518; }
 .na { background: #888; }
 
 /* Methodology page (and other prose pages) inherit these */

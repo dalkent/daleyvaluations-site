@@ -2,7 +2,7 @@
   <div class="wrap-wide">
     <p class="eyebrow">FTSE Valuation Tracker</p>
     <h1>Three valuation models. One signal. {{ ticker_count }} FTSE stocks.</h1>
-    <p class="lede">Every stock in the coverage universe is valued each week using DCF, DDM and EPV. The blended target is divided by the current price to give a Value Ratio, and a single signal: Strong Buy, Buy, Fair Value, Sell, or Strong Sell. <a href="{{ path_prefix }}methodology.html">Read the full methodology</a>.</p>
+    <p class="lede">Every stock in the coverage universe is valued each week using DCF, DDM and EPV. The blended target is divided by the current price to give a Daley Value Ratio (DVR), and a single signal: Strong Buy, Buy, Fair Value, Sell, or Strong Sell. <a href="{{ path_prefix }}methodology.html">Read the full methodology</a>.</p>
 
     <div class="signal-bar" aria-label="Current signal distribution">
       <div class="signal-bar-row">
@@ -56,7 +56,7 @@
             <th class="sortable" data-sort="sector">Sector</th>
             <th class="sortable num" data-sort="price">Price</th>
             <th class="sortable num" data-sort="target">Target</th>
-            <th class="sortable num" data-sort="vr">VR</th>
+            <th class="sortable num" data-sort="vr">DVR</th>
             <th class="sortable" data-sort="signal">Signal</th>
             <th>Change</th>
           </tr>
@@ -78,7 +78,7 @@
       </table>
     </div>
 
-    <p class="table-note">VR = Value Ratio (blended target divided by current price). Click a column header to sort. Click a ticker to see the full per-stock breakdown.</p>
+    <p class="table-note">DVR = Daley Value Ratio (blended target divided by current price). Click a column header to sort. Click a ticker to see the full per-stock breakdown.</p>
   </div>
 </section>
 
