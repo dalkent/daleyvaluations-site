@@ -199,10 +199,13 @@ def join_records(data):
 
 
 # Tickers excluded from the public site pending model reconciliation.
-# - PSH.L: closed-end vehicle, AM:PB+EPV anchors on NAV, misleading DVR
-# - LGEN.L: Life:EPSCap appears to have a units bug producing 74p target
-#   vs current 251p price - giving a spurious Strong Sell. Pending audit.
-EXCLUDED_TICKERS = {"PSH.L", "LGEN.L"}
+# - PSH.L: closed-end vehicle, AM:PB+EPV anchors on NAV, misleading DVR.
+# - III.L: listed PE vehicle (Action ~70% of NAV). AM:PB+EPV applies a P/B
+#   multiplier to assets already marked at fair value - double-counting. Same
+#   structural issue as PSH; not a true asset manager.
+# - LGEN.L: Life:EPSCap appears to have a units / normalised-EPS issue producing
+#   a 74p target vs current 251p price - spurious Strong Sell. Pending audit.
+EXCLUDED_TICKERS = {"PSH.L", "III.L", "LGEN.L"}
 
 
 def filter_public(records):
