@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FTSE Valuation Tracker | Daley Valuations</title>
-<meta name="description" content="Three valuation models, one signal, 102 FTSE stocks, refreshed weekly.">
+<meta name="description" content="Three valuation models, one signal, 101 FTSE stocks, refreshed weekly.">
 <link rel="canonical" href="https://daleyvaluations.com/">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-<link rel="stylesheet" href="style.css?v=1777553633">
+<link rel="stylesheet" href="style.css?v=1777553907">
 </head>
 <body>
 
@@ -37,12 +37,12 @@
 <section class="hero">
   <div class="wrap-wide">
     <p class="eyebrow">FTSE Valuation Tracker</p>
-    <h1>Three valuation models. One signal. 102 FTSE stocks.</h1>
+    <h1>Three valuation models. One signal. 101 FTSE stocks.</h1>
     <p class="lede">Every stock in the coverage universe is valued each week using DCF, DDM and EPV. The blended target is divided by the current price to give a Daley Value Ratio (DVR), and a single signal: Strong Buy, Buy, Fair Value, Sell, or Strong Sell. <a href="methodology.html">Read the full methodology</a>.</p>
 
     <div class="signal-bar" aria-label="Current signal distribution">
       <div class="signal-bar-row">
-        <span class="signal sb">Strong Buy</span><span class="signal-count">19</span>
+        <span class="signal sb">Strong Buy</span><span class="signal-count">18</span>
         <span class="signal b">Buy</span><span class="signal-count">8</span>
         <span class="signal fv">Fair Value</span><span class="signal-count">25</span>
         <span class="signal s">Sell</span><span class="signal-count">24</span>
@@ -62,16 +62,6 @@
       <div class="extremes-col">
         <h3 class="extremes-col-title cheap">Cheapest 5 by DVR</h3>
         <ol class="extremes-list">
-          <li>
-            <a href="ticker/psh-l.html" class="extreme-link">
-              <span class="extreme-ticker-cell"><span class="extreme-ticker">PSH.L</span></span>
-              <span class="extreme-company">Pershing Square Holdings, Ltd.</span>
-              <span class="extreme-meta">
-                <span class="extreme-vr">2.06</span>
-                <span class="signal sb">Strong Buy</span>
-              </span>
-            </a>
-          </li>
           <li>
             <a href="ticker/imb-l.html" class="extreme-link">
               <span class="extreme-ticker-cell"><span class="extreme-ticker">IMB.L</span><span class="held-dot" title="Held in live eToro portfolio"></span></span>
@@ -97,7 +87,7 @@
               <span class="extreme-ticker-cell"><span class="extreme-ticker">FXPO.L</span><span class="held-dot" title="Held in live eToro portfolio"></span></span>
               <span class="extreme-company">Ferrexpo plc</span>
               <span class="extreme-meta">
-                <span class="extreme-vr">1.58</span>
+                <span class="extreme-vr">1.59</span>
                 <span class="signal sb">Strong Buy</span>
               </span>
             </a>
@@ -107,7 +97,17 @@
               <span class="extreme-ticker-cell"><span class="extreme-ticker">ENOG.L</span><span class="held-dot" title="Held in live eToro portfolio"></span></span>
               <span class="extreme-company">Energean plc</span>
               <span class="extreme-meta">
-                <span class="extreme-vr">1.57</span>
+                <span class="extreme-vr">1.56</span>
+                <span class="signal sb">Strong Buy</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="ticker/bp-l.html" class="extreme-link">
+              <span class="extreme-ticker-cell"><span class="extreme-ticker">BP.L</span><span class="held-dot" title="Held in live eToro portfolio"></span></span>
+              <span class="extreme-company">BP p.l.c.</span>
+              <span class="extreme-meta">
+                <span class="extreme-vr">1.52</span>
                 <span class="signal sb">Strong Buy</span>
               </span>
             </a>
@@ -180,7 +180,7 @@
           <div class="sector-strip">
             <button type="button" class="sector-chip buy" data-sector="Energy">
               <span class="sector-chip-name">Energy</span>
-              <span class="sector-chip-meta"><span class="sector-chip-count">5 stocks</span> · avg DVR <span class="sector-chip-dvr">1.36</span></span>
+              <span class="sector-chip-meta"><span class="sector-chip-count">5 stocks</span> · avg DVR <span class="sector-chip-dvr">1.37</span></span>
             </button>
             <button type="button" class="sector-chip buy" data-sector="Consumer Defensive">
               <span class="sector-chip-name">Consumer Defensive</span>
@@ -195,6 +195,10 @@
         <div class="sector-summary-col">
           <h4 class="sector-summary-col-title expensive">Most expensive sectors</h4>
           <div class="sector-strip">
+            <button type="button" class="sector-chip sell" data-sector="Asset Management">
+              <span class="sector-chip-name">Asset Management</span>
+              <span class="sector-chip-meta"><span class="sector-chip-count">3 stocks</span> · avg DVR <span class="sector-chip-dvr">0.48</span></span>
+            </button>
             <button type="button" class="sector-chip sell" data-sector="Life Insurance">
               <span class="sector-chip-name">Life Insurance</span>
               <span class="sector-chip-meta"><span class="sector-chip-count">2 stocks</span> · avg DVR <span class="sector-chip-dvr">0.67</span></span>
@@ -202,10 +206,6 @@
             <button type="button" class="sector-chip sell" data-sector="Banks">
               <span class="sector-chip-name">Banks</span>
               <span class="sector-chip-meta"><span class="sector-chip-count">5 stocks</span> · avg DVR <span class="sector-chip-dvr">0.76</span></span>
-            </button>
-            <button type="button" class="sector-chip sell" data-sector="General Insurance">
-              <span class="sector-chip-name">General Insurance</span>
-              <span class="sector-chip-meta"><span class="sector-chip-count">5 stocks</span> · avg DVR <span class="sector-chip-dvr">0.78</span></span>
             </button>
           </div>
         </div>
@@ -287,7 +287,7 @@
         <span class="filter-label">Search</span>
         <input id="filter-search" type="search" placeholder="Ticker or company">
       </label>
-      <span id="row-count" class="row-count">102 stocks</span>
+      <span id="row-count" class="row-count">101 stocks</span>
     </div>
 
     <div class="table-wrap">
@@ -305,24 +305,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-ticker="MNG.L" data-company="m&amp;g plc" data-sector="Asset Management" data-signal="Strong Sell" data-vr="0.3059642270871931" data-price="301.79998779296875" data-target="0.9234" data-change="0" data-held="0">
+          <tr data-ticker="MNG.L" data-company="m&amp;g plc" data-sector="Asset Management" data-signal="Strong Sell" data-vr="0.3060960516121044" data-price="301.6700134277344" data-target="0.9234" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/mng-l.html">MNG.L</a></td>
             <td>M&amp;G plc</td>
             <td>Asset Management</td>
-            <td class="num">301.8p</td>
+            <td class="num">301.7p</td>
             <td class="num">92.3p</td>
             <td class="num">0.31</td>
             <td><span class="signal ss">Strong Sell</span></td>
-            <td class="change-cell"><span class="change-flat">—</span></td>
-          </tr>
-          <tr data-ticker="PSH.L" data-company="pershing square holdings, ltd." data-sector="Asset Management" data-signal="Strong Buy" data-vr="2.060053452760001" data-price="4132.591796875" data-target="85.1336" data-change="0" data-held="0">
-            <td class="ticker-cell"><a href="ticker/psh-l.html">PSH.L</a></td>
-            <td>Pershing Square Holdings, Ltd.</td>
-            <td>Asset Management</td>
-            <td class="num">4,132.6p</td>
-            <td class="num">8,513.4p</td>
-            <td class="num">2.06</td>
-            <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
           <tr data-ticker="SDR.L" data-company="schroders plc" data-sector="Asset Management" data-signal="Strong Sell" data-vr="0.525590819370141" data-price="579.6904907226562" data-target="3.0468" data-change="0" data-held="0">
@@ -335,141 +325,141 @@
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="STJ.L" data-company="st. james&#39;s place plc" data-sector="Asset Management" data-signal="Strong Sell" data-vr="0.6096694214876033" data-price="1210.0" data-target="7.377" data-change="0" data-held="0">
+          <tr data-ticker="STJ.L" data-company="st. james&#39;s place plc" data-sector="Asset Management" data-signal="Strong Sell" data-vr="0.6094175960346964" data-price="1210.5" data-target="7.377" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/stj-l.html">STJ.L</a></td>
             <td>St. James&#39;s Place plc</td>
             <td>Asset Management</td>
-            <td class="num">1,210.0p</td>
+            <td class="num">1,210.5p</td>
             <td class="num">737.7p</td>
             <td class="num">0.61</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="BARC.L" data-company="barclays plc" data-sector="Banks" data-signal="Strong Sell" data-vr="0.7103164759107669" data-price="432.07501220703125" data-target="3.0691" data-change="0" data-held="0">
+          <tr data-ticker="BARC.L" data-company="barclays plc" data-sector="Banks" data-signal="Strong Sell" data-vr="0.7120881670533643" data-price="431.0" data-target="3.0691" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/barc-l.html">BARC.L</a></td>
             <td>Barclays PLC</td>
             <td>Banks</td>
-            <td class="num">432.1p</td>
+            <td class="num">431.0p</td>
             <td class="num">306.9p</td>
             <td class="num">0.71</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="HSBA.L" data-company="hsbc holdings plc" data-sector="Banks" data-signal="Strong Sell" data-vr="0.6938824128877035" data-price="1350.199951171875" data-target="9.3688" data-change="0" data-held="0">
+          <tr data-ticker="HSBA.L" data-company="hsbc holdings plc" data-sector="Banks" data-signal="Strong Sell" data-vr="0.6950148367952522" data-price="1348.0" data-target="9.3688" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/hsba-l.html">HSBA.L</a></td>
             <td>HSBC Holdings plc</td>
             <td>Banks</td>
-            <td class="num">1,350.2p</td>
+            <td class="num">1,348.0p</td>
             <td class="num">936.9p</td>
-            <td class="num">0.69</td>
+            <td class="num">0.70</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="LLOY.L" data-company="lloyds banking group plc" data-sector="Banks" data-signal="Strong Sell" data-vr="0.6588438463774947" data-price="98.43000030517578" data-target="0.6485" data-change="0" data-held="0">
+          <tr data-ticker="LLOY.L" data-company="lloyds banking group plc" data-sector="Banks" data-signal="Strong Sell" data-vr="0.6597822707900223" data-price="98.29000091552734" data-target="0.6485" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/lloy-l.html">LLOY.L</a></td>
             <td>Lloyds Banking Group plc</td>
             <td>Banks</td>
-            <td class="num">98.4p</td>
+            <td class="num">98.3p</td>
             <td class="num">64.8p</td>
             <td class="num">0.66</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="NWG.L" data-company="natwest group plc" data-sector="Banks" data-signal="Buy" data-vr="1.1539236111111113" data-price="576.0" data-target="6.6466" data-change="0" data-held="1">
+          <tr data-ticker="NWG.L" data-company="natwest group plc" data-sector="Banks" data-signal="Buy" data-vr="1.1543244426725854" data-price="575.7999877929688" data-target="6.6466" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/nwg-l.html">NWG.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>NatWest Group plc</td>
             <td>Banks</td>
-            <td class="num">576.0p</td>
+            <td class="num">575.8p</td>
             <td class="num">664.7p</td>
             <td class="num">1.15</td>
             <td><span class="signal b">Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="STAN.L" data-company="standard chartered plc" data-sector="Banks" data-signal="Strong Sell" data-vr="0.5838054564271188" data-price="1856.800048828125" data-target="10.8401" data-change="0" data-held="0">
+          <tr data-ticker="STAN.L" data-company="standard chartered plc" data-sector="Banks" data-signal="Strong Sell" data-vr="0.5840571120689655" data-price="1856.0" data-target="10.8401" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/stan-l.html">STAN.L</a></td>
             <td>Standard Chartered PLC</td>
             <td>Banks</td>
-            <td class="num">1,856.8p</td>
+            <td class="num">1,856.0p</td>
             <td class="num">1,084.0p</td>
             <td class="num">0.58</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="AAL.L" data-company="anglo american plc" data-sector="Basic Materials" data-signal="Sell" data-vr="0.8462421798971221" data-price="3596.5" data-target="30.4351" data-change="0" data-held="0">
+          <tr data-ticker="AAL.L" data-company="anglo american plc" data-sector="Basic Materials" data-signal="Sell" data-vr="0.8454194444444444" data-price="3600.0" data-target="30.4351" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/aal-l.html">AAL.L</a></td>
             <td>Anglo American plc</td>
             <td>Basic Materials</td>
-            <td class="num">3,596.5p</td>
+            <td class="num">3,600.0p</td>
             <td class="num">3,043.5p</td>
             <td class="num">0.85</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="ANTO.L" data-company="antofagasta plc" data-sector="Basic Materials" data-signal="Sell" data-vr="0.8530062041737168" data-price="3546.0" data-target="30.2476" data-change="0" data-held="0">
+          <tr data-ticker="ANTO.L" data-company="antofagasta plc" data-sector="Basic Materials" data-signal="Sell" data-vr="0.8514454609429978" data-price="3552.5" data-target="30.2476" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/anto-l.html">ANTO.L</a></td>
             <td>Antofagasta plc</td>
             <td>Basic Materials</td>
-            <td class="num">3,546.0p</td>
+            <td class="num">3,552.5p</td>
             <td class="num">3,024.8p</td>
             <td class="num">0.85</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="CRDA.L" data-company="croda international plc" data-sector="Basic Materials" data-signal="Sell" data-vr="0.8067334035827186" data-price="2847.0" data-target="22.9677" data-change="0" data-held="0">
+          <tr data-ticker="CRDA.L" data-company="croda international plc" data-sector="Basic Materials" data-signal="Sell" data-vr="0.8078684488216672" data-price="2843.0" data-target="22.9677" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/crda-l.html">CRDA.L</a></td>
             <td>Croda International Plc</td>
             <td>Basic Materials</td>
-            <td class="num">2,847.0p</td>
+            <td class="num">2,843.0p</td>
             <td class="num">2,296.8p</td>
             <td class="num">0.81</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="EDV.L" data-company="endeavour mining plc" data-sector="Basic Materials" data-signal="Fair Value" data-vr="1.0009060022650056" data-price="4415.0" data-target="44.19" data-change="0" data-held="0">
+          <tr data-ticker="EDV.L" data-company="endeavour mining plc" data-sector="Basic Materials" data-signal="Fair Value" data-vr="1.0" data-price="4419.0" data-target="44.19" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/edv-l.html">EDV.L</a></td>
             <td>Endeavour Mining plc</td>
             <td>Basic Materials</td>
-            <td class="num">4,415.0p</td>
+            <td class="num">4,419.0p</td>
             <td class="num">4,419.0p</td>
             <td class="num">1.00</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="FRES.L" data-company="fresnillo plc" data-sector="Basic Materials" data-signal="Fair Value" data-vr="1.0078222778473092" data-price="3196.0" data-target="32.21" data-change="0" data-held="0">
+          <tr data-ticker="FRES.L" data-company="fresnillo plc" data-sector="Basic Materials" data-signal="Fair Value" data-vr="1.0040523690773067" data-price="3208.0" data-target="32.21" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/fres-l.html">FRES.L</a></td>
             <td>Fresnillo plc</td>
             <td>Basic Materials</td>
-            <td class="num">3,196.0p</td>
+            <td class="num">3,208.0p</td>
             <td class="num">3,221.0p</td>
-            <td class="num">1.01</td>
+            <td class="num">1.00</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="FXPO.L" data-company="ferrexpo plc" data-sector="Basic Materials" data-signal="Strong Buy" data-vr="1.5792639645624613" data-price="28.260000228881836" data-target="0.4463" data-change="0" data-held="1">
+          <tr data-ticker="FXPO.L" data-company="ferrexpo plc" data-sector="Basic Materials" data-signal="Strong Buy" data-vr="1.5939285714285714" data-price="28.0" data-target="0.4463" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/fxpo-l.html">FXPO.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Ferrexpo plc</td>
             <td>Basic Materials</td>
-            <td class="num">28.3p</td>
+            <td class="num">28.0p</td>
             <td class="num">44.6p</td>
-            <td class="num">1.58</td>
+            <td class="num">1.59</td>
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="GLEN.L" data-company="glencore plc" data-sector="Basic Materials" data-signal="Fair Value" data-vr="1.0036601044517417" data-price="560.0999755859375" data-target="5.6215" data-change="0" data-held="1">
+          <tr data-ticker="GLEN.L" data-company="glencore plc" data-sector="Basic Materials" data-signal="Fair Value" data-vr="1.0024072971405442" data-price="560.7999877929688" data-target="5.6215" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/glen-l.html">GLEN.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Glencore plc</td>
             <td>Basic Materials</td>
-            <td class="num">560.1p</td>
+            <td class="num">560.8p</td>
             <td class="num">562.1p</td>
             <td class="num">1.00</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="MNDI.L" data-company="mondi plc" data-sector="Basic Materials" data-signal="Fair Value" data-vr="0.9961159705861761" data-price="772.4000244140625" data-target="7.694" data-change="0" data-held="0">
+          <tr data-ticker="MNDI.L" data-company="mondi plc" data-sector="Basic Materials" data-signal="Fair Value" data-vr="0.996890401877523" data-price="771.7999877929688" data-target="7.694" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/mndi-l.html">MNDI.L</a></td>
             <td>Mondi plc</td>
             <td>Basic Materials</td>
-            <td class="num">772.4p</td>
+            <td class="num">771.8p</td>
             <td class="num">769.4p</td>
             <td class="num">1.00</td>
             <td><span class="signal fv">Fair Value</span></td>
@@ -505,11 +495,11 @@
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="AAF.L" data-company="airtel africa plc" data-sector="Communication Services" data-signal="Strong Buy" data-vr="1.2981253719169794" data-price="357.3999938964844" data-target="4.6395" data-change="0" data-held="0">
+          <tr data-ticker="AAF.L" data-company="airtel africa plc" data-sector="Communication Services" data-signal="Strong Buy" data-vr="1.3003083404509657" data-price="356.79998779296875" data-target="4.6395" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/aaf-l.html">AAF.L</a></td>
             <td>Airtel Africa Plc</td>
             <td>Communication Services</td>
-            <td class="num">357.4p</td>
+            <td class="num">356.8p</td>
             <td class="num">463.9p</td>
             <td class="num">1.30</td>
             <td><span class="signal sb">Strong Buy</span></td>
@@ -525,47 +515,47 @@
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="BT.A.L" data-company="bt group plc" data-sector="Communication Services" data-signal="Buy" data-vr="1.1433751418939653" data-price="215.10000610351562" data-target="2.4594" data-change="0" data-held="0">
+          <tr data-ticker="BT.A.L" data-company="bt group plc" data-sector="Communication Services" data-signal="Buy" data-vr="1.143906976744186" data-price="215.0" data-target="2.4594" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/bt-a-l.html">BT.A.L</a></td>
             <td>BT Group plc</td>
             <td>Communication Services</td>
-            <td class="num">215.1p</td>
+            <td class="num">215.0p</td>
             <td class="num">245.9p</td>
             <td class="num">1.14</td>
             <td><span class="signal b">Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="INF.L" data-company="informa plc" data-sector="Communication Services" data-signal="Sell" data-vr="0.8304201177006306" data-price="799.7999877929688" data-target="6.6417" data-change="0" data-held="0">
+          <tr data-ticker="INF.L" data-company="informa plc" data-sector="Communication Services" data-signal="Sell" data-vr="0.8306278392683842" data-price="799.5999755859375" data-target="6.6417" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/inf-l.html">INF.L</a></td>
             <td>Informa plc</td>
             <td>Communication Services</td>
-            <td class="num">799.8p</td>
+            <td class="num">799.6p</td>
             <td class="num">664.2p</td>
             <td class="num">0.83</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="PSON.L" data-company="pearson plc" data-sector="Communication Services" data-signal="Fair Value" data-vr="1.0551517939282429" data-price="1087.0" data-target="11.4695" data-change="0" data-held="0">
+          <tr data-ticker="PSON.L" data-company="pearson plc" data-sector="Communication Services" data-signal="Fair Value" data-vr="1.056123388581952" data-price="1086.0" data-target="11.4695" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/pson-l.html">PSON.L</a></td>
             <td>Pearson plc</td>
             <td>Communication Services</td>
-            <td class="num">1,087.0p</td>
+            <td class="num">1,086.0p</td>
             <td class="num">1,147.0p</td>
             <td class="num">1.06</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="RMV.L" data-company="rightmove plc" data-sector="Communication Services" data-signal="Sell" data-vr="0.8070820991631138" data-price="434.8999938964844" data-target="3.51" data-change="0" data-held="0">
+          <tr data-ticker="RMV.L" data-company="rightmove plc" data-sector="Communication Services" data-signal="Sell" data-vr="0.8072677319557093" data-price="434.79998779296875" data-target="3.51" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/rmv-l.html">RMV.L</a></td>
             <td>Rightmove plc</td>
             <td>Communication Services</td>
-            <td class="num">434.9p</td>
+            <td class="num">434.8p</td>
             <td class="num">351.0p</td>
             <td class="num">0.81</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="VOD.L" data-company="vodafone group public limited company" data-sector="Communication Services" data-signal="Sell" data-vr="0.8611278406028686" data-price="116.1500015258789" data-target="1.0002" data-change="0" data-held="1">
+          <tr data-ticker="VOD.L" data-company="vodafone group public limited company" data-sector="Communication Services" data-signal="Sell" data-vr="0.8603870967741936" data-price="116.25" data-target="1.0002" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/vod-l.html">VOD.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Vodafone Group Public Limited Company</td>
             <td>Communication Services</td>
@@ -585,27 +575,27 @@
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="BRBY.L" data-company="burberry group plc" data-sector="Consumer Cyclical" data-signal="Strong Buy" data-vr="1.320240336493367" data-price="1139.800048828125" data-target="15.0481" data-change="0" data-held="0">
+          <tr data-ticker="BRBY.L" data-company="burberry group plc" data-sector="Consumer Cyclical" data-signal="Strong Buy" data-vr="1.3190830431203087" data-price="1140.800048828125" data-target="15.0481" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/brby-l.html">BRBY.L</a></td>
             <td>Burberry Group plc</td>
             <td>Consumer Cyclical</td>
-            <td class="num">1,139.8p</td>
+            <td class="num">1,140.8p</td>
             <td class="num">1,504.8p</td>
             <td class="num">1.32</td>
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="BTRW.L" data-company="barratt redrow plc" data-sector="Consumer Cyclical" data-signal="Sell" data-vr="0.7787284895922371" data-price="250.10000610351562" data-target="1.9476" data-change="0" data-held="0">
+          <tr data-ticker="BTRW.L" data-company="barratt redrow plc" data-sector="Consumer Cyclical" data-signal="Sell" data-vr="0.7802884424579218" data-price="249.60000610351562" data-target="1.9476" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/btrw-l.html">BTRW.L</a></td>
             <td>Barratt Redrow plc</td>
             <td>Consumer Cyclical</td>
-            <td class="num">250.1p</td>
+            <td class="num">249.6p</td>
             <td class="num">194.8p</td>
             <td class="num">0.78</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="CPG.L" data-company="compass group plc" data-sector="Consumer Cyclical" data-signal="Strong Sell" data-vr="0.6843500776062795" data-price="28.850000381469727" data-target="19.7435" data-change="-2" data-held="0">
+          <tr data-ticker="CPG.L" data-company="compass group plc" data-sector="Consumer Cyclical" data-signal="Strong Sell" data-vr="0.6838101528559383" data-price="28.872779846191406" data-target="19.7435" data-change="-2" data-held="0">
             <td class="ticker-cell"><a href="ticker/cpg-l.html">CPG.L</a></td>
             <td>Compass Group PLC</td>
             <td>Consumer Cyclical</td>
@@ -615,57 +605,57 @@
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-down">Fair Value ↓ Strong Sell</span></td>
           </tr>
-          <tr data-ticker="ENT.L" data-company="entain plc" data-sector="Consumer Cyclical" data-signal="Fair Value" data-vr="0.9024899836119166" data-price="550.2000122070312" data-target="4.9655" data-change="0" data-held="0">
+          <tr data-ticker="ENT.L" data-company="entain plc" data-sector="Consumer Cyclical" data-signal="Fair Value" data-vr="0.902162023936337" data-price="550.4000244140625" data-target="4.9655" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/ent-l.html">ENT.L</a></td>
             <td>Entain Plc</td>
             <td>Consumer Cyclical</td>
-            <td class="num">550.2p</td>
+            <td class="num">550.4p</td>
             <td class="num">496.5p</td>
             <td class="num">0.90</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="GAW.L" data-company="games workshop group plc" data-sector="Consumer Cyclical" data-signal="Strong Sell" data-vr="0.46391388535031847" data-price="19625.0" data-target="91.0431" data-change="0" data-held="0">
+          <tr data-ticker="GAW.L" data-company="games workshop group plc" data-sector="Consumer Cyclical" data-signal="Strong Sell" data-vr="0.4641503951057864" data-price="19615.0" data-target="91.0431" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/gaw-l.html">GAW.L</a></td>
             <td>Games Workshop Group PLC</td>
             <td>Consumer Cyclical</td>
-            <td class="num">19,625.0p</td>
+            <td class="num">19,615.0p</td>
             <td class="num">9,104.3p</td>
             <td class="num">0.46</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="HWDN.L" data-company="howden joinery group plc" data-sector="Consumer Cyclical" data-signal="Strong Sell" data-vr="0.7140371081253999" data-price="781.5" data-target="5.5802" data-change="0" data-held="0">
+          <tr data-ticker="HWDN.L" data-company="howden joinery group plc" data-sector="Consumer Cyclical" data-signal="Strong Sell" data-vr="0.7144942381562099" data-price="781.0" data-target="5.5802" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/hwdn-l.html">HWDN.L</a></td>
             <td>Howden Joinery Group Plc</td>
             <td>Consumer Cyclical</td>
-            <td class="num">781.5p</td>
+            <td class="num">781.0p</td>
             <td class="num">558.0p</td>
             <td class="num">0.71</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="IHG.L" data-company="intercontinental hotels group plc" data-sector="Consumer Cyclical" data-signal="Strong Sell" data-vr="0.5253658653185994" data-price="143.35000610351562" data-target="75.3112" data-change="0" data-held="0">
+          <tr data-ticker="IHG.L" data-company="intercontinental hotels group plc" data-sector="Consumer Cyclical" data-signal="Strong Sell" data-vr="0.5257326352530541" data-price="143.25" data-target="75.3112" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/ihg-l.html">IHG.L</a></td>
             <td>InterContinental Hotels Group PLC</td>
             <td>Consumer Cyclical</td>
-            <td class="num">143.4p</td>
+            <td class="num">143.2p</td>
             <td class="num">75.3p</td>
             <td class="num">0.53</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="INCH.L" data-company="inchcape plc" data-sector="Consumer Cyclical" data-signal="Strong Buy" data-vr="1.3375668196399222" data-price="823.5999755859375" data-target="11.0162" data-change="0" data-held="1">
+          <tr data-ticker="INCH.L" data-company="inchcape plc" data-sector="Consumer Cyclical" data-signal="Strong Buy" data-vr="1.3395184427248454" data-price="822.4000244140625" data-target="11.0162" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/inch-l.html">INCH.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Inchcape plc</td>
             <td>Consumer Cyclical</td>
-            <td class="num">823.6p</td>
+            <td class="num">822.4p</td>
             <td class="num">1,101.6p</td>
             <td class="num">1.34</td>
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="JD.L" data-company="jd sports fashion plc" data-sector="Consumer Cyclical" data-signal="Strong Buy" data-vr="1.6200593619015036" data-price="67.30000305175781" data-target="1.0903" data-change="0" data-held="1">
+          <tr data-ticker="JD.L" data-company="jd sports fashion plc" data-sector="Consumer Cyclical" data-signal="Strong Buy" data-vr="1.6199390759324541" data-price="67.30500030517578" data-target="1.0903" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/jd-l.html">JD.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>JD Sports Fashion Plc</td>
             <td>Consumer Cyclical</td>
@@ -675,41 +665,41 @@
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="KGF.L" data-company="kingfisher plc" data-sector="Consumer Cyclical" data-signal="Strong Buy" data-vr="1.4735742755507164" data-price="282.29998779296875" data-target="4.1599" data-change="0" data-held="1">
+          <tr data-ticker="KGF.L" data-company="kingfisher plc" data-sector="Consumer Cyclical" data-signal="Strong Buy" data-vr="1.4709689460967605" data-price="282.79998779296875" data-target="4.1599" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/kgf-l.html">KGF.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Kingfisher plc</td>
             <td>Consumer Cyclical</td>
-            <td class="num">282.3p</td>
+            <td class="num">282.8p</td>
             <td class="num">416.0p</td>
             <td class="num">1.47</td>
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="MKS.L" data-company="marks and spencer group plc" data-sector="Consumer Cyclical" data-signal="Strong Buy" data-vr="1.335894370808698" data-price="329.29998779296875" data-target="4.3991" data-change="0" data-held="1">
+          <tr data-ticker="MKS.L" data-company="marks and spencer group plc" data-sector="Consumer Cyclical" data-signal="Strong Buy" data-vr="1.336097190584662" data-price="329.25" data-target="4.3991" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/mks-l.html">MKS.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Marks and Spencer Group plc</td>
             <td>Consumer Cyclical</td>
-            <td class="num">329.3p</td>
+            <td class="num">329.2p</td>
             <td class="num">439.9p</td>
             <td class="num">1.34</td>
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="NXT.L" data-company="next plc" data-sector="Consumer Cyclical" data-signal="Fair Value" data-vr="0.9803730250481696" data-price="12975.0" data-target="127.2034" data-change="0" data-held="0">
+          <tr data-ticker="NXT.L" data-company="next plc" data-sector="Consumer Cyclical" data-signal="Fair Value" data-vr="0.9815077160493827" data-price="12960.0" data-target="127.2034" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/nxt-l.html">NXT.L</a></td>
             <td>NEXT plc</td>
             <td>Consumer Cyclical</td>
-            <td class="num">12,975.0p</td>
+            <td class="num">12,960.0p</td>
             <td class="num">12,720.3p</td>
             <td class="num">0.98</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="PSN.L" data-company="persimmon plc" data-sector="Consumer Cyclical" data-signal="Sell" data-vr="0.7997269303201507" data-price="1062.0" data-target="8.4931" data-change="0" data-held="0">
+          <tr data-ticker="PSN.L" data-company="persimmon plc" data-sector="Consumer Cyclical" data-signal="Sell" data-vr="0.8008580858085809" data-price="1060.5" data-target="8.4931" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/psn-l.html">PSN.L</a></td>
             <td>Persimmon Plc</td>
             <td>Consumer Cyclical</td>
-            <td class="num">1,062.0p</td>
+            <td class="num">1,060.5p</td>
             <td class="num">849.3p</td>
             <td class="num">0.80</td>
             <td><span class="signal s">Sell</span></td>
@@ -725,21 +715,21 @@
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="WTB.L" data-company="whitbread plc" data-sector="Consumer Cyclical" data-signal="Buy" data-vr="1.1156695652173914" data-price="2300.0" data-target="25.6604" data-change="0" data-held="0">
+          <tr data-ticker="WTB.L" data-company="whitbread plc" data-sector="Consumer Cyclical" data-signal="Buy" data-vr="1.1137326388888888" data-price="2304.0" data-target="25.6604" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/wtb-l.html">WTB.L</a></td>
             <td>Whitbread plc</td>
             <td>Consumer Cyclical</td>
-            <td class="num">2,300.0p</td>
+            <td class="num">2,304.0p</td>
             <td class="num">2,566.0p</td>
-            <td class="num">1.12</td>
+            <td class="num">1.11</td>
             <td><span class="signal b">Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="ABF.L" data-company="associated british foods plc" data-sector="Consumer Defensive" data-signal="Fair Value" data-vr="0.9950610583446403" data-price="1842.5" data-target="18.334" data-change="0" data-held="0">
+          <tr data-ticker="ABF.L" data-company="associated british foods plc" data-sector="Consumer Defensive" data-signal="Fair Value" data-vr="0.9961423526215701" data-price="1840.5" data-target="18.334" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/abf-l.html">ABF.L</a></td>
             <td>Associated British Foods plc</td>
             <td>Consumer Defensive</td>
-            <td class="num">1,842.5p</td>
+            <td class="num">1,840.5p</td>
             <td class="num">1,833.4p</td>
             <td class="num">1.00</td>
             <td><span class="signal fv">Fair Value</span></td>
@@ -765,31 +755,31 @@
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="CCEP.L" data-company="coca-cola europacific partners plc" data-sector="Consumer Defensive" data-signal="Fair Value" data-vr="0.94599573257468" data-price="7030.0" data-target="66.5035" data-change="0" data-held="0">
+          <tr data-ticker="CCEP.L" data-company="coca-cola europacific partners plc" data-sector="Consumer Defensive" data-signal="Fair Value" data-vr="0.9466690391459075" data-price="7025.0" data-target="66.5035" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/ccep-l.html">CCEP.L</a></td>
             <td>Coca-Cola Europacific Partners PLC</td>
             <td>Consumer Defensive</td>
-            <td class="num">7,030.0p</td>
+            <td class="num">7,025.0p</td>
             <td class="num">6,650.4p</td>
             <td class="num">0.95</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="CCH.L" data-company="coca-cola hbc ag" data-sector="Consumer Defensive" data-signal="Sell" data-vr="0.7976104746317512" data-price="4277.0" data-target="34.1138" data-change="0" data-held="0">
+          <tr data-ticker="CCH.L" data-company="coca-cola hbc ag" data-sector="Consumer Defensive" data-signal="Sell" data-vr="0.7983571261408845" data-price="4273.0" data-target="34.1138" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/cch-l.html">CCH.L</a></td>
             <td>Coca-Cola HBC AG</td>
             <td>Consumer Defensive</td>
-            <td class="num">4,277.0p</td>
+            <td class="num">4,273.0p</td>
             <td class="num">3,411.4p</td>
             <td class="num">0.80</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="DGE.L" data-company="diageo plc" data-sector="Consumer Defensive" data-signal="Fair Value" data-vr="1.0814659720220943" data-price="1458.4000244140625" data-target="15.7721" data-change="0" data-held="1">
+          <tr data-ticker="DGE.L" data-company="diageo plc" data-sector="Consumer Defensive" data-signal="Fair Value" data-vr="1.083099885239484" data-price="1456.199951171875" data-target="15.7721" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/dge-l.html">DGE.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Diageo plc</td>
             <td>Consumer Defensive</td>
-            <td class="num">1,458.4p</td>
+            <td class="num">1,456.2p</td>
             <td class="num">1,577.2p</td>
             <td class="num">1.08</td>
             <td><span class="signal fv">Fair Value</span></td>
@@ -805,131 +795,131 @@
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="RKT.L" data-company="reckitt benckiser group plc" data-sector="Consumer Defensive" data-signal="Buy" data-vr="1.1824594363791632" data-price="4684.0" data-target="55.3864" data-change="0" data-held="1">
+          <tr data-ticker="RKT.L" data-company="reckitt benckiser group plc" data-sector="Consumer Defensive" data-signal="Buy" data-vr="1.1832172612689598" data-price="4681.0" data-target="55.3864" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/rkt-l.html">RKT.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Reckitt Benckiser Group plc</td>
             <td>Consumer Defensive</td>
-            <td class="num">4,684.0p</td>
+            <td class="num">4,681.0p</td>
             <td class="num">5,538.6p</td>
             <td class="num">1.18</td>
             <td><span class="signal b">Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="SBRY.L" data-company="j sainsbury plc" data-sector="Consumer Defensive" data-signal="Fair Value" data-vr="1.0555555166509687" data-price="331.20001220703125" data-target="3.496" data-change="0" data-held="1">
+          <tr data-ticker="SBRY.L" data-company="j sainsbury plc" data-sector="Consumer Defensive" data-signal="Fair Value" data-vr="1.057151457802598" data-price="330.70001220703125" data-target="3.496" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/sbry-l.html">SBRY.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>J Sainsbury plc</td>
             <td>Consumer Defensive</td>
-            <td class="num">331.2p</td>
+            <td class="num">330.7p</td>
             <td class="num">349.6p</td>
             <td class="num">1.06</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="TATE.L" data-company="tate &amp; lyle plc" data-sector="Consumer Defensive" data-signal="Sell" data-vr="0.8364035367598797" data-price="364.79998779296875" data-target="3.0512" data-change="0" data-held="1">
+          <tr data-ticker="TATE.L" data-company="tate &amp; lyle plc" data-sector="Consumer Defensive" data-signal="Sell" data-vr="0.8357162281544589" data-price="365.1000061035156" data-target="3.0512" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/tate-l.html">TATE.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Tate &amp; Lyle plc</td>
             <td>Consumer Defensive</td>
-            <td class="num">364.8p</td>
+            <td class="num">365.1p</td>
             <td class="num">305.1p</td>
             <td class="num">0.84</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="TSCO.L" data-company="tesco plc" data-sector="Consumer Defensive" data-signal="Fair Value" data-vr="1.009610630332122" data-price="482.79998779296875" data-target="4.8744" data-change="0" data-held="0">
+          <tr data-ticker="TSCO.L" data-company="tesco plc" data-sector="Consumer Defensive" data-signal="Fair Value" data-vr="1.0114961738403874" data-price="481.8999938964844" data-target="4.8744" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/tsco-l.html">TSCO.L</a></td>
             <td>Tesco PLC</td>
             <td>Consumer Defensive</td>
-            <td class="num">482.8p</td>
+            <td class="num">481.9p</td>
             <td class="num">487.4p</td>
             <td class="num">1.01</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="ULVR.L" data-company="unilever plc" data-sector="Consumer Defensive" data-signal="Buy" data-vr="1.1600116945386505" data-price="4275.5" data-target="49.5963" data-change="0" data-held="0">
+          <tr data-ticker="ULVR.L" data-company="unilever plc" data-sector="Consumer Defensive" data-signal="Buy" data-vr="1.1602830740437478" data-price="4274.5" data-target="49.5963" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/ulvr-l.html">ULVR.L</a></td>
             <td>Unilever PLC</td>
             <td>Consumer Defensive</td>
-            <td class="num">4,275.5p</td>
+            <td class="num">4,274.5p</td>
             <td class="num">4,959.6p</td>
             <td class="num">1.16</td>
             <td><span class="signal b">Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="BP.L" data-company="bp p.l.c." data-sector="Energy" data-signal="Strong Buy" data-vr="1.5173464757263666" data-price="581.0999755859375" data-target="8.8173" data-change="0" data-held="1">
+          <tr data-ticker="BP.L" data-company="bp p.l.c." data-sector="Energy" data-signal="Strong Buy" data-vr="1.5189147286821705" data-price="580.5" data-target="8.8173" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/bp-l.html">BP.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>BP p.l.c.</td>
             <td>Energy</td>
-            <td class="num">581.1p</td>
+            <td class="num">580.5p</td>
             <td class="num">881.7p</td>
             <td class="num">1.52</td>
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="DCC.L" data-company="dcc plc" data-sector="Energy" data-signal="Buy" data-vr="1.1613385281385282" data-price="5775.0" data-target="67.0673" data-change="0" data-held="0">
+          <tr data-ticker="DCC.L" data-company="dcc plc" data-sector="Energy" data-signal="Buy" data-vr="1.1632242236573478" data-price="5765.63818359375" data-target="67.0673" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/dcc-l.html">DCC.L</a></td>
             <td>DCC plc</td>
             <td>Energy</td>
-            <td class="num">5,775.0p</td>
+            <td class="num">5,765.6p</td>
             <td class="num">6,706.7p</td>
             <td class="num">1.16</td>
             <td><span class="signal b">Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="ENOG.L" data-company="energean plc" data-sector="Energy" data-signal="Strong Buy" data-vr="1.5652743561030236" data-price="893.0" data-target="13.9779" data-change="0" data-held="1">
+          <tr data-ticker="ENOG.L" data-company="energean plc" data-sector="Energy" data-signal="Strong Buy" data-vr="1.5626495248742314" data-price="894.5" data-target="13.9779" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/enog-l.html">ENOG.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Energean plc</td>
             <td>Energy</td>
-            <td class="num">893.0p</td>
+            <td class="num">894.5p</td>
             <td class="num">1,397.8p</td>
-            <td class="num">1.57</td>
+            <td class="num">1.56</td>
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="HBR.L" data-company="harbour energy plc" data-sector="Energy" data-signal="Fair Value" data-vr="1.069167759033546" data-price="293.20001220703125" data-target="3.1348" data-change="0" data-held="1">
+          <tr data-ticker="HBR.L" data-company="harbour energy plc" data-sector="Energy" data-signal="Fair Value" data-vr="1.0720930456345301" data-price="292.3999938964844" data-target="3.1348" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/hbr-l.html">HBR.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Harbour Energy plc</td>
             <td>Energy</td>
-            <td class="num">293.2p</td>
+            <td class="num">292.4p</td>
             <td class="num">313.5p</td>
             <td class="num">1.07</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="SHEL.L" data-company="shell plc" data-sector="Energy" data-signal="Strong Buy" data-vr="1.5109181516158259" data-price="3311.0" data-target="50.0265" data-change="0" data-held="1">
+          <tr data-ticker="SHEL.L" data-company="shell plc" data-sector="Energy" data-signal="Strong Buy" data-vr="1.5102339622641507" data-price="3312.5" data-target="50.0265" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/shel-l.html">SHEL.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>Shell plc</td>
             <td>Energy</td>
-            <td class="num">3,311.0p</td>
+            <td class="num">3,312.5p</td>
             <td class="num">5,002.6p</td>
             <td class="num">1.51</td>
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="III.L" data-company="3i group ord" data-sector="Financial Services" data-signal="Strong Buy" data-vr="1.4955252918287938" data-price="2570.0" data-target="38.435" data-change="0" data-held="0">
+          <tr data-ticker="III.L" data-company="3i group ord" data-sector="Financial Services" data-signal="Strong Buy" data-vr="1.4940719144800778" data-price="2572.5" data-target="38.435" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/iii-l.html">III.L</a></td>
             <td>3i Group Ord</td>
             <td>Financial Services</td>
-            <td class="num">2,570.0p</td>
+            <td class="num">2,572.5p</td>
             <td class="num">3,843.5p</td>
-            <td class="num">1.50</td>
+            <td class="num">1.49</td>
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="ADM.L" data-company="admiral group plc" data-sector="General Insurance" data-signal="Strong Sell" data-vr="0.4135820460507141" data-price="3431.0" data-target="14.19" data-change="0" data-held="0">
+          <tr data-ticker="ADM.L" data-company="admiral group plc" data-sector="General Insurance" data-signal="Strong Sell" data-vr="0.41370262390670554" data-price="3430.0" data-target="14.19" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/adm-l.html">ADM.L</a></td>
             <td>Admiral Group plc</td>
             <td>General Insurance</td>
-            <td class="num">3,431.0p</td>
+            <td class="num">3,430.0p</td>
             <td class="num">1,419.0p</td>
             <td class="num">0.41</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="AV.L" data-company="aviva plc" data-sector="General Insurance" data-signal="Strong Sell" data-vr="0.7482117080994386" data-price="623.5" data-target="4.6651" data-change="-1" data-held="0">
+          <tr data-ticker="AV.L" data-company="aviva plc" data-sector="General Insurance" data-signal="Strong Sell" data-vr="0.7484518035237839" data-price="623.2999877929688" data-target="4.6651" data-change="-1" data-held="0">
             <td class="ticker-cell"><a href="ticker/av-l.html">AV.L</a></td>
             <td>Aviva plc</td>
             <td>General Insurance</td>
-            <td class="num">623.5p</td>
+            <td class="num">623.3p</td>
             <td class="num">466.5p</td>
             <td class="num">0.75</td>
             <td><span class="signal ss">Strong Sell</span></td>
@@ -945,11 +935,11 @@
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="HSX.L" data-company="hiscox ltd" data-sector="General Insurance" data-signal="Fair Value" data-vr="0.928875968992248" data-price="1548.0" data-target="14.379" data-change="0" data-held="0">
+          <tr data-ticker="HSX.L" data-company="hiscox ltd" data-sector="General Insurance" data-signal="Fair Value" data-vr="0.930077619663648" data-price="1546.0" data-target="14.379" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/hsx-l.html">HSX.L</a></td>
             <td>Hiscox Ltd</td>
             <td>General Insurance</td>
-            <td class="num">1,548.0p</td>
+            <td class="num">1,546.0p</td>
             <td class="num">1,437.9p</td>
             <td class="num">0.93</td>
             <td><span class="signal fv">Fair Value</span></td>
@@ -965,41 +955,41 @@
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="AZN.L" data-company="astrazeneca plc" data-sector="Healthcare" data-signal="Strong Sell" data-vr="0.6465940481275808" data-price="14046.0" data-target="90.8206" data-change="0" data-held="0">
+          <tr data-ticker="AZN.L" data-company="astrazeneca plc" data-sector="Healthcare" data-signal="Strong Sell" data-vr="0.6476083856246434" data-price="14024.0" data-target="90.8206" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/azn-l.html">AZN.L</a></td>
             <td>AstraZeneca PLC</td>
             <td>Healthcare</td>
-            <td class="num">14,046.0p</td>
+            <td class="num">14,024.0p</td>
             <td class="num">9,082.1p</td>
             <td class="num">0.65</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="CTEC.L" data-company="convatec group plc" data-sector="Healthcare" data-signal="Strong Sell" data-vr="0.7281220657276996" data-price="213.0" data-target="1.5509" data-change="0" data-held="0">
+          <tr data-ticker="CTEC.L" data-company="convatec group plc" data-sector="Healthcare" data-signal="Strong Sell" data-vr="0.7288063805256553" data-price="212.8000030517578" data-target="1.5509" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/ctec-l.html">CTEC.L</a></td>
             <td>Convatec Group PLC</td>
             <td>Healthcare</td>
-            <td class="num">213.0p</td>
+            <td class="num">212.8p</td>
             <td class="num">155.1p</td>
             <td class="num">0.73</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="GSK.L" data-company="gsk plc" data-sector="Healthcare" data-signal="Fair Value" data-vr="1.000030729833547" data-price="1952.5" data-target="19.5256" data-change="0" data-held="0">
+          <tr data-ticker="GSK.L" data-company="gsk plc" data-sector="Healthcare" data-signal="Fair Value" data-vr="1.0031132802465965" data-price="1946.5" data-target="19.5256" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/gsk-l.html">GSK.L</a></td>
             <td>GSK plc</td>
             <td>Healthcare</td>
-            <td class="num">1,952.5p</td>
+            <td class="num">1,946.5p</td>
             <td class="num">1,952.6p</td>
             <td class="num">1.00</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="HIK.L" data-company="hikma pharmaceuticals plc" data-sector="Healthcare" data-signal="Buy" data-vr="1.1022427153701324" data-price="1393.3773193359375" data-target="15.3584" data-change="0" data-held="0">
+          <tr data-ticker="HIK.L" data-company="hikma pharmaceuticals plc" data-sector="Healthcare" data-signal="Buy" data-vr="1.100722279370453" data-price="1395.302001953125" data-target="15.3584" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/hik-l.html">HIK.L</a></td>
             <td>Hikma Pharmaceuticals PLC</td>
             <td>Healthcare</td>
-            <td class="num">1,393.4p</td>
+            <td class="num">1,395.3p</td>
             <td class="num">1,535.8p</td>
             <td class="num">1.10</td>
             <td><span class="signal b">Buy</span></td>
@@ -1015,11 +1005,11 @@
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="BA.L" data-company="bae systems plc" data-sector="Industrials" data-signal="Sell" data-vr="0.7964360791982401" data-price="2045.5" data-target="16.2911" data-change="0" data-held="0">
+          <tr data-ticker="BA.L" data-company="bae systems plc" data-sector="Industrials" data-signal="Sell" data-vr="0.7966308068459659" data-price="2045.0" data-target="16.2911" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/ba-l.html">BA.L</a></td>
             <td>BAE Systems plc</td>
             <td>Industrials</td>
-            <td class="num">2,045.5p</td>
+            <td class="num">2,045.0p</td>
             <td class="num">1,629.1p</td>
             <td class="num">0.80</td>
             <td><span class="signal s">Sell</span></td>
@@ -1035,21 +1025,21 @@
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="DPLM.L" data-company="diploma plc" data-sector="Industrials" data-signal="Strong Sell" data-vr="0.41165024982155596" data-price="7005.0" data-target="28.8361" data-change="0" data-held="0">
+          <tr data-ticker="DPLM.L" data-company="diploma plc" data-sector="Industrials" data-signal="Strong Sell" data-vr="0.4113566333808844" data-price="7010.0" data-target="28.8361" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/dplm-l.html">DPLM.L</a></td>
             <td>Diploma PLC</td>
             <td>Industrials</td>
-            <td class="num">7,005.0p</td>
+            <td class="num">7,010.0p</td>
             <td class="num">2,883.6p</td>
             <td class="num">0.41</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="EXPN.L" data-company="experian plc" data-sector="Industrials" data-signal="Strong Sell" data-vr="0.6261484619635292" data-price="2714.5" data-target="16.9968" data-change="0" data-held="0">
+          <tr data-ticker="EXPN.L" data-company="experian plc" data-sector="Industrials" data-signal="Strong Sell" data-vr="0.6267256637168142" data-price="2712.0" data-target="16.9968" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/expn-l.html">EXPN.L</a></td>
             <td>Experian plc</td>
             <td>Industrials</td>
-            <td class="num">2,714.5p</td>
+            <td class="num">2,712.0p</td>
             <td class="num">1,699.7p</td>
             <td class="num">0.63</td>
             <td><span class="signal ss">Strong Sell</span></td>
@@ -1065,31 +1055,31 @@
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="HLMA.L" data-company="halma plc" data-sector="Industrials" data-signal="Strong Sell" data-vr="0.4761106135244066" data-price="4466.0" data-target="21.2631" data-change="0" data-held="0">
+          <tr data-ticker="HLMA.L" data-company="halma plc" data-sector="Industrials" data-signal="Strong Sell" data-vr="0.47664425016812373" data-price="4461.0" data-target="21.2631" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/hlma-l.html">HLMA.L</a></td>
             <td>Halma plc</td>
             <td>Industrials</td>
-            <td class="num">4,466.0p</td>
+            <td class="num">4,461.0p</td>
             <td class="num">2,126.3p</td>
             <td class="num">0.48</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="IAG.L" data-company="international consolidated airlines group s.a." data-sector="Industrials" data-signal="Strong Buy" data-vr="1.364948635130166" data-price="372.1531982421875" data-target="5.0797" data-change="0" data-held="0">
+          <tr data-ticker="IAG.L" data-company="international consolidated airlines group s.a." data-sector="Industrials" data-signal="Strong Buy" data-vr="1.3644104664394336" data-price="372.29998779296875" data-target="5.0797" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/iag-l.html">IAG.L</a></td>
             <td>International Consolidated Airlines Group S.A.</td>
             <td>Industrials</td>
-            <td class="num">372.2p</td>
+            <td class="num">372.3p</td>
             <td class="num">508.0p</td>
             <td class="num">1.36</td>
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="IMI.L" data-company="imi plc" data-sector="Industrials" data-signal="Sell" data-vr="0.8163279368142915" data-price="2817.556396484375" data-target="23.0005" data-change="0" data-held="0">
+          <tr data-ticker="IMI.L" data-company="imi plc" data-sector="Industrials" data-signal="Sell" data-vr="0.8173596304193318" data-price="2814.0" data-target="23.0005" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/imi-l.html">IMI.L</a></td>
             <td>IMI plc</td>
             <td>Industrials</td>
-            <td class="num">2,817.6p</td>
+            <td class="num">2,814.0p</td>
             <td class="num">2,300.0p</td>
             <td class="num">0.82</td>
             <td><span class="signal s">Sell</span></td>
@@ -1105,41 +1095,41 @@
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="MRO.L" data-company="melrose industries plc" data-sector="Industrials" data-signal="Sell" data-vr="0.8640925264257784" data-price="484.29998779296875" data-target="4.1848" data-change="0" data-held="0">
+          <tr data-ticker="MRO.L" data-company="melrose industries plc" data-sector="Industrials" data-signal="Sell" data-vr="0.8646280991735538" data-price="484.0" data-target="4.1848" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/mro-l.html">MRO.L</a></td>
             <td>Melrose Industries PLC</td>
             <td>Industrials</td>
-            <td class="num">484.3p</td>
+            <td class="num">484.0p</td>
             <td class="num">418.5p</td>
             <td class="num">0.86</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="REL.L" data-company="relx plc" data-sector="Industrials" data-signal="Sell" data-vr="0.852292725987841" data-price="2708.154052734375" data-target="23.0814" data-change="0" data-held="0">
+          <tr data-ticker="REL.L" data-company="relx plc" data-sector="Industrials" data-signal="Sell" data-vr="0.8524677906076839" data-price="2707.597900390625" data-target="23.0814" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/rel-l.html">REL.L</a></td>
             <td>RELX PLC</td>
             <td>Industrials</td>
-            <td class="num">2,708.2p</td>
+            <td class="num">2,707.6p</td>
             <td class="num">2,308.1p</td>
             <td class="num">0.85</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="RR.L" data-company="rolls-royce holdings plc" data-sector="Industrials" data-signal="Strong Sell" data-vr="0.5888832913518052" data-price="1191.0" data-target="7.0136" data-change="0" data-held="0">
+          <tr data-ticker="RR.L" data-company="rolls-royce holdings plc" data-sector="Industrials" data-signal="Strong Sell" data-vr="0.5903703703703704" data-price="1188.0" data-target="7.0136" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/rr-l.html">RR.L</a></td>
             <td>Rolls-Royce Holdings plc</td>
             <td>Industrials</td>
-            <td class="num">1,191.0p</td>
+            <td class="num">1,188.0p</td>
             <td class="num">701.4p</td>
             <td class="num">0.59</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="RTO.L" data-company="rentokil initial plc" data-sector="Industrials" data-signal="Sell" data-vr="0.7628646583141079" data-price="493.6000061035156" data-target="3.7655" data-change="0" data-held="0">
+          <tr data-ticker="RTO.L" data-company="rentokil initial plc" data-sector="Industrials" data-signal="Sell" data-vr="0.762246963562753" data-price="494.0" data-target="3.7655" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/rto-l.html">RTO.L</a></td>
             <td>Rentokil Initial plc</td>
             <td>Industrials</td>
-            <td class="num">493.6p</td>
+            <td class="num">494.0p</td>
             <td class="num">376.6p</td>
             <td class="num">0.76</td>
             <td><span class="signal s">Sell</span></td>
@@ -1155,31 +1145,31 @@
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="SPX.L" data-company="spirax group plc" data-sector="Industrials" data-signal="Strong Sell" data-vr="0.6184837545126354" data-price="7202.0" data-target="44.5432" data-change="0" data-held="0">
+          <tr data-ticker="SPX.L" data-company="spirax group plc" data-sector="Industrials" data-signal="Strong Sell" data-vr="0.6189994441356309" data-price="7196.0" data-target="44.5432" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/spx-l.html">SPX.L</a></td>
             <td>Spirax Group plc</td>
             <td>Industrials</td>
-            <td class="num">7,202.0p</td>
+            <td class="num">7,196.0p</td>
             <td class="num">4,454.3p</td>
             <td class="num">0.62</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="WEIR.L" data-company="the weir group plc" data-sector="Industrials" data-signal="Sell" data-vr="0.8321917808219178" data-price="2628.0" data-target="21.87" data-change="0" data-held="0">
+          <tr data-ticker="WEIR.L" data-company="the weir group plc" data-sector="Industrials" data-signal="Sell" data-vr="0.8315589353612167" data-price="2630.0" data-target="21.87" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/weir-l.html">WEIR.L</a></td>
             <td>The Weir Group PLC</td>
             <td>Industrials</td>
-            <td class="num">2,628.0p</td>
+            <td class="num">2,630.0p</td>
             <td class="num">2,187.0p</td>
             <td class="num">0.83</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="LGEN.L" data-company="legal &amp; general group plc" data-sector="Life Insurance" data-signal="Strong Sell" data-vr="0.29375745526838964" data-price="251.5" data-target="0.7388" data-change="0" data-held="0">
+          <tr data-ticker="LGEN.L" data-company="legal &amp; general group plc" data-sector="Life Insurance" data-signal="Strong Sell" data-vr="0.2939912419530837" data-price="251.3000030517578" data-target="0.7388" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/lgen-l.html">LGEN.L</a></td>
             <td>Legal &amp; General Group Plc</td>
             <td>Life Insurance</td>
-            <td class="num">251.5p</td>
+            <td class="num">251.3p</td>
             <td class="num">73.9p</td>
             <td class="num">0.29</td>
             <td><span class="signal ss">Strong Sell</span></td>
@@ -1195,17 +1185,17 @@
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="ICG.L" data-company="icg plc" data-sector="PE/Alternatives" data-signal="Strong Sell" data-vr="0.5615173572228445" data-price="1786.0" data-target="10.0287" data-change="0" data-held="0">
+          <tr data-ticker="ICG.L" data-company="icg plc" data-sector="PE/Alternatives" data-signal="Strong Sell" data-vr="0.5612031337437046" data-price="1787.0" data-target="10.0287" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/icg-l.html">ICG.L</a></td>
             <td>ICG plc</td>
             <td>PE/Alternatives</td>
-            <td class="num">1,786.0p</td>
+            <td class="num">1,787.0p</td>
             <td class="num">1,002.9p</td>
             <td class="num">0.56</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="BBOX.L" data-company="tritax big box ord" data-sector="Real Estate" data-signal="Sell" data-vr="0.8716246106169072" data-price="151.12010192871094" data-target="1.3172" data-change="0" data-held="0">
+          <tr data-ticker="BBOX.L" data-company="tritax big box ord" data-sector="Real Estate" data-signal="Sell" data-vr="0.8717405339465124" data-price="151.10000610351562" data-target="1.3172" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/bbox-l.html">BBOX.L</a></td>
             <td>Tritax Big Box Ord</td>
             <td>Real Estate</td>
@@ -1215,57 +1205,57 @@
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="BLND.L" data-company="british land company plc" data-sector="Real Estate" data-signal="Sell" data-vr="0.8703310778270065" data-price="386.6000061035156" data-target="3.3647" data-change="0" data-held="0">
+          <tr data-ticker="BLND.L" data-company="british land company plc" data-sector="Real Estate" data-signal="Sell" data-vr="0.8716839378238342" data-price="386.0" data-target="3.3647" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/blnd-l.html">BLND.L</a></td>
             <td>British Land Company PLC</td>
             <td>Real Estate</td>
-            <td class="num">386.6p</td>
+            <td class="num">386.0p</td>
             <td class="num">336.5p</td>
             <td class="num">0.87</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="LAND.L" data-company="land securities group plc" data-sector="Real Estate" data-signal="Fair Value" data-vr="1.070915254237288" data-price="590.0" data-target="6.3184" data-change="0" data-held="0">
+          <tr data-ticker="LAND.L" data-company="land securities group plc" data-sector="Real Estate" data-signal="Fair Value" data-vr="1.0718235793044952" data-price="589.5" data-target="6.3184" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/land-l.html">LAND.L</a></td>
             <td>Land Securities Group Plc</td>
             <td>Real Estate</td>
-            <td class="num">590.0p</td>
+            <td class="num">589.5p</td>
             <td class="num">631.8p</td>
             <td class="num">1.07</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="LMP.L" data-company="londonmetric property plc" data-sector="Real Estate" data-signal="Sell" data-vr="0.8091530513483519" data-price="190.10000610351562" data-target="1.5382" data-change="0" data-held="0">
+          <tr data-ticker="LMP.L" data-company="londonmetric property plc" data-sector="Real Estate" data-signal="Sell" data-vr="0.8100052919635595" data-price="189.89999389648438" data-target="1.5382" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/lmp-l.html">LMP.L</a></td>
             <td>LondonMetric Property Plc</td>
             <td>Real Estate</td>
-            <td class="num">190.1p</td>
+            <td class="num">189.9p</td>
             <td class="num">153.8p</td>
             <td class="num">0.81</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="SGRO.L" data-company="segro plc" data-sector="Real Estate" data-signal="Strong Sell" data-vr="0.700606936416185" data-price="692.0" data-target="4.8482" data-change="0" data-held="0">
+          <tr data-ticker="SGRO.L" data-company="segro plc" data-sector="Real Estate" data-signal="Strong Sell" data-vr="0.7014178116865899" data-price="691.2000122070312" data-target="4.8482" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/sgro-l.html">SGRO.L</a></td>
             <td>SEGRO Plc</td>
             <td>Real Estate</td>
-            <td class="num">692.0p</td>
+            <td class="num">691.2p</td>
             <td class="num">484.8p</td>
             <td class="num">0.70</td>
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="SGE.L" data-company="the sage group plc" data-sector="Technology" data-signal="Fair Value" data-vr="0.9182559456398641" data-price="883.0" data-target="8.1082" data-change="0" data-held="0">
+          <tr data-ticker="SGE.L" data-company="the sage group plc" data-sector="Technology" data-signal="Fair Value" data-vr="0.9186721305557658" data-price="882.5999755859375" data-target="8.1082" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/sge-l.html">SGE.L</a></td>
             <td>The Sage Group plc</td>
             <td>Technology</td>
-            <td class="num">883.0p</td>
+            <td class="num">882.6p</td>
             <td class="num">810.8p</td>
             <td class="num">0.92</td>
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="CNA.L" data-company="centrica plc" data-sector="Utilities" data-signal="Strong Buy" data-vr="1.422164420225885" data-price="211.60000610351562" data-target="3.0093" data-change="0" data-held="0">
+          <tr data-ticker="CNA.L" data-company="centrica plc" data-sector="Utilities" data-signal="Strong Buy" data-vr="1.4224602485738072" data-price="211.55599975585938" data-target="3.0093" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/cna-l.html">CNA.L</a></td>
             <td>Centrica plc</td>
             <td>Utilities</td>
@@ -1275,7 +1265,7 @@
             <td><span class="signal sb">Strong Buy</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="MTLN.L" data-company="metlen energy &amp; metals plc" data-sector="Utilities" data-signal="Fair Value" data-vr="0.916974624665761" data-price="34.7400016784668" data-target="31.8557" data-change="0" data-held="0">
+          <tr data-ticker="MTLN.L" data-company="metlen energy &amp; metals plc" data-sector="Utilities" data-signal="Fair Value" data-vr="0.9175028479263078" data-price="34.720001220703125" data-target="31.8557" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/mtln-l.html">MTLN.L</a></td>
             <td>Metlen Energy &amp; Metals PLC</td>
             <td>Utilities</td>
@@ -1285,11 +1275,11 @@
             <td><span class="signal fv">Fair Value</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="NG.L" data-company="national grid plc" data-sector="Utilities" data-signal="Sell" data-vr="0.8180005957150469" data-price="1309.4000244140625" data-target="10.7109" data-change="0" data-held="1">
+          <tr data-ticker="NG.L" data-company="national grid plc" data-sector="Utilities" data-signal="Sell" data-vr="0.818750986070995" data-price="1308.199951171875" data-target="10.7109" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/ng-l.html">NG.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>National Grid plc</td>
             <td>Utilities</td>
-            <td class="num">1,309.4p</td>
+            <td class="num">1,308.2p</td>
             <td class="num">1,071.1p</td>
             <td class="num">0.82</td>
             <td><span class="signal s">Sell</span></td>
@@ -1305,21 +1295,21 @@
             <td><span class="signal ss">Strong Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="SVT.L" data-company="severn trent plc" data-sector="Utilities" data-signal="Sell" data-vr="0.775021160822249" data-price="3308.0" data-target="25.6377" data-change="0" data-held="0">
+          <tr data-ticker="SVT.L" data-company="severn trent plc" data-sector="Utilities" data-signal="Sell" data-vr="0.7766646470766434" data-price="3301.0" data-target="25.6377" data-change="0" data-held="0">
             <td class="ticker-cell"><a href="ticker/svt-l.html">SVT.L</a></td>
             <td>Severn Trent PLC</td>
             <td>Utilities</td>
-            <td class="num">3,308.0p</td>
+            <td class="num">3,301.0p</td>
             <td class="num">2,563.8p</td>
             <td class="num">0.78</td>
             <td><span class="signal s">Sell</span></td>
             <td class="change-cell"><span class="change-flat">—</span></td>
           </tr>
-          <tr data-ticker="UU.L" data-company="united utilities group plc" data-sector="Utilities" data-signal="Sell" data-vr="0.8157454050374404" data-price="1469.0" data-target="11.9833" data-change="0" data-held="1">
+          <tr data-ticker="UU.L" data-company="united utilities group plc" data-sector="Utilities" data-signal="Sell" data-vr="0.8168575323790047" data-price="1467.0" data-target="11.9833" data-change="0" data-held="1">
             <td class="ticker-cell"><a href="ticker/uu-l.html">UU.L</a><span class="held-dot" title="Held in live eToro portfolio"></span></td>
             <td>United Utilities Group PLC</td>
             <td>Utilities</td>
-            <td class="num">1,469.0p</td>
+            <td class="num">1,467.0p</td>
             <td class="num">1,198.3p</td>
             <td class="num">0.82</td>
             <td><span class="signal s">Sell</span></td>
@@ -1339,7 +1329,7 @@
 <footer class="site-footer">
   <div class="wrap-wide">
     <p><strong>Daley Valuations</strong> is an independent equity research site by Neil Daley, PhD, CFA. Twenty years in institutional finance, applied to public markets in plain English.</p>
-    <p class="stamp">Data last refreshed: 2026-04-30 13:53 (live). Site rebuilds weekly with the FTSE Valuation Tracker.</p>
+    <p class="stamp">Data last refreshed: 2026-04-30 13:58 (live). Site rebuilds weekly with the FTSE Valuation Tracker.</p>
     <p class="stamp small">Not financial advice. These are systematic valuations, not recommendations. Always do your own research.</p>
   </div>
 </footer>

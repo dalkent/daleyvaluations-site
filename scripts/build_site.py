@@ -198,13 +198,20 @@ def join_records(data):
     return merged
 
 
+# Tickers excluded from the public site. These have a "real" model output in the
+# spreadsheet but are structurally closed-end vehicles (listed hedge funds, PE
+# trusts) where the model anchors on NAV and produces a misleading DVR.
+EXCLUDED_TICKERS = {"PSH.L"}
+
+
 def filter_public(records):
     return [r for r in records
             if r.get("market") == "FTSE"
             and r.get("asset_type") == "Equity"
             and r.get("sector") != "Corp Bonds"
             and r.get("current_signal")
-            and (r.get("model_method") or "").strip().lower() != "no valuation"]
+            and (r.get("model_method") or "").strip().lower() != "no valuation"
+            and r.get("ticker") not in EXCLUDED_TICKERS]
 
 
 def fetch_live_prices(records, force_refresh=False):
