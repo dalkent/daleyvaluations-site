@@ -59,6 +59,41 @@
         </ol>
       </div>
     </div>
+
+    {% if cheap_sectors or expensive_sectors %}
+    <div class="sector-summary" aria-label="Sector summary">
+      <h3 class="sector-summary-heading">Same view, by sector</h3>
+      <p class="sector-summary-sub">Average Daley Value Ratio across each sector. Sectors with only one rated name are excluded. Click a sector to filter the table below.</p>
+      <div class="sector-summary-grid">
+        {% if cheap_sectors %}
+        <div class="sector-summary-col">
+          <h4 class="sector-summary-col-title cheap">Cheapest sectors</h4>
+          <div class="sector-strip">
+            {% for s in cheap_sectors %}
+            <button type="button" class="sector-chip {{ s.tint }}" data-sector="{{ s.sector }}">
+              <span class="sector-chip-name">{{ s.sector }}</span>
+              <span class="sector-chip-meta"><span class="sector-chip-count">{{ s.count }} stocks</span> · avg DVR <span class="sector-chip-dvr">{{ s.avg_dvr }}</span></span>
+            </button>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        {% if expensive_sectors %}
+        <div class="sector-summary-col">
+          <h4 class="sector-summary-col-title expensive">Most expensive sectors</h4>
+          <div class="sector-strip">
+            {% for s in expensive_sectors %}
+            <button type="button" class="sector-chip {{ s.tint }}" data-sector="{{ s.sector }}">
+              <span class="sector-chip-name">{{ s.sector }}</span>
+              <span class="sector-chip-meta"><span class="sector-chip-count">{{ s.count }} stocks</span> · avg DVR <span class="sector-chip-dvr">{{ s.avg_dvr }}</span></span>
+            </button>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
   </div>
 </section>
 {% endif %}
@@ -109,17 +144,6 @@
 
 <section class="tracker-section">
   <div class="wrap-wide">
-
-    {% if sector_summary %}
-    <div class="sector-strip" aria-label="Sector summary">
-      {% for s in sector_summary %}
-      <button type="button" class="sector-chip {{ s.tint }}" data-sector="{{ s.sector }}">
-        <span class="sector-chip-name">{{ s.sector }}</span>
-        <span class="sector-chip-meta"><span class="sector-chip-count">{{ s.count }}</span> · DVR <span class="sector-chip-dvr">{{ s.avg_dvr }}</span></span>
-      </button>
-      {% endfor %}
-    </div>
-    {% endif %}
 
     <div class="filters">
       <label>

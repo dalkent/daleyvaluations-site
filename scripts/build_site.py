@@ -379,29 +379,33 @@ def render_tracker(public_records, held_tickers, refreshed_at, cache_bust=""):
     top_cheap = rated_sorted[:5]
     top_expensive = list(reversed(rated_sorted[-5:]))
 
-    # Sector summary strip - count, avg DVR, tint by avg signal
-    sector_summary = []
+    # Sector summary - filter to sectors with 2+ rated names, take 3 cheapest + 3 most expensive
+    all_sectors = []
     for sec in sectors:
         secrows = [r for r in rated if r["sector"] == sec]
-        if not secrows: continue
-        avg_dvr = sum(r["value_ratio_raw"] for r in secrows) / len(secrows)
-        if avg_dvr >= 1.10: tint = "buy"
-        elif avg_dvr >= 0.90: tint = "fair"
+        if len(secrows) < 2: continue
+        avg_dvr_num = sum(r["value_ratio_raw"] for r in secrows) / len(secrows)
+        if avg_dvr_num >= 1.10: tint = "buy"
+        elif avg_dvr_num >= 0.90: tint = "fair"
         else: tint = "sell"
-        sector_summary.append({
+        all_sectors.append({
             "sector": sec,
             "count": len(secrows),
-            "avg_dvr": f"{avg_dvr:.2f}",
+            "avg_dvr_num": avg_dvr_num,
+            "avg_dvr": f"{avg_dvr_num:.2f}",
             "tint": tint,
         })
-    sector_summary.sort(key=lambda s: float(s["avg_dvr"]), reverse=True)
+    all_sectors.sort(key=lambda s: s["avg_dvr_num"], reverse=True)
+    cheap_sectors = all_sectors[:3]
+    expensive_sectors = list(reversed(all_sectors[-3:]))
 
     body = env.get_template("tracker.html").render(
         rows=rows, sectors=sectors, signal_counts=signal_counts,
         ticker_count=len(rows), held_count=held_count,
         upgrades=upgrades, downgrades=downgrades,
         top_cheap=top_cheap, top_expensive=top_expensive,
-        sector_summary=sector_summary, path_prefix="",
+        cheap_sectors=cheap_sectors, expensive_sectors=expensive_sectors,
+        path_prefix="",
     )
     return env.get_template("_layout.html").render(
         page_title="FTSE Valuation Tracker",

@@ -590,12 +590,43 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   font-size: 0.95rem;
 }
 
-/* Sector summary strip */
+/* Sector summary - sits below the company extremes list */
+.sector-summary {
+  margin: 2rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+.sector-summary-heading {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.2rem;
+  margin: 0 0 0.35rem;
+  color: var(--ink);
+}
+.sector-summary-sub {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin: 0 0 1rem;
+}
+.sector-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+.sector-summary-col-title {
+  font-family: "Inter Tight", -apple-system, sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.55rem;
+  font-weight: 600;
+}
+.sector-summary-col-title.cheap { color: #2e7d4f; }
+.sector-summary-col-title.expensive { color: #b03a2e; }
 .sector-strip {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin: 0 0 1.25rem;
+  margin: 0;
 }
 .sector-chip {
   display: inline-flex;
@@ -637,4 +668,5 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   .extremes-grid { grid-template-columns: 1fr; gap: 1.25rem; }
   .extreme-link { grid-template-columns: 1.5rem 4rem 1fr auto; gap: 0.5rem; }
   .extreme-company { font-size: 0.85rem; }
+  .sector-summary-grid { grid-template-columns: 1fr; gap: 1.25rem; }
 }
