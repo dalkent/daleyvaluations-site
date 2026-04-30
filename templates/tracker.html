@@ -112,7 +112,7 @@
           {% for c in upgrades %}
           <li>
             <a href="{{ path_prefix }}ticker/{{ c.slug }}.html" class="change-link">
-              <span class="change-ticker">{{ c.ticker }}</span>{% if c.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}
+              <span class="change-ticker-cell"><span class="change-ticker">{{ c.ticker }}</span>{% if c.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}</span>
               <span class="change-company">{{ c.company }}</span>
               <span class="change-move"><span class="signal {{ c.to_signal_class }}">{{ c.to_signal }}</span> <span class="change-from">from {{ c.from_signal }}</span></span>
             </a>
@@ -128,7 +128,7 @@
           {% for c in downgrades %}
           <li>
             <a href="{{ path_prefix }}ticker/{{ c.slug }}.html" class="change-link">
-              <span class="change-ticker">{{ c.ticker }}</span>{% if c.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}
+              <span class="change-ticker-cell"><span class="change-ticker">{{ c.ticker }}</span>{% if c.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}</span>
               <span class="change-company">{{ c.company }}</span>
               <span class="change-move"><span class="signal {{ c.to_signal_class }}">{{ c.to_signal }}</span> <span class="change-from">from {{ c.from_signal }}</span></span>
             </a>
