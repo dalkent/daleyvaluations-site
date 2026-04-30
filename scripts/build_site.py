@@ -351,7 +351,7 @@ def is_financial_sector(sector):
                       "PE/Alternatives", "Capital Markets", "Financial Services")
 
 
-def render_tracker(public_records, held_tickers, refreshed_at):
+def render_tracker(public_records, held_tickers, refreshed_at, cache_bust=""):
     rows = shape_for_tracker(public_records, held_tickers)
     rows.sort(key=lambda r: (r["sector"], r["ticker"]))
     sectors = sorted(set(r["sector"] for r in rows if r["sector"]))
@@ -370,11 +370,11 @@ def render_tracker(public_records, held_tickers, refreshed_at):
         page_title="FTSE Valuation Tracker",
         page_description=f"Three valuation models, one signal, {len(rows)} FTSE stocks, refreshed weekly.",
         canonical_path="/", active="tracker", path_prefix="",
-        content=body, data_refreshed_at=refreshed_at,
+        content=body, data_refreshed_at=refreshed_at, cache_bust=cache_bust,
     )
 
 
-def render_ticker(r, refreshed_at, is_held):
+def render_ticker(r, refreshed_at, is_held, cache_bust=""):
     signal_label, signal_class = signal_for(r["value_ratio"])
     currency = r.get("currency", "")
     is_fin = is_financial_sector(r["sector"])
@@ -422,11 +422,11 @@ def render_ticker(r, refreshed_at, is_held):
         page_title=f"{r['ticker']} — {r['company']} valuation",
         page_description=f"{r['company']} ({r['ticker']}). Three-model DCF/DDM/EPV blend, current signal {signal_label}, by Neil Daley, PhD, CFA.",
         canonical_path=f"/ticker/{slug_for(r['ticker'])}",
-        active="", path_prefix="../", content=body, data_refreshed_at=refreshed_at,
+        active="", path_prefix="../", content=body, data_refreshed_at=refreshed_at, cache_bust=cache_bust,
     )
 
 
-def render_methodology(methodology_source_path, refreshed_at):
+def render_methodology(methodology_source_path, refreshed_at, cache_bust=""):
     with open(methodology_source_path, encoding="utf-8") as f:
         full = f.read()
     m = re.search(r'<div class="wrap">(.*?)</div>\s*</body>', full, re.DOTALL)
@@ -440,7 +440,7 @@ def render_methodology(methodology_source_path, refreshed_at):
         page_title="Methodology",
         page_description="The three-model valuation framework behind Daley Valuations: DCF, DDM and EPV blended into a single fair-value target for 106 FTSE stocks.",
         canonical_path="/methodology", active="methodology", path_prefix="",
-        content=body, data_refreshed_at=refreshed_at,
+        content=body, data_refreshed_at=refreshed_at, cache_bust=cache_bust,
     )
 
 
@@ -490,16 +490,17 @@ def main():
     else:
         print(f"  Sanity check passed")
 
+    cache_bust = str(int(datetime.now().timestamp()))
     refreshed_at = datetime.now().strftime("%Y-%m-%d %H:%M") + " (live)"
 
-    tracker_html = render_tracker(public, held_tickers, refreshed_at)
+    tracker_html = render_tracker(public, held_tickers, refreshed_at, cache_bust)
     out_index = REPO_ROOT / ("index_preview.html" if args.preview else "index.html")
     with open(out_index, "w", encoding="utf-8") as f:
         f.write(tracker_html)
     print(f"  Wrote {out_index.name}")
 
     if args.methodology_source.exists():
-        methodology_html = render_methodology(args.methodology_source, refreshed_at)
+        methodology_html = render_methodology(args.methodology_source, refreshed_at, cache_bust)
         with open(REPO_ROOT / "methodology.html", "w", encoding="utf-8") as f:
             f.write(methodology_html)
         print(f"  Wrote methodology.html")
@@ -509,7 +510,7 @@ def main():
     count = 0
     for r in public:
         is_held = r["ticker"].upper() in held_tickers or r["yahoo_ticker"].upper() in held_tickers
-        html = render_ticker(r, refreshed_at, is_held)
+        html = render_ticker(r, refreshed_at, is_held, cache_bust)
         out = ticker_dir / f"{slug_for(r['ticker'])}.html"
         with open(out, "w", encoding="utf-8") as f:
             f.write(html)

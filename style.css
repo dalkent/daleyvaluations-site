@@ -463,7 +463,7 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
 .held-summary .held-dot { margin: 0; }
 
 /* Holdings filter checkbox */
-.filter-checkbox {
+.filters label.filter-checkbox {
   display: flex !important;
   flex-direction: row !important;
   align-items: center;
@@ -486,14 +486,14 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
      visual weight, matching the height of the input boxes. */
   height: fit-content;
 }
-.filter-checkbox:hover {
+.filters label.filter-checkbox:hover {
   border-color: var(--accent-2);
 }
-.filter-checkbox input[type="checkbox"]:checked + span {
+.filters label.filter-checkbox input[type="checkbox"]:checked + span {
   font-weight: 600;
   color: var(--accent);
 }
-.filter-checkbox input {
+.filters label.filter-checkbox input {
   width: 1.05rem;
   height: 1.05rem;
   accent-color: #c9a227;
