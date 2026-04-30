@@ -514,7 +514,6 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   font-size: 0.95rem;
   color: var(--ink-soft);
   margin: 0 0 1.25rem;
-  max-width: 60ch;
 }
 .extremes-grid {
   display: grid;
@@ -561,6 +560,11 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--ink-soft);
+}
+.extreme-ticker-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 .extreme-ticker {
   font-family: "Inter Tight", -apple-system, sans-serif;

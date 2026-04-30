@@ -30,7 +30,7 @@
           {% for r in top_cheap %}
           <li>
             <a href="{{ path_prefix }}ticker/{{ r.slug }}.html" class="extreme-link">
-              <span class="extreme-ticker">{{ r.ticker }}</span>{% if r.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}
+              <span class="extreme-ticker-cell"><span class="extreme-ticker">{{ r.ticker }}</span>{% if r.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}</span>
               <span class="extreme-company">{{ r.company }}</span>
               <span class="extreme-meta">
                 <span class="extreme-vr">{{ r.value_ratio_display }}</span>
@@ -47,7 +47,7 @@
           {% for r in top_expensive %}
           <li>
             <a href="{{ path_prefix }}ticker/{{ r.slug }}.html" class="extreme-link">
-              <span class="extreme-ticker">{{ r.ticker }}</span>{% if r.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}
+              <span class="extreme-ticker-cell"><span class="extreme-ticker">{{ r.ticker }}</span>{% if r.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}</span>
               <span class="extreme-company">{{ r.company }}</span>
               <span class="extreme-meta">
                 <span class="extreme-vr">{{ r.value_ratio_display }}</span>
