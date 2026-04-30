@@ -198,10 +198,11 @@ def join_records(data):
     return merged
 
 
-# Tickers excluded from the public site. These have a "real" model output in the
-# spreadsheet but are structurally closed-end vehicles (listed hedge funds, PE
-# trusts) where the model anchors on NAV and produces a misleading DVR.
-EXCLUDED_TICKERS = {"PSH.L"}
+# Tickers excluded from the public site pending model reconciliation.
+# - PSH.L: closed-end vehicle, AM:PB+EPV anchors on NAV, misleading DVR
+# - LGEN.L: Life:EPSCap appears to have a units bug producing 74p target
+#   vs current 251p price - giving a spurious Strong Sell. Pending audit.
+EXCLUDED_TICKERS = {"PSH.L", "LGEN.L"}
 
 
 def filter_public(records):
@@ -427,25 +428,71 @@ def render_tracker(public_records, held_tickers, refreshed_at, cache_bust=""):
     )
 
 
+def model_labels_for(method, sector):
+    """Return (val1_label, val1_note, val2_label, val2_note, val3_label, val3_note)
+    based on the sector-specific model method. Each note explains what the column means
+    for this method, or 'Not used by this method' if it is filler.
+    """
+    method_l = (method or "").lower()
+    sector_l = (sector or "").lower()
+
+    if "bank:ddm" in method_l or sector_l == "banks":
+        return (
+            "Banks DCF", "Discounted cash flow on free cash to equity, discounted at Ke.",
+            "P/B target", "Justified price-to-book based on ROE vs Ke.",
+            "EPV", "Earnings power on a normalised ROE basis.",
+        )
+    if "am:pb" in method_l or sector_l == "asset management":
+        return (
+            "DCF (not used)", "Not used by the asset-manager model. Filler value.",
+            "P/B target", "Justified price-to-book based on fee margin and growth.",
+            "EPV", "Forward EPS × normalised P/E.",
+        )
+    if "fin:" in method_l or sector_l == "financial services":
+        return (
+            "DDM", "Gordon Growth dividend discount.",
+            "EPV", "Forward EPS × normalised P/E.",
+            "RIM / Analyst", "Residual income with analyst-target sanity check.",
+        )
+    if "gi:ptb" in method_l or sector_l == "general insurance":
+        return (
+            "Tangible book × multiplier", "Tangible book per share × sector multiplier.",
+            "DDM", "Gordon Growth dividend discount.",
+            "P/TB target", "Justified price-to-tangible-book.",
+        )
+    if "life:" in method_l or sector_l == "life insurance":
+        return (
+            "DCF (filler)", "Not the primary model for Life Insurance. Filler value.",
+            "DDM (filler)", "Not the primary model for Life Insurance. Filler value.",
+            "EPS Cap", "Forward EPS × capped P/E. Primary model for Life Insurance.",
+        )
+    # Default - non-financial: classic DCF / DDM / EPV
+    return (
+        "DCF", "5-year FCF projection plus terminal value, discounted at WACC.",
+        "DDM", "Gordon Growth: D₁ ÷ (WACC − g).",
+        "EPV", "Forward EPS × normalised P/E, capped at 22.5×.",
+    )
+
+
 def render_ticker(r, refreshed_at, is_held, cache_bust=""):
     signal_label, signal_class = signal_for(r["value_ratio"])
     currency = r.get("currency", "")
     is_fin = is_financial_sector(r["sector"])
 
-    if is_fin:
-        val_dcf_display = "Not used"
-        val_dcf_note = "DCF skipped for financial-sector stocks; sector-specific models used instead."
-    else:
-        val_dcf_display = fmt_target_smart(r["val_dcf"], currency, r["live_price"]) if r["val_dcf"] else "—"
-        val_dcf_note = "5-year FCF projection plus terminal value, discounted at WACC."
+    val1_label, val1_note, val2_label, val2_note, val3_label, val3_note = model_labels_for(
+        r.get("model_method", ""), r.get("sector", ""))
 
+    val_dcf_display = fmt_target_smart(r["val_dcf"], currency, r["live_price"]) if r["val_dcf"] else "—"
     val_ddm_display = fmt_target_smart(r["val_ddm"], currency, r["live_price"]) if r["val_ddm"] else "—"
-    val_ddm_note = ("Sector-weighted blend." if is_fin
-                    else ("Gordon Growth: D₁ ÷ (WACC − g)." if r["val_ddm"]
-                    else "No dividend or WACC ≤ g."))
-
     val_epv_display = fmt_target_smart(r["val_epv"], currency, r["live_price"]) if r["val_epv"] else "—"
-    val_epv_note = "Forward EPS × normalised P/E, capped at 22.5×."
+
+    # If a slot is filler (not used by this method), suppress its display
+    if "(filler)" in val1_label or "(not used)" in val1_label:
+        val_dcf_display = "Not used"
+    if "(filler)" in val2_label or "(not used)" in val2_label:
+        val_ddm_display = "Not used"
+    if "(filler)" in val3_label or "(not used)" in val3_label:
+        val_epv_display = "Not used"
 
     if r["prev_signal"] and r["current_signal"] and r["prev_signal"] != r["current_signal"]:
         signal_change_html = f'Signal moved this week: <strong>{r["prev_signal"]}</strong> → <strong>{r["current_signal"]}</strong>'
@@ -460,9 +507,9 @@ def render_ticker(r, refreshed_at, is_held, cache_bust=""):
         target_display=fmt_target_smart(r["blended_target"], currency, r["live_price"]),
         signal_change_html=signal_change_html,
         is_held=is_held,
-        val_dcf_display=val_dcf_display, val_dcf_note=val_dcf_note,
-        val_ddm_display=val_ddm_display, val_ddm_note=val_ddm_note,
-        val_epv_display=val_epv_display, val_epv_note=val_epv_note,
+        val_dcf_display=val_dcf_display, val_dcf_note=val1_note, val_dcf_label=val1_label,
+        val_ddm_display=val_ddm_display, val_ddm_note=val2_note, val_ddm_label=val2_label,
+        val_epv_display=val_epv_display, val_epv_note=val3_note, val_epv_label=val3_label,
         model_method=r["model_method"] or "—",
         beta_display=f"{r['beta']:.3f}" if r["beta"] else "—",
         ke_or_wacc="Ke" if is_fin else "WACC",
