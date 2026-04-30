@@ -49,7 +49,7 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   color: inherit;
 }
 .brand-row:hover { text-decoration: none; }
-.brand-mark { width: 38px; height: 38px; flex-shrink: 0; }
+.brand-mark { width: 48px; height: 48px; flex-shrink: 0; display: block; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
 .brand-name {
   font-family: "Source Serif 4", Georgia, serif;

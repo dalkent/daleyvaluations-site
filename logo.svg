@@ -1,5 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 80 80" fill="none">
-  <path d="M12 60 L12 20 L34 60 L34 20" stroke="#0f2a1d" stroke-width="4" stroke-linecap="square" fill="none"></path>
-  <line x1="38" y1="64" x2="50" y2="16" stroke="#0f2a1d" stroke-width="2"></line>
-  <path d="M54 20 L54 60 L66 60 C74 60 78 52 78 40 C78 28 74 20 66 20 Z" fill="#0f2a1d"></path>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 220 220">
+  
+  <circle cx="110" cy="110" r="80" fill="#f4f0e6" stroke="#0f2a1d" stroke-width="2"></circle>
+  <circle cx="110" cy="110" r="70" fill="none" stroke="#0f2a1d" stroke-width="0.6"></circle>
+  <text x="110" y="92" text-anchor="middle" font-family="&#39;Source Serif 4&#39;, Georgia, serif" font-size="22" font-weight="700" fill="#0f2a1d" letter-spacing="3">DALEY</text>
+  <text x="110" y="108" text-anchor="middle" font-family="&#39;Source Serif 4&#39;, Georgia, serif" font-size="9" fill="#0f2a1d" letter-spacing="5">VALUATIONS</text>
+  <line x1="74" y1="120" x2="146" y2="120" stroke="#0f2a1d" stroke-width="0.5"></line>
+  <g fill="none">
+    <line x1="80" y1="156" x2="144" y2="156" stroke="#0f2a1d" stroke-width="1"></line>
+    <line x1="80" y1="156" x2="80" y2="130" stroke="#0f2a1d" stroke-width="1"></line>
+    <path d="M 80 150 Q 96 150 110 138 T 144 124" stroke="#c9a227" stroke-width="2.5"></path>
+    <circle cx="110" cy="138" r="3" fill="#c9a227"></circle>
+  </g>
 </svg>
