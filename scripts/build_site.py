@@ -199,7 +199,12 @@ def join_records(data):
 
 
 def filter_public(records):
-    return [r for r in records if r.get("market") == "FTSE" and r.get("asset_type") == "Equity" and r.get("sector") != "Corp Bonds" and r.get("current_signal")]
+    return [r for r in records
+            if r.get("market") == "FTSE"
+            and r.get("asset_type") == "Equity"
+            and r.get("sector") != "Corp Bonds"
+            and r.get("current_signal")
+            and (r.get("model_method") or "").strip().lower() != "no valuation"]
 
 
 def fetch_live_prices(records, force_refresh=False):
