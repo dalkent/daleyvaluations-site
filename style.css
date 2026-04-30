@@ -379,8 +379,9 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
 }
 .changes-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem 2rem;
+  max-width: 760px;
 }
 .changes-col-title {
   font-family: "Inter Tight", -apple-system, sans-serif;
@@ -466,13 +467,31 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   display: flex !important;
   flex-direction: row !important;
   align-items: center;
-  gap: 0.45rem !important;
+  gap: 0.5rem !important;
   font-family: "Inter Tight", -apple-system, sans-serif;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   color: var(--ink);
   user-select: none;
   cursor: pointer;
-  padding-bottom: 0.4rem;
+  /* Match the height of select boxes: their label-stack pushes the input
+     down by roughly the size of .filter-label (~0.72rem + 0.3rem gap)
+     plus padding. We pad-top to align baselines. */
+  padding: 0.55rem 0.8rem;
+  background: var(--paper-card);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  margin-top: auto;
+  /* The label-stack above filters means we sit at flex-end already - this
+     compensates for the missing label row by giving the checkbox its own
+     visual weight, matching the height of the input boxes. */
+  height: fit-content;
+}
+.filter-checkbox:hover {
+  border-color: var(--accent-2);
+}
+.filter-checkbox input[type="checkbox"]:checked + span {
+  font-weight: 600;
+  color: var(--accent);
 }
 .filter-checkbox input {
   width: 1.05rem;
