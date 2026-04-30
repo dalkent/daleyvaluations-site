@@ -218,22 +218,39 @@
 
 <h3>What runs on what</h3>
 
-<p>Different sectors get different combinations:</p>
+<p>Different sectors get different combinations. The general framework runs DCF, DDM and EPV in parallel and blends them. Financial-sector stocks use a sector-specific primary method and an earnings-anchored secondary, blended by sub-sector classification.</p>
 
 <table>
   <thead>
-    <tr><th>Sector</th><th>Models used</th></tr>
+    <tr><th>Sector</th><th>Primary method</th><th>Secondary method</th><th>Blend</th></tr>
   </thead>
   <tbody>
-    <tr><td>Industrials, consumer, energy, utilities, healthcare, tech</td><td>DCF + DDM + EPV</td></tr>
-    <tr><td>Banks</td><td>Two-Stage DDM (45%) + P/B Excess Returns (35%) + Earnings Capitalisation (20%)</td></tr>
-    <tr><td>General insurance</td><td>Justified Price-to-Tangible-Book</td></tr>
-    <tr><td>Life insurance</td><td>Earnings Capitalisation</td></tr>
-    <tr><td>Asset management</td><td>Justified P/B (60%) + Earnings Capitalisation (40%)</td></tr>
-    <tr><td>Capital markets and exchanges</td><td>EV / EBITDA at 22x</td></tr>
-    <tr><td>Basic materials (miners)</td><td>EPV and primary-method DCF only; DDM excluded</td></tr>
+    <tr><td>Industrials, consumer, energy, utilities, healthcare, tech</td><td>DCF</td><td>DDM and EPV</td><td>Equal-weight average of the three after outlier removal</td></tr>
+    <tr><td>Banks</td><td>Two-Stage DDM (45%) + P/B Excess Returns (35%) + Earnings Capitalisation (20%)</td><td>Normalised EPS × justified P/E</td><td>Sub-sector weighted (see below)</td></tr>
+    <tr><td>General insurance</td><td>Justified Price-to-Tangible-Book</td><td>Normalised EPS × justified P/E</td><td>Sub-sector weighted (see below)</td></tr>
+    <tr><td>Life insurance</td><td>Earnings Capitalisation</td><td>Normalised EPS × justified P/E</td><td>Sub-sector weighted (see below)</td></tr>
+    <tr><td>Asset management</td><td>Justified P/B (60%) + Earnings Capitalisation (40%)</td><td>Normalised EPS × justified P/E</td><td>Sub-sector weighted (see below)</td></tr>
+    <tr><td>Capital markets and exchanges</td><td>EV / EBITDA at 22x</td><td>None</td><td>Single method</td></tr>
+    <tr><td>Basic materials (miners)</td><td>DCF and EPV</td><td>None; DDM excluded</td><td>Equal-weight of the two</td></tr>
   </tbody>
 </table>
+
+<h3>Sub-sector classification within financials</h3>
+
+<p>Book-value-anchored methods work well for capital-heavy traditional financials where balance sheet equity is a meaningful proxy for what the business owns. They break for asset-light, high-ROE specialists where the value sits in the brand, the underwriting discipline or the distribution model rather than the balance sheet. To deal with this, every financial-sector stock is classified into one of three sub-sectors and the book-anchored and earnings-anchored methods are blended in different proportions:</p>
+
+<table>
+  <thead>
+    <tr><th>Sub-sector</th><th>Book weight</th><th>Earnings weight</th><th>Example</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Capital-heavy traditional</td><td>80%</td><td>20%</td><td>Aviva</td></tr>
+    <tr><td>Mixed</td><td>50%</td><td>50%</td><td>NatWest</td></tr>
+    <tr><td>Asset-light specialist</td><td>20%</td><td>80%</td><td>Admiral</td></tr>
+  </tbody>
+</table>
+
+<p>The earnings-anchored secondary uses normalised earnings per share, computed as a three-year average of underlying EPS with mark-to-market and one-off items excluded. If the normalisation breaks (negative or distorted recent EPS) the model falls back to the book method only and the ticker is flagged. The justified P/E used in the secondary is taken from a sub-sector lookup table published in the assumptions section below.</p>
 
 <h2>The blend</h2>
 
@@ -278,7 +295,7 @@
   <li><strong>Mining and commodity traders</strong> (Glencore, Anglo American, Rio Tinto). Free cash flow is cyclical, dividends are variable, and reported earnings can swing on a single year of commodity prices. Treat signals here as low confidence and lean on analyst consensus and sector multiples instead.</li>
   <li><strong>Pre-profit growth stocks.</strong> If there are no earnings and no dividend, two of the three models go silent and the EPV is doing all the work. The framework was not built for this and the signal will reflect that.</li>
   <li><strong>Companies in transition.</strong> Spin-offs, large acquisitions, and major restructurings all break the assumption that historical financials predict future ones. The model will value the past; the price is reacting to the future.</li>
-  <li><strong>Asset-light, high-ROE specialists in book-anchored sectors.</strong> The financial-sector models for banks, insurers and asset managers anchor on tangible book value scaled by a sector multiplier. That is the right tool for capital-heavy traditional businesses where book value is a meaningful proxy for what the company owns. It is the wrong tool for asset-light specialists like Admiral, where the value is in the brand, the underwriting discipline and the distribution model rather than the balance sheet. Stocks of this kind will produce aggressive Sell signals on the model that may not be defensible without context. A model upgrade adding an earnings-power secondary check for these names is on the roadmap.</li>
+  <li><strong>Recent demergers and unusual capital structures.</strong> Companies that have just demerged, listed, or gone through a major recapitalisation may not have three clean years of underlying earnings to feed the normalisation rule. Where this happens the framework falls back to a shorter base or, if that is not reliable either, to the book method only. The signal is still produced but its confidence is lower, and the article on each name will say so explicitly.</li>
 </ul>
 
 <h2>The assumptions, written down</h2>
@@ -296,8 +313,33 @@
     <tr><td>Normalised P/E multiple (EPV)</td><td>15x</td></tr>
     <tr><td>Forward P/E cap (EPV)</td><td>22.5x</td></tr>
     <tr><td>Outlier filter (blend)</td><td>median ÷ 3 to median × 3</td></tr>
+    <tr><td>EPS normalisation window (financials)</td><td>3-year underlying average</td></tr>
   </tbody>
 </table>
+
+<h3>Justified P/E by sub-sector (financials)</h3>
+
+<p>The earnings-anchored secondary method multiplies the normalised EPS by a justified P/E specific to the sub-sector. These are the multiples currently in use:</p>
+
+<table>
+  <thead>
+    <tr><th>Sub-sector</th><th>Sector</th><th>Justified P/E</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Capital-heavy traditional</td><td>Banks</td><td>9x</td></tr>
+    <tr><td>Mixed</td><td>Banks</td><td>11x</td></tr>
+    <tr><td>Capital-heavy traditional</td><td>General Insurance</td><td>10x</td></tr>
+    <tr><td>Mixed</td><td>General Insurance</td><td>13x</td></tr>
+    <tr><td>Asset-light specialist</td><td>General Insurance</td><td>14x</td></tr>
+    <tr><td>Capital-heavy traditional</td><td>Life Insurance</td><td>10x</td></tr>
+    <tr><td>Mixed</td><td>Life Insurance</td><td>12x</td></tr>
+    <tr><td>Capital-heavy traditional</td><td>Asset Management</td><td>10x</td></tr>
+    <tr><td>Mixed</td><td>Asset Management</td><td>12x</td></tr>
+    <tr><td>Asset-light specialist</td><td>Asset Management</td><td>13x</td></tr>
+  </tbody>
+</table>
+
+<p>The multiples are calibrated against historical sector medians and current market levels. They are reviewed annually and adjusted when long-run averages drift far enough to matter.</p>
 
 <p>Every change to these inputs is logged with a reason and an effect on at least one example stock. That log is the audit trail behind the numbers you see on this site.</p>
 
@@ -311,7 +353,8 @@
 
 <footer>
   <p><strong>Daley Valuations</strong> is an independent equity research site by Neil Daley, PhD, CFA. Twenty years in institutional finance, now applied to public markets in plain English.</p>
-  <p class="stamp">Last reviewed: 29 April 2026. The methodology is a living document and is updated when the underlying assumptions change.</p>
+  <p class="stamp">Last reviewed: 30 April 2026. The methodology is a living document and is updated when the underlying assumptions change.</p>
+  <p class="stamp small"><strong>Recent change (2026-04-30):</strong> the financial-sector framework was upgraded to add an earnings-anchored secondary method. Previously every financial-sector stock was valued purely on a book-value-anchored model, which produced aggressive Sell signals for asset-light, high-ROE specialists where book value is not the right anchor. The new framework classifies each financial-sector stock into one of three sub-sectors (capital-heavy traditional, mixed, asset-light specialist) and blends a book-anchored primary with an earnings-anchored secondary in 80/20, 50/50 or 20/80 proportions. Backtest moved Admiral from a Strong Sell at DVR 0.41 to Fair Value at roughly DVR 0.96. Banks and capital-heavy traditional insurers were largely unchanged.</p>
 </footer>
 
 </div>
