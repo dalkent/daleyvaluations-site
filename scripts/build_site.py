@@ -203,9 +203,11 @@ def join_records(data):
 # - III.L: listed PE vehicle (Action ~70% of NAV). AM:PB+EPV applies a P/B
 #   multiplier to assets already marked at fair value - double-counting. Same
 #   structural issue as PSH; not a true asset manager.
-# - LGEN.L: Life:EPSCap appears to have a units / normalised-EPS issue producing
-#   a 74p target vs current 251p price - spurious Strong Sell. Pending audit.
-EXCLUDED_TICKERS = {"PSH.L", "III.L", "LGEN.L"}
+# - LGEN.L: Life:EPSCap producing a 74p target vs 251p price - implied ~4.4x
+#   P/E suggests EPSCap input is using depressed reported EPS, not normalised.
+# - MNG.L: AM:PB+EPV producing 33p EPV vs 300p price - implied ~1.5x P/E,
+#   clearly broken. Same EPS-normalisation root cause as LGEN.
+EXCLUDED_TICKERS = {"PSH.L", "III.L", "LGEN.L", "MNG.L"}
 
 
 def filter_public(records):
