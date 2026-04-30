@@ -355,7 +355,8 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   margin: 0 0 1rem;
 }
 .breadcrumb a { color: var(--accent-2); text-decoration: none; }
-.breadcrumb a:hover { text-
+.breadcrumb a:hover { text-decoration: underline; }
+
 /* ── What Changed panel ───────────────────────────────────────────────────── */
 
 .changes-section {
@@ -510,4 +511,8 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
     margin-top: 0.25rem;
   }
   .held-summary { margin-left: 0; margin-top: 0.5rem; }
+}
+ margin-top: 0.5rem; }
+}
+ margin-top: 0.5rem; }
 }
