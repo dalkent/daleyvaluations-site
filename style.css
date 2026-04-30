@@ -355,191 +355,140 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   margin: 0 0 1rem;
 }
 .breadcrumb a { color: var(--accent-2); text-decoration: none; }
-.breadcrumb a:hover { text-decoration: underline; }
-.breadcrumb .sep { margin: 0 0.5rem; opacity: 0.6; }
+.breadcrumb a:hover { text-
+/* ── What Changed panel ───────────────────────────────────────────────────── */
 
-.ticker-h1 {
+.changes-section {
+  padding: 2rem 0 1.5rem;
+  border-bottom: 1px solid var(--rule);
+  background: rgba(15, 42, 29, 0.025);
+}
+.changes-heading {
   font-family: "Source Serif 4", Georgia, serif;
-  font-size: 2.4rem;
-  line-height: 1.1;
-  margin: 0 0 0.5rem;
+  font-size: 1.4rem;
+  margin: 0 0 0.4rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   color: var(--ink);
 }
-.ticker-sub {
-  font-family: "Inter Tight", -apple-system, sans-serif;
-  font-size: 0.95rem;
-  color: var(--muted);
-  margin: 0 0 2rem;
-  letter-spacing: 0.02em;
-}
-
-.signal-display {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  background: var(--paper-card);
-  border: 1px solid var(--rule);
-  padding: 1.5rem;
-  margin: 1.5rem 0;
-}
-.signal-display-block { text-align: left; }
-.signal-display-block p { margin: 0; }
-.signal-label-small {
-  font-family: "Inter Tight", -apple-system, sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 600;
-  margin-bottom: 0.4rem !important;
-}
-.signal-large {
-  font-size: 1rem;
-  padding: 0.3rem 0.8rem;
-  display: inline-block;
-}
-.big-number {
-  font-family: "Source Serif 4", Georgia, serif;
-  font-size: 1.7rem;
-  font-weight: 600;
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-}
-.signal-change-note {
+.changes-sub {
+  margin: 0 0 1.5rem;
   font-family: "Inter Tight", -apple-system, sans-serif;
   font-size: 0.92rem;
   color: var(--muted);
-  margin: 1rem 0 0;
 }
-
-.ticker-section {
-  padding: 2rem 0 4rem;
-}
-.ticker-section h2 {
-  font-family: "Source Serif 4", Georgia, serif;
-  font-size: 1.5rem;
-  margin: 2.5rem 0 0.6rem;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  color: var(--ink);
-}
-.ticker-section h2:first-child { margin-top: 0; }
-.section-lede {
-  color: var(--muted);
-  margin: 0 0 1.25rem;
-  font-style: italic;
-}
-
-.ticker-models, .ticker-assumptions {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 0.5rem 0 1rem;
-  font-family: "Inter Tight", -apple-system, sans-serif;
-  font-size: 0.95rem;
-  background: var(--paper-card);
-  border: 1px solid var(--rule);
-}
-.ticker-models thead th,
-.ticker-models tbody td,
-.ticker-assumptions tbody th,
-.ticker-assumptions tbody td {
-  padding: 0.7rem 0.85rem;
-  border-bottom: 1px solid var(--rule);
-  text-align: left;
-}
-.ticker-models tbody tr:last-child td,
-.ticker-assumptions tbody tr:last-child td,
-.ticker-assumptions tbody tr:last-child th { border-bottom: none; }
-.ticker-models thead th {
-  font-weight: 600;
-  color: var(--muted);
-  text-transform: uppercase;
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  background: rgba(15, 42, 29, 0.03);
-}
-.ticker-models td.num,
-.ticker-models th.num,
-.ticker-assumptions td.num {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-.ticker-assumptions th {
-  font-weight: 500;
-  color: var(--muted);
-  width: 50%;
-}
-.model-sub {
-  display: inline-block;
-  font-size: 0.78rem;
-  color: var(--muted);
-  font-weight: 400;
-  margin-left: 0.3rem;
-}
-.model-method-note {
-  font-family: "Inter Tight", -apple-system, sans-serif;
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin: -0.5rem 0 1rem;
-}
-
-.ticker-ctas {
+.changes-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin: 2.5rem 0 1.5rem;
+  gap: 2rem;
 }
-.cta-block {
-  display: flex;
-  flex-direction: column;
-  padding: 1.25rem 1.5rem;
-  background: var(--ink);
-  color: var(--paper);
-  text-decoration: none;
-  border: 1px solid var(--ink);
-  transition: background 0.15s ease;
+.changes-col-title {
   font-family: "Inter Tight", -apple-system, sans-serif;
-}
-.cta-block:hover { background: var(--accent-2); border-color: var(--accent-2); text-decoration: none; }
-.cta-eyebrow {
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  opacity: 0.7;
-  margin-bottom: 0.3rem;
+  font-weight: 600;
+  margin: 0 0 0.85rem;
 }
-.cta-line {
-  font-size: 1rem;
-  font-weight: 500;
+.changes-col-title.up { color: #0f5132; }
+.changes-col-title.down { color: #7a1518; }
+.changes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.changes-list li { margin-bottom: 0.4rem; }
+.change-link {
+  display: grid;
+  grid-template-columns: 5rem 1fr auto;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 0.55rem 0.7rem;
+  background: var(--paper-card);
+  border: 1px solid var(--rule);
+  text-decoration: none;
+  color: var(--ink);
+  font-family: "Inter Tight", -apple-system, sans-serif;
+  font-size: 0.92rem;
+  transition: background 0.1s ease;
+}
+.change-link:hover {
+  background: rgba(15, 42, 29, 0.04);
+  text-decoration: none;
+}
+.change-ticker {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.change-company {
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.change-move {
+  text-align: right;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+.change-from {
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-left: 0.25rem;
 }
 
-.ticker-disclaimer {
+/* ── Held indicator ───────────────────────────────────────────────────────── */
+
+.held-dot {
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: #c9a227;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.held-summary {
   font-family: "Inter Tight", -apple-system, sans-serif;
   font-size: 0.85rem;
   color: var(--muted);
-  font-style: italic;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--rule);
+  margin-left: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 500;
+}
+.held-summary .held-dot { margin: 0; }
+
+/* Holdings filter checkbox */
+.filter-checkbox {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.45rem !important;
+  font-family: "Inter Tight", -apple-system, sans-serif;
+  font-size: 0.92rem;
+  color: var(--ink);
+  user-select: none;
+  cursor: pointer;
+  padding-bottom: 0.4rem;
+}
+.filter-checkbox input {
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: #c9a227;
+  cursor: pointer;
 }
 
-/* Mobile */
+/* Mobile adjustments */
 @media (max-width: 700px) {
-  html { font-size: 16px; }
-  .hero h1 { font-size: 1.8rem; }
-  .ticker-h1 { font-size: 1.8rem; }
-  .signal-display { grid-template-columns: repeat(2, 1fr); }
-  .ticker-ctas { grid-template-columns: 1fr; }
-  .site-header .wrap-wide { gap: 1rem; }
-  .site-nav { gap: 1rem; font-size: 0.85rem; }
-  .signal-bar-row { font-size: 0.85rem; }
-  .signal-count { margin-right: 0.85rem; font-size: 0.85rem; }
-  .tracker-table { font-size: 0.85rem; }
-  .tracker-table th, .tracker-table td { padding: 0.6rem 0.55rem; }
-  .filters { gap: 1rem; }
-  .filters select, .filters input { min-width: 140px; }
-  .row-count { margin-left: 0; }
+  .changes-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+  .change-link { grid-template-columns: 4.5rem 1fr; }
+  .change-move {
+    grid-column: 1 / -1;
+    text-align: left;
+    margin-top: 0.25rem;
+  }
+  .held-summary { margin-left: 0; margin-top: 0.5rem; }
 }

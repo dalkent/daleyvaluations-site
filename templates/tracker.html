@@ -11,10 +11,55 @@
         <span class="signal fv">Fair Value</span><span class="signal-count">{{ signal_counts['Fair Value'] }}</span>
         <span class="signal s">Sell</span><span class="signal-count">{{ signal_counts['Sell'] }}</span>
         <span class="signal ss">Strong Sell</span><span class="signal-count">{{ signal_counts['Strong Sell'] }}</span>
+        <span class="held-summary"><span class="held-dot" aria-hidden="true"></span>{{ held_count }} held in live portfolio</span>
       </div>
     </div>
   </div>
 </section>
+
+{% if upgrades or downgrades %}
+<section class="changes-section">
+  <div class="wrap-wide">
+    <h2 class="changes-heading">What changed this week</h2>
+    <p class="changes-sub">Signal moves since the previous weekly run. {{ upgrades|length }} upgrade{% if upgrades|length != 1 %}s{% endif %}, {{ downgrades|length }} downgrade{% if downgrades|length != 1 %}s{% endif %}.</p>
+
+    <div class="changes-grid">
+      {% if upgrades %}
+      <div class="changes-col">
+        <h3 class="changes-col-title up">Upgrades ↑</h3>
+        <ul class="changes-list">
+          {% for c in upgrades %}
+          <li>
+            <a href="{{ path_prefix }}ticker/{{ c.slug }}.html" class="change-link">
+              <span class="change-ticker">{{ c.ticker }}</span>{% if c.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}
+              <span class="change-company">{{ c.company }}</span>
+              <span class="change-move"><span class="signal {{ c.to_signal_class }}">{{ c.to_signal }}</span> <span class="change-from">from {{ c.from_signal }}</span></span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if downgrades %}
+      <div class="changes-col">
+        <h3 class="changes-col-title down">Downgrades ↓</h3>
+        <ul class="changes-list">
+          {% for c in downgrades %}
+          <li>
+            <a href="{{ path_prefix }}ticker/{{ c.slug }}.html" class="change-link">
+              <span class="change-ticker">{{ c.ticker }}</span>{% if c.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}
+              <span class="change-company">{{ c.company }}</span>
+              <span class="change-move"><span class="signal {{ c.to_signal_class }}">{{ c.to_signal }}</span> <span class="change-from">from {{ c.from_signal }}</span></span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
 
 <section class="tracker-section">
   <div class="wrap-wide">
@@ -44,6 +89,10 @@
         <span class="filter-label">Search</span>
         <input id="filter-search" type="search" placeholder="Ticker or company">
       </label>
+      <label class="filter-checkbox">
+        <input id="filter-held" type="checkbox">
+        <span>Holdings only</span>
+      </label>
       <span id="row-count" class="row-count">{{ ticker_count }} stocks</span>
     </div>
 
@@ -63,8 +112,8 @@
         </thead>
         <tbody>
         {% for r in rows %}
-          <tr data-ticker="{{ r.ticker }}" data-company="{{ r.company | lower }}" data-sector="{{ r.sector }}" data-signal="{{ r.signal_label }}" data-vr="{{ r.value_ratio_raw or 0 }}" data-price="{{ r.price_raw or 0 }}" data-target="{{ r.target_raw or 0 }}">
-            <td class="ticker-cell"><a href="{{ path_prefix }}ticker/{{ r.slug }}.html">{{ r.ticker }}</a></td>
+          <tr data-ticker="{{ r.ticker }}" data-company="{{ r.company | lower }}" data-sector="{{ r.sector }}" data-signal="{{ r.signal_label }}" data-vr="{{ r.value_ratio_raw or 0 }}" data-price="{{ r.price_raw or 0 }}" data-target="{{ r.target_raw or 0 }}" data-held="{{ '1' if r.is_held else '0' }}">
+            <td class="ticker-cell"><a href="{{ path_prefix }}ticker/{{ r.slug }}.html">{{ r.ticker }}</a>{% if r.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}</td>
             <td>{{ r.company }}</td>
             <td>{{ r.sector }}</td>
             <td class="num">{{ r.price_display }}</td>
@@ -78,7 +127,7 @@
       </table>
     </div>
 
-    <p class="table-note">DVR = Daley Value Ratio (blended target divided by current price). Click a column header to sort. Click a ticker to see the full per-stock breakdown.</p>
+    <p class="table-note">DVR = Daley Value Ratio (blended target divided by current price). The gold dot marks stocks held in my live eToro portfolio. Click a column header to sort. Click a ticker to see the full per-stock breakdown.</p>
   </div>
 </section>
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""build_site.py - Daley Valuations site builder."""
+"""build_site.py - Daley Valuations site builder. v2 with Held badge + What Changed panel."""
 import argparse, json, sys, time, os, shutil, re
 from collections import Counter
 from datetime import datetime
@@ -9,6 +9,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = REPO_ROOT / "templates"
 DEFAULT_DATA_FILE = Path("C:/Users/Neil/ClaudeCode/eToro/data/etoro_master.json")
+DEFAULT_PORTFOLIO_FILE = Path("C:/Users/Neil/ClaudeCode/eToro/data/combined_portfolio.json")
 PRICE_CACHE_FILE = REPO_ROOT / ".price_cache.json"
 PRICE_CACHE_TTL_HOURS = 1
 
@@ -63,12 +64,9 @@ def fmt_target(v, currency=""):
 
 
 def fmt_target_smart(v, currency, live_price):
-    """For ticker pages, use the same magnitude detection as apply_live_prices."""
     if v is None: return "—"
-    if currency not in ("GBp", "GBX"):
-        return fmt_target(v, currency)
+    if currency not in ("GBp", "GBX"): return fmt_target(v, currency)
     if live_price and live_price > 0:
-        # Pick whichever yields a plausible VR
         as_decimal = v * 100
         as_pence = v
         if 0.2 <= as_decimal / live_price <= 5.0:
@@ -110,7 +108,6 @@ def load_data(data_file):
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
-        # Try repairing truncated trailing braces (a known issue when valuation.py errors mid-write)
         for closer in ("}", "]}", "]}}", "}}"):
             try:
                 data = json.loads(raw + closer)
@@ -119,6 +116,35 @@ def load_data(data_file):
             except json.JSONDecodeError:
                 continue
         sys.exit("ERROR: data file is corrupt and could not be auto-repaired. Re-run valuation.py.")
+
+
+def load_held_tickers(portfolio_file):
+    """Read combined_portfolio.json and return set of ticker symbols (yahoo format) currently held.
+
+    The file may contain two concatenated JSON snapshots; take the first.
+    Returns just the set of tickers - never units, P&L, entry prices, or any private detail.
+    """
+    if not portfolio_file.exists():
+        print(f"  WARNING: portfolio file not found at {portfolio_file} - Held badges will be omitted")
+        return set()
+    try:
+        with open(portfolio_file, encoding="utf-8") as f:
+            raw = f.read()
+        decoder = json.JSONDecoder()
+        data, _ = decoder.raw_decode(raw)
+        held = set()
+        for h in data.get("holdings", []):
+            # eToro holdings only - T212 is private and not represented on the public site
+            if (h.get("broker") or "").lower() != "etoro":
+                continue
+            yahoo = (h.get("yahoo") or "").strip().upper()
+            if yahoo:
+                held.add(yahoo)
+        print(f"  Loaded {len(held)} held tickers from portfolio file")
+        return held
+    except Exception as e:
+        print(f"  WARNING: could not parse portfolio file ({e}) - Held badges will be omitted")
+        return set()
 
 
 def join_records(data):
@@ -134,7 +160,6 @@ def join_records(data):
         if not ticker: continue
         watch = watch_by.get(ticker, {})
         meta = meta_by.get(ticker, {})
-        # Yahoo ticker - normalise to upper case
         yt = (meta.get("Yahoo Finance Ticker") or ticker).strip().upper()
         merged.append({
             "ticker": ticker,
@@ -225,22 +250,17 @@ def fetch_live_prices(records, force_refresh=False):
 def apply_live_prices(records, live_prices):
     for r in records:
         live = live_prices.get(r["yahoo_ticker"])
-        if live is None:
-            continue
+        if live is None: continue
         r["live_price"] = live
         target = r.get("blended_target")
-        if target is None or live <= 0:
-            continue
+        if target is None or live <= 0: continue
         currency = r.get("currency", "")
         if currency in ("GBp", "GBX"):
             vr_decimal = (target * 100) / live
             vr_already_pence = target / live
-            if 0.2 <= vr_decimal <= 5.0:
-                r["value_ratio"] = vr_decimal
-            elif 0.2 <= vr_already_pence <= 5.0:
-                r["value_ratio"] = vr_already_pence
-            else:
-                r["value_ratio"] = vr_decimal
+            if 0.2 <= vr_decimal <= 5.0: r["value_ratio"] = vr_decimal
+            elif 0.2 <= vr_already_pence <= 5.0: r["value_ratio"] = vr_already_pence
+            else: r["value_ratio"] = vr_decimal
         else:
             r["value_ratio"] = target / live
     return records
@@ -257,17 +277,19 @@ def sanity_check(records):
     return warnings
 
 
-def shape_for_tracker(records):
+def shape_for_tracker(records, held_tickers):
     out = []
     for r in records:
         signal_label, signal_class = signal_for(r["value_ratio"])
         currency = r.get("currency", "")
+        is_held = r["ticker"].upper() in held_tickers or r["yahoo_ticker"].upper() in held_tickers
         out.append({
             "ticker": r["ticker"],
             "slug": slug_for(r["ticker"]),
             "company": r["company"],
             "sector": r["sector"],
             "currency": currency,
+            "is_held": is_held,
             "price_raw": r["live_price"],
             "target_raw": r["blended_target"],
             "value_ratio_raw": r["value_ratio"],
@@ -277,8 +299,45 @@ def shape_for_tracker(records):
             "signal_label": signal_label,
             "signal_class": signal_class,
             "change_display": fmt_change(r["prev_signal"], signal_label),
+            "prev_signal": r["prev_signal"] or "",
         })
     return out
+
+
+def compute_changes(rows):
+    """Identify upgrades and downgrades from prev_signal vs current signal_label."""
+    order = ["Strong Sell", "Sell", "Fair Value", "Buy", "Strong Buy"]
+    upgrades = []
+    downgrades = []
+    for r in rows:
+        prev = r.get("prev_signal") or ""
+        current = r.get("signal_label") or ""
+        if not prev or not current or prev == current:
+            continue
+        try:
+            prev_i = order.index(prev)
+            curr_i = order.index(current)
+        except ValueError:
+            continue
+        change = {
+            "ticker": r["ticker"],
+            "slug": r["slug"],
+            "company": r["company"],
+            "sector": r["sector"],
+            "from_signal": prev,
+            "to_signal": current,
+            "to_signal_class": r["signal_class"],
+            "is_held": r["is_held"],
+            "value_ratio_display": r["value_ratio_display"],
+        }
+        if curr_i > prev_i:
+            upgrades.append(change)
+        else:
+            downgrades.append(change)
+    # Order both lists by company name for stable rendering
+    upgrades.sort(key=lambda c: c["company"])
+    downgrades.sort(key=lambda c: c["company"])
+    return upgrades, downgrades
 
 
 def latest_data_timestamp(records):
@@ -287,42 +346,39 @@ def latest_data_timestamp(records):
     return max(stamps)
 
 
-# ── Renderers ─────────────────────────────────────────────────────────────────
-
-def render_tracker(public_records, refreshed_at):
-    rows = shape_for_tracker(public_records)
-    rows.sort(key=lambda r: (r["sector"], r["ticker"]))
-    sectors = sorted(set(r["sector"] for r in rows if r["sector"]))
-    signal_counts = Counter(r["signal_label"] for r in rows)
-    for sig in ("Strong Buy", "Buy", "Fair Value", "Sell", "Strong Sell"):
-        signal_counts.setdefault(sig, 0)
-    body = env.get_template("tracker.html").render(
-        rows=rows, sectors=sectors, signal_counts=signal_counts,
-        ticker_count=len(rows), path_prefix="",
-    )
-    return env.get_template("_layout.html").render(
-        page_title="FTSE Valuation Tracker",
-        page_description=f"Three valuation models, one signal, {len(rows)} FTSE stocks, refreshed weekly.",
-        canonical_path="/",
-        active="tracker",
-        path_prefix="",
-        content=body,
-        data_refreshed_at=refreshed_at,
-    )
-
-
 def is_financial_sector(sector):
     return sector in ("Banks", "General Insurance", "Life Insurance", "Asset Management",
                       "PE/Alternatives", "Capital Markets", "Financial Services")
 
 
-def render_ticker(r, refreshed_at):
-    """Render one per-ticker page."""
+def render_tracker(public_records, held_tickers, refreshed_at):
+    rows = shape_for_tracker(public_records, held_tickers)
+    rows.sort(key=lambda r: (r["sector"], r["ticker"]))
+    sectors = sorted(set(r["sector"] for r in rows if r["sector"]))
+    signal_counts = Counter(r["signal_label"] for r in rows)
+    for sig in ("Strong Buy", "Buy", "Fair Value", "Sell", "Strong Sell"):
+        signal_counts.setdefault(sig, 0)
+    upgrades, downgrades = compute_changes(rows)
+    held_count = sum(1 for r in rows if r["is_held"])
+
+    body = env.get_template("tracker.html").render(
+        rows=rows, sectors=sectors, signal_counts=signal_counts,
+        ticker_count=len(rows), held_count=held_count,
+        upgrades=upgrades, downgrades=downgrades, path_prefix="",
+    )
+    return env.get_template("_layout.html").render(
+        page_title="FTSE Valuation Tracker",
+        page_description=f"Three valuation models, one signal, {len(rows)} FTSE stocks, refreshed weekly.",
+        canonical_path="/", active="tracker", path_prefix="",
+        content=body, data_refreshed_at=refreshed_at,
+    )
+
+
+def render_ticker(r, refreshed_at, is_held):
     signal_label, signal_class = signal_for(r["value_ratio"])
     currency = r.get("currency", "")
     is_fin = is_financial_sector(r["sector"])
 
-    # Model values - DCF is skipped for financials
     if is_fin:
         val_dcf_display = "Not used"
         val_dcf_note = "DCF skipped for financial-sector stocks; sector-specific models used instead."
@@ -338,28 +394,22 @@ def render_ticker(r, refreshed_at):
     val_epv_display = fmt_target_smart(r["val_epv"], currency, r["live_price"]) if r["val_epv"] else "—"
     val_epv_note = "Forward EPS × normalised P/E, capped at 22.5×."
 
-    # Signal change line
     if r["prev_signal"] and r["current_signal"] and r["prev_signal"] != r["current_signal"]:
         signal_change_html = f'Signal moved this week: <strong>{r["prev_signal"]}</strong> → <strong>{r["current_signal"]}</strong>'
     else:
         signal_change_html = ""
 
     body = env.get_template("ticker.html").render(
-        ticker=r["ticker"],
-        company=r["company"],
-        sector=r["sector"],
-        signal_label=signal_label,
-        signal_class=signal_class,
+        ticker=r["ticker"], company=r["company"], sector=r["sector"],
+        signal_label=signal_label, signal_class=signal_class,
         value_ratio_display=fmt_vr(r["value_ratio"]),
         price_display=fmt_price(r["live_price"], currency),
         target_display=fmt_target_smart(r["blended_target"], currency, r["live_price"]),
         signal_change_html=signal_change_html,
-        val_dcf_display=val_dcf_display,
-        val_dcf_note=val_dcf_note,
-        val_ddm_display=val_ddm_display,
-        val_ddm_note=val_ddm_note,
-        val_epv_display=val_epv_display,
-        val_epv_note=val_epv_note,
+        is_held=is_held,
+        val_dcf_display=val_dcf_display, val_dcf_note=val_dcf_note,
+        val_ddm_display=val_ddm_display, val_ddm_note=val_ddm_note,
+        val_epv_display=val_epv_display, val_epv_note=val_epv_note,
         model_method=r["model_method"] or "—",
         beta_display=f"{r['beta']:.3f}" if r["beta"] else "—",
         ke_or_wacc="Ke" if is_fin else "WACC",
@@ -372,39 +422,25 @@ def render_ticker(r, refreshed_at):
         page_title=f"{r['ticker']} — {r['company']} valuation",
         page_description=f"{r['company']} ({r['ticker']}). Three-model DCF/DDM/EPV blend, current signal {signal_label}, by Neil Daley, PhD, CFA.",
         canonical_path=f"/ticker/{slug_for(r['ticker'])}",
-        active="",
-        path_prefix="../",
-        content=body,
-        data_refreshed_at=refreshed_at,
+        active="", path_prefix="../", content=body, data_refreshed_at=refreshed_at,
     )
 
 
 def render_methodology(methodology_source_path, refreshed_at):
-    """Wrap the existing methodology HTML body inside the new site layout."""
     with open(methodology_source_path, encoding="utf-8") as f:
         full = f.read()
-
-    # Extract the body between the existing <header>...</header> and <footer>...</footer>
-    # Simpler: extract between <div class="wrap"> and </div></body>
     m = re.search(r'<div class="wrap">(.*?)</div>\s*</body>', full, re.DOTALL)
     if m:
         inner = m.group(1)
     else:
-        # Fallback: extract everything inside <body>
         m2 = re.search(r'<body>(.*?)</body>', full, re.DOTALL)
         inner = m2.group(1) if m2 else "<p>Methodology content not found.</p>"
-
-    # Wrap in a prose-wrap div
     body = f'<div class="prose-wrap">{inner}</div>'
-
     return env.get_template("_layout.html").render(
         page_title="Methodology",
         page_description="The three-model valuation framework behind Daley Valuations: DCF, DDM and EPV blended into a single fair-value target for 106 FTSE stocks.",
-        canonical_path="/methodology",
-        active="methodology",
-        path_prefix="",
-        content=body,
-        data_refreshed_at=refreshed_at,
+        canonical_path="/methodology", active="methodology", path_prefix="",
+        content=body, data_refreshed_at=refreshed_at,
     )
 
 
@@ -426,12 +462,10 @@ def render_sitemap(public_records):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--preview", action="store_true",
-                        help="Write tracker to index_preview.html instead of overwriting index.html")
+    parser.add_argument("--preview", action="store_true")
     parser.add_argument("--data", type=Path, default=DEFAULT_DATA_FILE)
-    parser.add_argument("--methodology-source", type=Path,
-                        default=REPO_ROOT / "methodology_source.html",
-                        help="Path to the existing methodology HTML body to migrate")
+    parser.add_argument("--portfolio", type=Path, default=DEFAULT_PORTFOLIO_FILE)
+    parser.add_argument("--methodology-source", type=Path, default=REPO_ROOT / "methodology_source.html")
     parser.add_argument("--no-prices", action="store_true")
     parser.add_argument("--refresh-prices", action="store_true")
     args = parser.parse_args()
@@ -442,6 +476,8 @@ def main():
     print(f"  Joined {len(all_records)} total records")
     public = filter_public(all_records)
     print(f"  Filtered to {len(public)} FTSE equities for public site")
+
+    held_tickers = load_held_tickers(args.portfolio)
 
     if not args.no_prices:
         live_prices = fetch_live_prices(public, force_refresh=args.refresh_prices)
@@ -456,36 +492,30 @@ def main():
 
     refreshed_at = datetime.now().strftime("%Y-%m-%d %H:%M") + " (live)"
 
-    # 1) Tracker (homepage)
-    tracker_html = render_tracker(public, refreshed_at)
+    tracker_html = render_tracker(public, held_tickers, refreshed_at)
     out_index = REPO_ROOT / ("index_preview.html" if args.preview else "index.html")
     with open(out_index, "w", encoding="utf-8") as f:
         f.write(tracker_html)
     print(f"  Wrote {out_index.name}")
 
-    # 2) Methodology
     if args.methodology_source.exists():
         methodology_html = render_methodology(args.methodology_source, refreshed_at)
-        out_method = REPO_ROOT / "methodology.html"
-        with open(out_method, "w", encoding="utf-8") as f:
+        with open(REPO_ROOT / "methodology.html", "w", encoding="utf-8") as f:
             f.write(methodology_html)
         print(f"  Wrote methodology.html")
-    else:
-        print(f"  WARNING: methodology source not found at {args.methodology_source}, skipping methodology page")
 
-    # 3) Per-ticker pages
     ticker_dir = REPO_ROOT / "ticker"
     ticker_dir.mkdir(exist_ok=True)
     count = 0
     for r in public:
-        html = render_ticker(r, refreshed_at)
+        is_held = r["ticker"].upper() in held_tickers or r["yahoo_ticker"].upper() in held_tickers
+        html = render_ticker(r, refreshed_at, is_held)
         out = ticker_dir / f"{slug_for(r['ticker'])}.html"
         with open(out, "w", encoding="utf-8") as f:
             f.write(html)
         count += 1
     print(f"  Wrote {count} per-ticker pages to ticker/")
 
-    # 4) Sitemap (only on full build, not preview)
     if not args.preview:
         sitemap = render_sitemap(public)
         with open(REPO_ROOT / "sitemap.xml", "w", encoding="utf-8") as f:

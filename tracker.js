@@ -15,11 +15,13 @@
   var sectorSelect = document.getElementById('filter-sector');
   var signalSelect = document.getElementById('filter-signal');
   var searchInput = document.getElementById('filter-search');
+  var heldCheckbox = document.getElementById('filter-held');
 
   function applyFilter() {
     var sector = sectorSelect.value;
     var signal = signalSelect.value;
     var search = (searchInput.value || '').trim().toLowerCase();
+    var heldOnly = heldCheckbox && heldCheckbox.checked;
     var visible = 0;
     rows.forEach(function (row) {
       var matchSector = !sector || row.dataset.sector === sector;
@@ -27,7 +29,8 @@
       var matchSearch = !search ||
         row.dataset.ticker.toLowerCase().indexOf(search) !== -1 ||
         row.dataset.company.indexOf(search) !== -1;
-      var show = matchSector && matchSignal && matchSearch;
+      var matchHeld = !heldOnly || row.dataset.held === '1';
+      var show = matchSector && matchSignal && matchSearch && matchHeld;
       row.classList.toggle('hidden', !show);
       if (show) visible++;
     });
@@ -41,9 +44,9 @@
   sectorSelect.addEventListener('change', applyFilter);
   signalSelect.addEventListener('change', applyFilter);
   searchInput.addEventListener('input', applyFilter);
+  if (heldCheckbox) heldCheckbox.addEventListener('change', applyFilter);
 
   // ── Sorting ──────────────────────────────────────────────────────────────────
-  // Categorical sort orders (e.g. signals)
   var SIGNAL_ORDER = ['Strong Buy', 'Buy', 'Fair Value', 'Sell', 'Strong Sell'];
   function signalRank(s) {
     var i = SIGNAL_ORDER.indexOf(s);
@@ -97,7 +100,6 @@
     th.addEventListener('click', function () { sortBy(th.dataset.sort); });
   });
 
-  // Default sort: by sector ascending, then alphabetical (already pre-sorted server-side, but mark the header)
   var sectorHeader = document.querySelector('th[data-sort="sector"]');
   if (sectorHeader) sectorHeader.classList.add('sort-asc');
 })();
