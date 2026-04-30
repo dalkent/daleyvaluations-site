@@ -210,6 +210,65 @@ def join_records(data):
 EXCLUDED_TICKERS = {"PSH.L", "III.L", "LGEN.L", "MNG.L"}
 
 
+# Per-ticker blend overrides. Loaded from blend_overrides.json in repo root.
+# Each entry is one of:
+#   "drop_dcf"        - blend = mean(DDM, EPV)
+#   "drop_ddm"        - blend = mean(DCF, EPV)
+#   "drop_epv"        - blend = mean(DCF, DDM)
+#   "dcf_only"        - blend = DCF
+#   "ddm_only"        - blend = DDM
+#   "epv_only"        - blend = EPV
+#   {"target": 1234, "rationale": "..."} - hard override target
+# These are applied AFTER the spreadsheet's Blended Target. Reason for override
+# should be documented in published article or vault note.
+BLEND_OVERRIDES_FILE = REPO_ROOT / "blend_overrides.json"
+
+
+def load_blend_overrides():
+    if not BLEND_OVERRIDES_FILE.exists():
+        return {}
+    try:
+        with open(BLEND_OVERRIDES_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"  WARNING: could not parse {BLEND_OVERRIDES_FILE.name} ({e}) - no overrides applied")
+        return {}
+
+
+def apply_blend_overrides(records):
+    """Apply per-ticker blend overrides from blend_overrides.json.
+    Tickers without an override keep the spreadsheet's Blended Target.
+    """
+    overrides = load_blend_overrides()
+    applied = 0
+    for r in records:
+        rule = overrides.get(r["ticker"])
+        if rule is None:
+            continue
+        v1, v2, v3 = r.get("val_dcf"), r.get("val_ddm"), r.get("val_epv")
+        new_blend = None
+        if isinstance(rule, dict) and "target" in rule:
+            new_blend = float(rule["target"])
+        elif rule == "drop_dcf" and v2 and v3:
+            new_blend = (v2 + v3) / 2
+        elif rule == "drop_ddm" and v1 and v3:
+            new_blend = (v1 + v3) / 2
+        elif rule == "drop_epv" and v1 and v2:
+            new_blend = (v1 + v2) / 2
+        elif rule == "dcf_only" and v1:
+            new_blend = v1
+        elif rule == "ddm_only" and v2:
+            new_blend = v2
+        elif rule == "epv_only" and v3:
+            new_blend = v3
+        if new_blend is not None:
+            r["blended_target"] = new_blend
+            applied += 1
+    if applied:
+        print(f"  Applied {applied} blend override(s) from {BLEND_OVERRIDES_FILE.name}")
+    return records
+
+
 def filter_public(records):
     return [r for r in records
             if r.get("market") == "FTSE"
@@ -581,6 +640,8 @@ def main():
     print(f"  Joined {len(all_records)} total records")
     public = filter_public(all_records)
     print(f"  Filtered to {len(public)} FTSE equities for public site")
+
+    public = apply_blend_overrides(public)
 
     held_tickers = load_held_tickers(args.portfolio)
 
