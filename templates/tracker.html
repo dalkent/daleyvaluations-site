@@ -17,6 +17,52 @@
   </div>
 </section>
 
+{% if top_cheap and top_expensive %}
+<section class="extremes-section">
+  <div class="wrap-wide">
+    <h2 class="extremes-heading">Where the model sees the biggest gaps</h2>
+    <p class="extremes-sub">Cheapest and most expensive names by Daley Value Ratio. The wider the gap from 1.00, the further the blended target sits from today's price.</p>
+
+    <div class="extremes-grid">
+      <div class="extremes-col">
+        <h3 class="extremes-col-title cheap">Cheapest 5 by DVR</h3>
+        <ol class="extremes-list">
+          {% for r in top_cheap %}
+          <li>
+            <a href="{{ path_prefix }}ticker/{{ r.slug }}.html" class="extreme-link">
+              <span class="extreme-ticker">{{ r.ticker }}</span>{% if r.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}
+              <span class="extreme-company">{{ r.company }}</span>
+              <span class="extreme-meta">
+                <span class="extreme-vr">{{ r.value_ratio_display }}</span>
+                <span class="signal {{ r.signal_class }}">{{ r.signal_label }}</span>
+              </span>
+            </a>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+      <div class="extremes-col">
+        <h3 class="extremes-col-title expensive">Most Expensive 5 by DVR</h3>
+        <ol class="extremes-list">
+          {% for r in top_expensive %}
+          <li>
+            <a href="{{ path_prefix }}ticker/{{ r.slug }}.html" class="extreme-link">
+              <span class="extreme-ticker">{{ r.ticker }}</span>{% if r.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}
+              <span class="extreme-company">{{ r.company }}</span>
+              <span class="extreme-meta">
+                <span class="extreme-vr">{{ r.value_ratio_display }}</span>
+                <span class="signal {{ r.signal_class }}">{{ r.signal_label }}</span>
+              </span>
+            </a>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
 {% if upgrades or downgrades %}
 <section class="changes-section">
   <div class="wrap-wide">
@@ -64,6 +110,17 @@
 <section class="tracker-section">
   <div class="wrap-wide">
 
+    {% if sector_summary %}
+    <div class="sector-strip" aria-label="Sector summary">
+      {% for s in sector_summary %}
+      <button type="button" class="sector-chip {{ s.tint }}" data-sector="{{ s.sector }}">
+        <span class="sector-chip-name">{{ s.sector }}</span>
+        <span class="sector-chip-meta"><span class="sector-chip-count">{{ s.count }}</span> · DVR <span class="sector-chip-dvr">{{ s.avg_dvr }}</span></span>
+      </button>
+      {% endfor %}
+    </div>
+    {% endif %}
+
     <div class="filters">
       <label>
         <span class="filter-label">Sector</span>
@@ -107,12 +164,12 @@
             <th class="sortable num" data-sort="target">Target</th>
             <th class="sortable num" data-sort="vr">DVR</th>
             <th class="sortable" data-sort="signal">Signal</th>
-            <th>Change</th>
+            <th class="sortable" data-sort="change">Change</th>
           </tr>
         </thead>
         <tbody>
         {% for r in rows %}
-          <tr data-ticker="{{ r.ticker }}" data-company="{{ r.company | lower }}" data-sector="{{ r.sector }}" data-signal="{{ r.signal_label }}" data-vr="{{ r.value_ratio_raw or 0 }}" data-price="{{ r.price_raw or 0 }}" data-target="{{ r.target_raw or 0 }}" data-held="{{ '1' if r.is_held else '0' }}">
+          <tr data-ticker="{{ r.ticker }}" data-company="{{ r.company | lower }}" data-sector="{{ r.sector }}" data-signal="{{ r.signal_label }}" data-vr="{{ r.value_ratio_raw or 0 }}" data-price="{{ r.price_raw or 0 }}" data-target="{{ r.target_raw or 0 }}" data-change="{{ r.change_rank or 0 }}" data-held="{{ '1' if r.is_held else '0' }}">
             <td class="ticker-cell"><a href="{{ path_prefix }}ticker/{{ r.slug }}.html">{{ r.ticker }}</a>{% if r.is_held %}<span class="held-dot" title="Held in live eToro portfolio"></span>{% endif %}</td>
             <td>{{ r.company }}</td>
             <td>{{ r.sector }}</td>

@@ -46,6 +46,24 @@
   searchInput.addEventListener('input', applyFilter);
   if (heldCheckbox) heldCheckbox.addEventListener('change', applyFilter);
 
+  // Sector chips - click to filter by sector
+  document.querySelectorAll('.sector-chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var clickedSector = chip.dataset.sector;
+      if (sectorSelect.value === clickedSector) {
+        sectorSelect.value = '';
+      } else {
+        sectorSelect.value = clickedSector;
+      }
+      applyFilter();
+      document.querySelectorAll('.sector-chip').forEach(function (c) {
+        c.classList.toggle('active', c.dataset.sector === sectorSelect.value);
+      });
+      var trackerSection = document.querySelector('.tracker-section');
+      if (trackerSection) trackerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
   // ── Sorting ──────────────────────────────────────────────────────────────────
   var SIGNAL_ORDER = ['Strong Buy', 'Buy', 'Fair Value', 'Sell', 'Strong Sell'];
   function signalRank(s) {
@@ -62,12 +80,13 @@
       case 'price':   return parseFloat(row.dataset.price) || 0;
       case 'target':  return parseFloat(row.dataset.target) || 0;
       case 'vr':      return parseFloat(row.dataset.vr) || 0;
+      case 'change':  return parseFloat(row.dataset.change) || 0;
       default: return '';
     }
   }
 
   function isNumericCol(col) {
-    return col === 'price' || col === 'target' || col === 'vr' || col === 'signal';
+    return col === 'price' || col === 'target' || col === 'vr' || col === 'signal' || col === 'change';
   }
 
   function sortBy(col) {

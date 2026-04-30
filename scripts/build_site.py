@@ -100,6 +100,17 @@ def fmt_change(prev, current):
     return f'<span class="change-down">{prev} ↓ {current}</span>'
 
 
+def change_rank(prev, current):
+    """Numeric delta in signal rank: positive = upgrade, negative = downgrade, 0 = flat."""
+    if not prev or not current or prev == current:
+        return 0
+    order = ["Strong Sell", "Sell", "Fair Value", "Buy", "Strong Buy"]
+    try:
+        return order.index(current) - order.index(prev)
+    except ValueError:
+        return 0
+
+
 def load_data(data_file):
     if not data_file.exists():
         sys.exit(f"ERROR: data file not found at {data_file}")
@@ -299,6 +310,7 @@ def shape_for_tracker(records, held_tickers):
             "signal_label": signal_label,
             "signal_class": signal_class,
             "change_display": fmt_change(r["prev_signal"], signal_label),
+            "change_rank": change_rank(r["prev_signal"], signal_label),
             "prev_signal": r["prev_signal"] or "",
         })
     return out
@@ -361,10 +373,35 @@ def render_tracker(public_records, held_tickers, refreshed_at, cache_bust=""):
     upgrades, downgrades = compute_changes(rows)
     held_count = sum(1 for r in rows if r["is_held"])
 
+    # Top 5 / Bottom 5 by DVR (only rows with a real ratio)
+    rated = [r for r in rows if r.get("value_ratio_raw")]
+    rated_sorted = sorted(rated, key=lambda r: r["value_ratio_raw"], reverse=True)
+    top_cheap = rated_sorted[:5]
+    top_expensive = list(reversed(rated_sorted[-5:]))
+
+    # Sector summary strip - count, avg DVR, tint by avg signal
+    sector_summary = []
+    for sec in sectors:
+        secrows = [r for r in rated if r["sector"] == sec]
+        if not secrows: continue
+        avg_dvr = sum(r["value_ratio_raw"] for r in secrows) / len(secrows)
+        if avg_dvr >= 1.10: tint = "buy"
+        elif avg_dvr >= 0.90: tint = "fair"
+        else: tint = "sell"
+        sector_summary.append({
+            "sector": sec,
+            "count": len(secrows),
+            "avg_dvr": f"{avg_dvr:.2f}",
+            "tint": tint,
+        })
+    sector_summary.sort(key=lambda s: float(s["avg_dvr"]), reverse=True)
+
     body = env.get_template("tracker.html").render(
         rows=rows, sectors=sectors, signal_counts=signal_counts,
         ticker_count=len(rows), held_count=held_count,
-        upgrades=upgrades, downgrades=downgrades, path_prefix="",
+        upgrades=upgrades, downgrades=downgrades,
+        top_cheap=top_cheap, top_expensive=top_expensive,
+        sector_summary=sector_summary, path_prefix="",
     )
     return env.get_template("_layout.html").render(
         page_title="FTSE Valuation Tracker",

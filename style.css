@@ -499,6 +499,127 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   cursor: pointer;
 }
 
+/* Top 5 / Bottom 5 by DVR */
+.extremes-section {
+  padding: 2rem 0 1rem;
+  background: var(--paper);
+}
+.extremes-heading {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.6rem;
+  margin: 0 0 0.35rem;
+  color: var(--ink);
+}
+.extremes-sub {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin: 0 0 1.25rem;
+  max-width: 60ch;
+}
+.extremes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+.extremes-col-title {
+  font-family: "Inter Tight", -apple-system, sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.65rem;
+  font-weight: 600;
+}
+.extremes-col-title.cheap { color: var(--accent-2, #2e7d4f); }
+.extremes-col-title.expensive { color: var(--danger, #b03a2e); }
+.extremes-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: extremes;
+}
+.extremes-list li {
+  counter-increment: extremes;
+  margin: 0 0 0.4rem;
+}
+.extreme-link {
+  display: grid;
+  grid-template-columns: 1.5rem 5rem 1fr auto;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.65rem 0.85rem;
+  background: var(--paper-card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color 120ms ease;
+}
+.extreme-link:hover { border-color: var(--accent-2); }
+.extreme-link::before {
+  content: counter(extremes);
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.extreme-ticker {
+  font-family: "Inter Tight", -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.extreme-company {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.extreme-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-self: end;
+}
+.extreme-vr {
+  font-family: "Inter Tight", -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Sector summary strip */
+.sector-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+}
+.sector-chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.5rem 0.85rem;
+  background: var(--paper-card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  font-family: "Inter Tight", -apple-system, sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.sector-chip:hover { border-color: var(--accent-2); }
+.sector-chip.active {
+  border-color: var(--accent);
+  background: rgba(201, 162, 39, 0.08);
+  font-weight: 600;
+}
+.sector-chip-name { font-weight: 600; font-size: 0.9rem; }
+.sector-chip-meta { font-size: 0.75rem; color: var(--ink-soft); letter-spacing: 0.02em; }
+.sector-chip.buy { border-left: 3px solid #2e7d4f; }
+.sector-chip.fair { border-left: 3px solid #c9a227; }
+.sector-chip.sell { border-left: 3px solid #b03a2e; }
+
 /* Mobile adjustments */
 @media (max-width: 700px) {
   .changes-grid { grid-template-columns: 1fr; gap: 1.25rem; }
@@ -509,4 +630,7 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
     margin-top: 0.25rem;
   }
   .held-summary { margin-left: 0; margin-top: 0.5rem; }
+  .extremes-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+  .extreme-link { grid-template-columns: 1.5rem 4rem 1fr auto; gap: 0.5rem; }
+  .extreme-company { font-size: 0.85rem; }
 }
