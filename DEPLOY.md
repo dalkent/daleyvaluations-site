@@ -33,7 +33,7 @@ GitHub will show you a page with setup instructions. Leave that tab open. You'll
 Open a terminal. Navigate to the site folder:
 
 ```
-cd "C:\Users\Neil\My Drive\Daley's Brain\Projects\eToro & Investing\Drafts\daleyvaluations-site"
+cd "C:\Users\Neil\ClaudeCode\daleyvaluations-site"
 ```
 
 If you've never used Git before, set your name and email globally first:
@@ -128,7 +128,7 @@ Also check `https://daleyvaluations.com/robots.txt` opens correctly. That confir
 Once everything above is set up, deploying a change is three commands:
 
 ```
-cd "C:\Users\Neil\My Drive\Daley's Brain\Projects\eToro & Investing\Drafts\daleyvaluations-site"
+cd "C:\Users\Neil\ClaudeCode\daleyvaluations-site"
 git add .
 git commit -m "Update methodology page assumptions"
 git push

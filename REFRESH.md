@@ -48,7 +48,7 @@ Right now you double-click the batch file when you want to refresh. To make it r
 2. Create a new basic task: "Daley Valuations Weekly Refresh"
 3. Trigger: Weekly, Monday, 5:30pm
 4. Action: Start a program
-5. Program: `C:\Users\Neil\My Drive\Daley's Brain\Projects\eToro & Investing\Drafts\daleyvaluations-site\full-refresh.bat`
+5. Program: `C:\Users\Neil\ClaudeCode\daleyvaluations-site\full-refresh.bat`
 6. Save
 
 That makes the site auto-refresh every Monday afternoon. Recommended once you've done 2-3 manual cycles and confirmed the pipeline is reliable on your machine.
