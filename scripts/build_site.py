@@ -203,11 +203,15 @@ def join_records(data):
 # - III.L: listed PE vehicle (Action ~70% of NAV). AM:PB+EPV applies a P/B
 #   multiplier to assets already marked at fair value - double-counting. Same
 #   structural issue as PSH; not a true asset manager.
-# - LGEN.L: Life:EPSCap producing a 74p target vs 251p price - implied ~4.4x
-#   P/E suggests EPSCap input is using depressed reported EPS, not normalised.
-# - MNG.L: AM:PB+EPV producing 33p EPV vs 300p price - implied ~1.5x P/E,
-#   clearly broken. Same EPS-normalisation root cause as LGEN.
-EXCLUDED_TICKERS = {"PSH.L", "III.L", "LGEN.L", "MNG.L"}
+#
+# LGEN.L / MNG.L were excluded historically because Life:EPSCap and AM:PB+EPV
+# produced absurd targets (~74p vs 251p price for LGEN; ~33p vs 300p for MNG)
+# driven by depressed yfinance EPS (mark-to-market hits on annuity books).
+# As of 2026-04-30 the financial-sector model fix in valuation.py blends a
+# justified-P/E earnings-anchored value with the book-anchored method using
+# manual EPS overrides on the Tickers sheet — so LGEN and MNG now publish
+# defensible signals and are no longer excluded here.
+EXCLUDED_TICKERS = {"PSH.L", "III.L"}
 
 
 # Per-ticker blend overrides. Loaded from blend_overrides.json in repo root.
