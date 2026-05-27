@@ -8,8 +8,26 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = REPO_ROOT / "templates"
-DEFAULT_DATA_FILE = Path("C:/Users/Neil/ClaudeCode/eToro/data/etoro_master.json")
-DEFAULT_PORTFOLIO_FILE = Path("C:/Users/Neil/ClaudeCode/eToro/data/combined_portfolio.json")
+
+# Canonical JSON sources. The local data\ folder is the working copy maintained
+# by run_daily.py / eToro.bat / website.bat --revalue. The same files are also
+# mirrored to C:\Users\Neil\My Drive\eToro Sync\ on every run, so the Mac and
+# other consumers can read fresh data without a GitHub pull.
+#
+# To point this builder at a different copy (e.g. on Mac, or pinned to Drive),
+# set ETORO_MASTER_JSON and ETORO_PORTFOLIO_JSON env vars.
+DEFAULT_DATA_FILE = Path(
+    os.environ.get(
+        "ETORO_MASTER_JSON",
+        "C:/Users/Neil/ClaudeCode/eToro/data/etoro_master.json",
+    )
+)
+DEFAULT_PORTFOLIO_FILE = Path(
+    os.environ.get(
+        "ETORO_PORTFOLIO_JSON",
+        "C:/Users/Neil/ClaudeCode/eToro/data/combined_portfolio.json",
+    )
+)
 PRICE_CACHE_FILE = REPO_ROOT / ".price_cache.json"
 PRICE_CACHE_TTL_HOURS = 1
 
