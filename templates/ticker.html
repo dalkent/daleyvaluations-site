@@ -13,7 +13,8 @@
     <div class="signal-display">
       <div class="signal-display-block">
         <p class="signal-label-small">Signal</p>
-        <p><span class="signal {{ signal_class }} signal-large">{{ signal_label }}</span></p>
+        <p><span class="signal {{ signal_class }} signal-large">{{ signal_label }}</span>{% if marker %}<span class="one-model" title="{{ marker_note }}">{{ marker }}</span>{% endif %}</p>
+        {% if marker %}<p class="one-model-note">{{ marker_note }}</p>{% endif %}
       </div>
       <div class="signal-display-block">
         <p class="signal-label-small">Daley Value Ratio</p>

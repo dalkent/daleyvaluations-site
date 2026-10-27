@@ -675,3 +675,28 @@ a:hover { text-decoration-thickness: 2px; color: var(--accent); }
   .extreme-company { font-size: 0.85rem; }
   .sector-summary-grid { grid-template-columns: 1fr; gap: 1.25rem; }
 }
+
+/* ── Thin-valuation marker (2026-10-27) ──────────────────────────────────── */
+/* "1 model" / "Consensus": target rests on one method or on analyst consensus,
+   so the signal is capped at Buy/Sell (rule in eToro/scripts/signals.py). */
+.one-model {
+  display: inline-block;
+  margin: 0 0.4rem;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  font-family: "Inter Tight", -apple-system, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--paper);
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: help;
+}
+.one-model-note {
+  font-family: "Inter Tight", -apple-system, sans-serif;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0.3rem 0 0;
+}

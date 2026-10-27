@@ -52,25 +52,38 @@ def get_records(data, path):
     return obj if isinstance(obj, list) else []
 
 
-def _single_source(method):
-    m = str(method or "")
-    return "100%)" in m or m.startswith("Analyst Consensus")
+# The signal rule lives in ONE place: eToro/scripts/signals.py (2026-10-27).
+# This repo sits beside the eToro folder (C:/Users/Neil/ClaudeCode/...); set
+# ETORO_SCRIPTS_DIR to point elsewhere (e.g. on the Mac). No fallback copy on
+# purpose: a silent local copy is exactly how the site drifted from the model.
+ETORO_SCRIPTS_DIR = Path(os.environ.get("ETORO_SCRIPTS_DIR", REPO_ROOT.parent / "eToro" / "scripts"))
+sys.path.insert(0, str(ETORO_SCRIPTS_DIR))
+try:
+    import signals as _signals
+except ImportError:
+    sys.exit(f"ERROR: signals.py not found in {ETORO_SCRIPTS_DIR}. Set ETORO_SCRIPTS_DIR.")
+
+_CLASS = {"Strong Buy": "sb", "Buy": "b", "Fair Value": "fv", "Sell": "s", "Strong Sell": "ss", "N/A": "na"}
+
+
+def is_single_source(method):
+    return _signals.is_single_source(method)
 
 
 def signal_for(vr, method=None):
-    """Signal from value ratio, with the single-source cap (mirrors valuation.py
-    and generate_dashboard.capped_signal, added 2026-10-27). When the target
-    rests on one component ("...100%)") or the Analyst Consensus fallback,
-    Strong Buy/Sell are capped at Buy/Sell."""
-    if vr is None: return "N/A", "na"
-    if _single_source(method):
-        if vr >= 1.25: vr = 1.10
-        elif vr < 0.75: vr = 0.75
-    if vr >= 1.25: return "Strong Buy", "sb"
-    if vr >= 1.10: return "Buy", "b"
-    if vr >= 0.90: return "Fair Value", "fv"
-    if vr >= 0.75: return "Sell", "s"
-    return "Strong Sell", "ss"
+    """(label, css_class) for the published signal. Rule lives in signals.py."""
+    label = _signals.signal(vr, method)
+    return label, _CLASS[label]
+
+
+def source_marker(method):
+    """(tag, tooltip) for thin valuations, or (None, None). Shown beside the signal."""
+    m = str(method or "")
+    if m.startswith("Analyst Consensus"):
+        return "Consensus", "Target is the analyst consensus, not my model. Signal capped at Buy or Sell."
+    if _signals.is_single_source(m):
+        return "1 model", "Target rests on a single valuation method. Signal capped at Buy or Sell."
+    return None, None
 
 
 def slug_for(ticker):
@@ -403,9 +416,12 @@ def shape_for_tracker(records, held_tickers):
     out = []
     for r in records:
         signal_label, signal_class = signal_for(r["value_ratio"], r.get("model_method"))
+        marker, marker_note = source_marker(r.get("model_method"))
         currency = r.get("currency", "")
         is_held = r["ticker"].upper() in held_tickers or r["yahoo_ticker"].upper() in held_tickers
         out.append({
+            "marker": marker,
+            "marker_note": marker_note,
             "ticker": r["ticker"],
             "slug": slug_for(r["ticker"]),
             "company": r["company"],
@@ -496,9 +512,8 @@ def render_tracker(public_records, held_tickers, refreshed_at, cache_bust=""):
         secrows = [r for r in rated if r["sector"] == sec]
         if len(secrows) < 2: continue
         avg_dvr_num = sum(r["value_ratio_raw"] for r in secrows) / len(secrows)
-        if avg_dvr_num >= 1.10: tint = "buy"
-        elif avg_dvr_num >= 0.90: tint = "fair"
-        else: tint = "sell"
+        _band = _signals.raw_signal(avg_dvr_num)   # thresholds from signals.py
+        tint = "buy" if _band in ("Strong Buy", "Buy") else "fair" if _band == "Fair Value" else "sell"
         all_sectors.append({
             "sector": sec,
             "count": len(secrows),
@@ -574,6 +589,7 @@ def model_labels_for(method, sector):
 
 def render_ticker(r, refreshed_at, is_held, cache_bust=""):
     signal_label, signal_class = signal_for(r["value_ratio"], r.get("model_method"))
+    marker, marker_note = source_marker(r.get("model_method"))
     currency = r.get("currency", "")
     is_fin = is_financial_sector(r["sector"])
 
@@ -600,6 +616,7 @@ def render_ticker(r, refreshed_at, is_held, cache_bust=""):
     body = env.get_template("ticker.html").render(
         ticker=r["ticker"], company=r["company"], sector=r["sector"],
         signal_label=signal_label, signal_class=signal_class,
+        marker=marker, marker_note=marker_note,
         value_ratio_display=fmt_vr(r["value_ratio"]),
         price_display=fmt_price(r["live_price"], currency),
         target_display=fmt_target_smart(r["blended_target"], currency, r["live_price"]),
