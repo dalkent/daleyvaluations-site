@@ -52,8 +52,20 @@ def get_records(data, path):
     return obj if isinstance(obj, list) else []
 
 
-def signal_for(vr):
+def _single_source(method):
+    m = str(method or "")
+    return "100%)" in m or m.startswith("Analyst Consensus")
+
+
+def signal_for(vr, method=None):
+    """Signal from value ratio, with the single-source cap (mirrors valuation.py
+    and generate_dashboard.capped_signal, added 2026-10-27). When the target
+    rests on one component ("...100%)") or the Analyst Consensus fallback,
+    Strong Buy/Sell are capped at Buy/Sell."""
     if vr is None: return "N/A", "na"
+    if _single_source(method):
+        if vr >= 1.25: vr = 1.10
+        elif vr < 0.75: vr = 0.75
     if vr >= 1.25: return "Strong Buy", "sb"
     if vr >= 1.10: return "Buy", "b"
     if vr >= 0.90: return "Fair Value", "fv"
@@ -390,7 +402,7 @@ def sanity_check(records):
 def shape_for_tracker(records, held_tickers):
     out = []
     for r in records:
-        signal_label, signal_class = signal_for(r["value_ratio"])
+        signal_label, signal_class = signal_for(r["value_ratio"], r.get("model_method"))
         currency = r.get("currency", "")
         is_held = r["ticker"].upper() in held_tickers or r["yahoo_ticker"].upper() in held_tickers
         out.append({
@@ -561,7 +573,7 @@ def model_labels_for(method, sector):
 
 
 def render_ticker(r, refreshed_at, is_held, cache_bust=""):
-    signal_label, signal_class = signal_for(r["value_ratio"])
+    signal_label, signal_class = signal_for(r["value_ratio"], r.get("model_method"))
     currency = r.get("currency", "")
     is_fin = is_financial_sector(r["sector"])
 
