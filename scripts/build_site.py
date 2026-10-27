@@ -57,11 +57,26 @@ def get_records(data, path):
 # ETORO_SCRIPTS_DIR to point elsewhere (e.g. on the Mac). No fallback copy on
 # purpose: a silent local copy is exactly how the site drifted from the model.
 ETORO_SCRIPTS_DIR = Path(os.environ.get("ETORO_SCRIPTS_DIR", REPO_ROOT.parent / "eToro" / "scripts"))
-sys.path.insert(0, str(ETORO_SCRIPTS_DIR))
-try:
-    import signals as _signals
-except ImportError:
-    sys.exit(f"ERROR: signals.py not found in {ETORO_SCRIPTS_DIR}. Set ETORO_SCRIPTS_DIR.")
+
+
+def _load_signals(path):
+    """Load signals.py by exact file path, without touching sys.path (adding the
+    eToro scripts dir to sys.path made importlib.reload(build_site) in the
+    tracker pick up the eToro-side shim instead of this file)."""
+    import importlib.util
+    if "signals" in sys.modules:
+        return sys.modules["signals"]
+    p = Path(path) / "signals.py"
+    if not p.exists():
+        sys.exit(f"ERROR: signals.py not found in {path}. Set ETORO_SCRIPTS_DIR.")
+    spec = importlib.util.spec_from_file_location("signals", p)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["signals"] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+_signals = _load_signals(ETORO_SCRIPTS_DIR)
 
 _CLASS = {"Strong Buy": "sb", "Buy": "b", "Fair Value": "fv", "Sell": "s", "Strong Sell": "ss", "N/A": "na"}
 
@@ -80,9 +95,9 @@ def source_marker(method):
     """(tag, tooltip) for thin valuations, or (None, None). Shown beside the signal."""
     m = str(method or "")
     if m.startswith("Analyst Consensus"):
-        return "Consensus", "Target is the analyst consensus, not my model. Signal capped at Buy or Sell."
+        return "Consensus", "Target is the analyst consensus, not my model. Treat the signal with caution."
     if _signals.is_single_source(m):
-        return "1 model", "Target rests on a single valuation method. Signal capped at Buy or Sell."
+        return "1 model", "Target rests on a single valuation method, so it has not been cross-checked. Treat the signal with caution."
     return None, None
 
 
@@ -231,6 +246,7 @@ def join_records(data):
             "val_ddm": to_float(v.get("Val 2 (DDM / Banks:P/B / AM:P/B)")),
             "val_epv": to_float(v.get("Val 3 (EPV / Fin:Earn Cap / GI:P/TB)")),
             "blended_target": to_float(v.get("Blended Target (GBP / USD)")),
+            "forward_target": to_float(v.get("Forward Target")),   # recovery case (2026-10-27), not shown on site yet
             "model_method": v.get("Model / Method") or "",
             "last_updated": v.get("Last Updated", ""),
             "prev_signal": v.get("Prev Signal", ""),
