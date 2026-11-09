@@ -2,7 +2,7 @@
   <div class="wrap-wide">
     <p class="eyebrow">FTSE Valuation Tracker</p>
     <h1>Three valuation models. One signal. {{ ticker_count }} FTSE stocks.</h1>
-    <p class="lede">Every stock in the coverage universe is valued each week using DCF, DDM and EPV. The blended target is divided by the current price to give a Daley Value Ratio (DVR), and a single signal: Strong Buy, Buy, Fair Value, Sell, or Strong Sell. <a href="{{ path_prefix }}methodology.html">Read the full methodology</a>.</p>
+    <p class="lede">Every stock in the coverage universe is valued with the same rules: cash flow, dividend and earnings models, weighted by type of business. The blended target is divided by the current price to give a Daley Value Ratio (DVR), and a single signal: Strong Buy, Buy, Fair Value, Sell, or Strong Sell. <a href="{{ path_prefix }}methodology.html">Read the full methodology</a>.</p>
 
     <div class="signal-bar" aria-label="Current signal distribution">
       <div class="signal-bar-row">
@@ -101,8 +101,8 @@
 {% if upgrades or downgrades %}
 <section class="changes-section">
   <div class="wrap-wide">
-    <h2 class="changes-heading">What changed this week</h2>
-    <p class="changes-sub">Signal moves since the previous weekly run. {{ upgrades|length }} upgrade{% if upgrades|length != 1 %}s{% endif %}, {{ downgrades|length }} downgrade{% if downgrades|length != 1 %}s{% endif %}.</p>
+    <h2 class="changes-heading">What changed {{ change_label }}</h2>
+    <p class="changes-sub">Signal moves {{ change_label }}. {{ upgrades|length }} upgrade{% if upgrades|length != 1 %}s{% endif %}, {{ downgrades|length }} downgrade{% if downgrades|length != 1 %}s{% endif %}.</p>
 
     <div class="changes-grid">
       {% if upgrades %}
@@ -200,7 +200,7 @@
             <td class="num">{{ r.price_display }}</td>
             <td class="num">{{ r.target_display }}</td>
             <td class="num">{{ r.value_ratio_display }}</td>
-            <td><span class="signal {{ r.signal_class }}">{{ r.signal_label }}</span>{% if r.marker %}<span class="one-model" title="{{ r.marker_note }}">{{ r.marker }}</span>{% endif %}</td>
+            <td><span class="signal {{ r.signal_class }}">{{ r.signal_label }}</span>{% if r.marker %}<span class="one-model" title="{{ r.marker_note }}">{{ r.marker }}</span>{% endif %}{% if r.flag_tag %}<span class="one-model" title="{{ r.flag_note }}">{{ r.flag_tag }}</span>{% endif %}</td>
             <td class="change-cell">{{ r.change_display | safe }}</td>
           </tr>
         {% endfor %}
@@ -208,7 +208,7 @@
       </table>
     </div>
 
-    <p class="table-note">DVR = Daley Value Ratio (blended target divided by current price). The gold dot marks stocks held in my live eToro portfolio. "1 model" means the target rests on a single valuation method and "Consensus" means it uses the analyst consensus instead of my model. Treat those signals with more caution. Click a column header to sort. Click a ticker to see the full per-stock breakdown.</p>
+    <p class="table-note">DVR = Daley Value Ratio (blended target divided by current price). The gold dot marks stocks held in my live eToro portfolio. "1 model" means the target rests on a single valuation method and "Consensus" means it uses the analyst consensus instead of my model. "Caution" means the signal could flip on a small change: the earnings check is borderline, the forward view disagrees, or a Strong Buy rests on one model. Hover for the reason, and see the ticker page for every check. Treat all three with more caution. Click a column header to sort. Click a ticker to see the full per-stock breakdown.</p>
   </div>
 </section>
 

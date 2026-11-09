@@ -15,6 +15,7 @@
         <p class="signal-label-small">Signal</p>
         <p><span class="signal {{ signal_class }} signal-large">{{ signal_label }}</span>{% if marker %}<span class="one-model" title="{{ marker_note }}">{{ marker }}</span>{% endif %}</p>
         {% if marker %}<p class="one-model-note">{{ marker_note }}</p>{% endif %}
+        {% for tag, note in flags %}<p class="one-model-note"><span class="one-model" title="{{ note }}">{{ tag }}</span>{{ note }}</p>{% endfor %}
       </div>
       <div class="signal-display-block">
         <p class="signal-label-small">Daley Value Ratio</p>
@@ -39,51 +40,47 @@
 <section class="ticker-section">
   <div class="wrap">
 
-    <h2>The three models</h2>
-    <p class="section-lede">Each model produces an independent estimate of fair value. The blended target above is the average of the surviving models after outlier removal. <a href="../methodology.html">Read the full methodology</a>.</p>
+    {% if forward_line %}<p class="signal-change-note">{{ forward_line }}</p>{% endif %}
+
+    <h2>The models</h2>
+    <p class="section-lede">Each model gives its own estimate of fair value. The blended target is a weighted average, with weights fixed in advance for each type of business. <a href="../methodology.html">Read the full methodology</a>.</p>
 
     <table class="ticker-models">
       <thead>
         <tr>
           <th>Model</th>
           <th class="num">Output</th>
+          <th class="num">Weight</th>
           <th>Note</th>
         </tr>
       </thead>
       <tbody>
+        {% for m in models %}
         <tr>
-          <td><strong>{{ val_dcf_label }}</strong></td>
-          <td class="num">{{ val_dcf_display }}</td>
-          <td>{{ val_dcf_note }}</td>
+          <td><strong>{{ m.label }}</strong></td>
+          <td class="num">{{ m.display }}</td>
+          <td class="num">{{ m.weight }}</td>
+          <td>{{ m.note }}</td>
         </tr>
-        <tr>
-          <td><strong>{{ val_ddm_label }}</strong></td>
-          <td class="num">{{ val_ddm_display }}</td>
-          <td>{{ val_ddm_note }}</td>
-        </tr>
-        <tr>
-          <td><strong>{{ val_epv_label }}</strong></td>
-          <td class="num">{{ val_epv_display }}</td>
-          <td>{{ val_epv_note }}</td>
-        </tr>
+        {% endfor %}
       </tbody>
     </table>
 
-    <p class="model-method-note">Method: <strong>{{ model_method }}</strong></p>
+    <p class="model-method-note">Method: <strong>{{ method_text }}</strong>{% if weights_text %}. Weights used: {{ weights_text }}{% endif %}.</p>
+    {% if implied %}<p class="model-method-note">{{ implied }}</p>{% endif %}
 
     <h2>The assumptions</h2>
     <table class="ticker-assumptions">
       <tbody>
-        <tr><th>Beta (clamped)</th><td class="num">{{ beta_display }}</td></tr>
-        <tr><th>Cost of capital ({{ ke_or_wacc }})</th><td class="num">{{ wacc_display }}</td></tr>
-        <tr><th>Five-year growth (g1)</th><td class="num">{{ g1_display }}</td></tr>
-        <tr><th>Terminal growth (g2)</th><td class="num">{{ g2_display }}</td></tr>
+        {% for k, v in assumptions %}
+        <tr><th>{{ k }}</th><td class="num">{{ v }}</td></tr>
+        {% endfor %}
       </tbody>
     </table>
 
     <div class="ticker-ctas">
-      <a class="cta-block" href="https://dalkent13.substack.com" rel="noopener">
-        <span class="cta-eyebrow">The full thesis</span>
+      <a class="cta-block" href="{{ substack_url }}" rel="noopener">
+        <span class="cta-eyebrow">The deep dives</span>
         <span class="cta-line">Read this week's article on Substack →</span>
       </a>
       <a class="cta-block" href="https://www.etoro.com/people/dalkent13" rel="noopener">

@@ -2,7 +2,7 @@
 
 Source for [daleyvaluations.com](https://daleyvaluations.com), the equity research site behind [Neil Daley](https://www.etoro.com/people/dalkent13)'s FTSE valuation work.
 
-The site is a static, weekly-refreshed reference covering 114 FTSE stocks, valued using a three-model blend (DCF, DDM, EPV) with sector-specific routing for financials. The full methodology lives at [/methodology](https://daleyvaluations.com).
+The site is a static, weekly-refreshed reference covering the FTSE stocks in the model, valued with DCF, DDM and earnings models blended by business type, with separate models for financials. The full methodology lives at [/methodology](https://daleyvaluations.com/methodology).
 
 ## What this repo is
 
@@ -30,19 +30,9 @@ The live site is deployed via [Cloudflare Pages](https://pages.cloudflare.com/) 
 
 To deploy a change: edit, commit, push. That is it.
 
-## Roadmap
+## Keeping the methodology page in step
 
-The site launches with one page (the methodology) and grows in stages:
-
-| Stage | Adds | Status |
-|---|---|---|
-| 1 | Methodology page | Live |
-| 2 | Live valuation tracker (homepage) | Planned |
-| 3 | Per-ticker pages (114 stocks) | Planned |
-| 4 | Portfolio snapshot, archive index | Planned |
-| 5 | Paid tools tier (Excel models, exports) | Considered |
-
-Each stage stands alone. The site never has prose that isn't reference content. Time-stamped writing lives at [dalkent13.substack.com](https://dalkent13.substack.com).
+`methodology_source.html` is a Jinja fragment. Its numbers are read from the model's `valuation.py` and `signals.py` at build time, and its `data-methodology-version` stamp must equal the `version:` of the vault document *Valuation Methodology*. If the document has moved on, `build_site.py` stops with an error: update the page prose, then the stamp.
 
 ## Author
 

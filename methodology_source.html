@@ -1,362 +1,188 @@
-<!DOCTYPE html>
-<html lang="en-GB">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Methodology | Daley Valuations</title>
-<meta name="description" content="The three-model valuation framework behind Daley Valuations: DCF, DDM and EPV blended into a single fair-value target for 114 FTSE stocks. Built and maintained by Neil Daley, PhD, CFA.">
-<link rel="canonical" href="https://daleyvaluations.com/methodology">
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-<style>
-  :root {
-    --ink: #0f2a1d;
-    --paper: #f4f0e6;
-    --paper-card: #faf7ee;
-    --accent: #0f2a1d;
-    --accent-2: #2a5d3f;
-    --rule: #d8d2c2;
-    --muted: #5a5a55;
-  }
-  * { box-sizing: border-box; }
-  html { font-size: 17px; }
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: "Source Serif 4", Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
-  }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
-  header { padding-bottom: 2rem; border-bottom: 1px solid var(--rule); margin-bottom: 2.5rem; }
-  .brand-row {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    margin: 0 0 1.25rem;
-    text-decoration: none;
-    color: inherit;
-  }
-  .brand-row:hover { text-decoration: none; }
-  .brand-mark {
-    width: 38px;
-    height: 38px;
-    flex-shrink: 0;
-  }
-  .brand-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.15;
-  }
-  .brand-name {
-    font-family: "Source Serif 4", Georgia, serif;
-    font-weight: 600;
-    font-size: 1.15rem;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-  }
-  .brand-tag {
-    font-family: "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
-    font-weight: 500;
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-  h1 {
-    font-family: "Source Serif 4", Georgia, serif;
-    font-size: 2.4rem;
-    line-height: 1.15;
-    margin: 0 0 1rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-  .lede {
-    font-size: 1.15rem;
-    color: var(--muted);
-    margin: 0;
-    font-style: italic;
-  }
-  h2 {
-    font-family: "Source Serif 4", Georgia, serif;
-    font-size: 1.6rem;
-    margin: 3rem 0 1rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-  }
-  h3 {
-    font-family: "Source Serif 4", Georgia, serif;
-    font-size: 1.18rem;
-    margin: 2rem 0 0.5rem;
-    font-weight: 600;
-    color: var(--ink);
-  }
-  p { margin: 0 0 1.1rem; }
-  a { color: var(--accent-2); text-decoration: underline; text-underline-offset: 2px; }
-  a:hover { text-decoration-thickness: 2px; color: var(--accent); }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    font-size: 0.95rem;
-    font-family: "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
-    background: var(--paper-card);
-    border: 1px solid var(--rule);
-  }
-  th, td {
-    text-align: left;
-    padding: 0.7rem 0.85rem;
-    border-bottom: 1px solid var(--rule);
-  }
-  tr:last-child td { border-bottom: none; }
-  th {
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    background: rgba(15, 42, 29, 0.03);
-  }
-  .signal {
-    display: inline-block;
-    padding: 0.18rem 0.6rem;
-    border-radius: 3px;
-    font-weight: 600;
-    font-size: 0.8rem;
-    color: white;
-    font-family: "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
-    letter-spacing: 0.02em;
-  }
-  .sb { background: #0f2a1d; }
-  .b  { background: #2a5d3f; }
-  .fv { background: #c9a227; color: #0f2a1d; }
-  .s  { background: #b85c2a; }
-  .ss { background: #962a2a; }
-  blockquote {
-    margin: 1.5rem 0;
-    padding: 1rem 1.25rem;
-    border-left: 3px solid var(--accent);
-    background: var(--paper-card);
-    font-style: italic;
-    color: var(--ink);
-  }
-  blockquote p { margin: 0; }
-  ul { margin: 0 0 1.1rem; padding-left: 1.5rem; }
-  li { margin-bottom: 0.5rem; }
-  footer {
-    margin-top: 4rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--rule);
-    font-size: 0.92rem;
-    color: var(--muted);
-    font-family: "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
-  }
-  footer p { margin: 0 0 0.6rem; }
-  footer a { color: var(--accent-2); }
-  .stamp {
-    font-family: "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin-top: 0.5rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-</style>
-</head>
-<body>
-<div class="wrap">
+{# Methodology page: a Jinja fragment rendered by build_site.py.
+   It is the public version of the vault doc "Valuation Methodology".
+   Every model number below is read from valuation.py / signals.py at build time.
+   The stamp on the next line must equal the vault doc's version: line, or the build stops.
+   When the doc changes: update the prose here, then change the stamp. #}
+<article class="methodology" data-methodology-version="3.3">
 
-<header>
-  <a class="brand-row" href="/">
-    <svg class="brand-mark" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M12 60 L12 20 L34 60 L34 20" stroke="#0f2a1d" stroke-width="4" stroke-linecap="square" fill="none"/>
-      <line x1="38" y1="64" x2="50" y2="16" stroke="#0f2a1d" stroke-width="2"/>
-      <path d="M54 20 L54 60 L66 60 C74 60 78 52 78 40 C78 28 74 20 66 20 Z" fill="#0f2a1d"/>
-    </svg>
-    <span class="brand-text">
-      <span class="brand-name">Daley Valuations</span>
-      <span class="brand-tag">Neil Daley · Valuation Research</span>
-    </span>
-  </a>
-  <h1>Methodology</h1>
-  <p class="lede">The valuation framework behind every signal on this site. Three independent models, one blended target, applied weekly to 114 FTSE stocks.</p>
-</header>
+<h1>Methodology</h1>
+<p class="lede">The rules behind every signal on this site. The same rules run on all {{ count }} FTSE stocks, and every number is written down below.</p>
 
-<p>Most stock commentary is opinion dressed up as analysis. The work here goes the other way. Every signal you see on this site comes from a systematic, data-driven valuation framework I have built and refined over the last decade. The methodology runs the same way on every stock, every week, with the inputs and assumptions written down so you can argue with them.</p>
+<p>Most stock commentary is opinion dressed up as analysis. The work here goes the other way. Every signal comes from a systematic valuation framework that builds on twenty years of valuation work. The current rules are written down below, with dates, so you can check them and argue with them.</p>
 
-<p>This page explains how the framework works, why it is built that way, and where it falls short. If you are going to trust the signals on this site, you should know exactly what is producing them.</p>
+<p>The framework is a deliberately strict value lens. It asks what a business is worth on its current cash, dividends and earnings, with modest growth. Fast-growing, high-return companies will often look expensive through it. That is a choice, not an accident, and the ticker pages show what growth today's price assumes so you can see the gap.</p>
 
-<h2>The three models</h2>
+<h2>From data to signal</h2>
+<ol>
+  <li><strong>Route.</strong> Each stock goes down one of two paths: financials (banks, insurers, asset managers and other financial firms) or everything else.</li>
+  <li><strong>Value.</strong> Up to three models each produce a fair value per share.</li>
+  <li><strong>Blend.</strong> The values are combined with weights fixed in advance for that type of business.</li>
+  <li><strong>Compare.</strong> The blended target divided by today's price gives the Daley Value Ratio (DVR).</li>
+  <li><strong>Signal.</strong> The DVR sets the signal. Tags flag signals that rest on thin evidence.</li>
+</ol>
 
-<p>Each FTSE stock is valued using up to three independent methods. Three is the right number. One model is fragile. Two cannot resolve a disagreement. Three lets you spot when one is misbehaving and gives you a way to weight the rest.</p>
-
-<h3>1. Discounted Cash Flow (DCF)</h3>
-
-<p>Project the company's free cash flow forward five years, add a terminal value for everything beyond that, and discount the whole stream back to today using a cost of capital appropriate to the stock's risk. This is the textbook intrinsic-value model and the most theoretically pure of the three.</p>
-
-<p>It is also the most sensitive. A 1% move in the discount rate can swing a DCF target by 20-30%. Small changes in the growth assumption produce large changes in the answer. So I treat the DCF output as a directional signal, not a precise number.</p>
-
-<p>For banks, insurers and other financial firms, the DCF is unreliable because operating cash flow is dominated by lending and deposits rather than business cash generation. For these stocks the DCF is skipped entirely and a sector-specific model takes its place.</p>
-
-<h3>2. Dividend Discount Model (DDM)</h3>
-
-<p>Value the stock as the present value of every future dividend it will ever pay. The classic Gordon Growth formulation: next year's expected dividend divided by the gap between the discount rate and the long-run dividend growth rate.</p>
-
-<p>The DDM is best for mature, dividend-paying companies with stable payout policies. It produces no answer at all for stocks that pay nothing, and it produces a misleading answer for stocks whose dividend is variable or commodity-linked. Mining companies, in particular, break this model and are excluded from the DDM blend.</p>
-
-<h3>3. Earnings Power Value (EPV)</h3>
-
-<p>Forward earnings per share multiplied by a normalised price-to-earnings multiple. The third model deliberately ignores future growth, on the principle that if a business is genuinely worth what it earns today, anything more is gravy. The EPV typically produces the most conservative of the three numbers and acts as a floor.</p>
-
-<p>The P/E used is capped at 22.5x to stop a market price already inflated by growth expectations from feeding back into the model and producing a circular result.</p>
-
-<h3>What runs on what</h3>
-
-<p>Different sectors get different combinations. The general framework runs DCF, DDM and EPV in parallel and blends them. Financial-sector stocks use a sector-specific primary method and an earnings-anchored secondary, blended by sub-sector classification.</p>
-
+<h2>The discount rate</h2>
+<p>Every model discounts future cash at a rate set by the stock's risk: the risk-free rate plus beta times the equity risk premium. For financial firms the same rate is called the cost of equity (Ke), because a bank's borrowing is part of its business, not a financing choice.</p>
 <table>
-  <thead>
-    <tr><th>Sector</th><th>Primary method</th><th>Secondary method</th><th>Blend</th></tr>
-  </thead>
   <tbody>
-    <tr><td>Industrials, consumer, energy, utilities, healthcare, tech</td><td>DCF</td><td>DDM and EPV</td><td>Equal-weight average of the three after outlier removal</td></tr>
-    <tr><td>Banks</td><td>Two-Stage DDM (45%) + P/B Excess Returns (35%) + Earnings Capitalisation (20%)</td><td>Normalised EPS × justified P/E</td><td>Sub-sector weighted (see below)</td></tr>
-    <tr><td>General insurance</td><td>Justified Price-to-Tangible-Book</td><td>Normalised EPS × justified P/E</td><td>Sub-sector weighted (see below)</td></tr>
-    <tr><td>Life insurance</td><td>Earnings Capitalisation</td><td>Normalised EPS × justified P/E</td><td>Sub-sector weighted (see below)</td></tr>
-    <tr><td>Asset management</td><td>Justified P/B (60%) + Earnings Capitalisation (40%)</td><td>Normalised EPS × justified P/E</td><td>Sub-sector weighted (see below)</td></tr>
-    <tr><td>Capital markets and exchanges</td><td>EV / EBITDA at 22x</td><td>None</td><td>Single method</td></tr>
-    <tr><td>Basic materials (miners)</td><td>DCF and EPV</td><td>None; DDM excluded</td><td>Equal-weight of the two</td></tr>
+    <tr><td>Risk-free rate, UK (10-year gilt)</td><td>{{ pct(M.RF_UK) }}</td></tr>
+    <tr><td>Risk-free rate, US (10-year Treasury)</td><td>{{ pct(M.RF_US) }}</td></tr>
+    <tr><td>Equity risk premium</td><td>{{ pct(M.ERP) }}</td></tr>
+    <tr><td>Beta range</td><td>{{ num(M.BETA_FLOOR_DEFAULT) }} to {{ num(M.BETA_CAP) }}. A missing beta is treated as {{ num(M.BETA_MISSING) }}</td></tr>
+    <tr><td>Beta floor, {{ beta_floor_sectors }}</td><td>{{ beta_floor }}</td></tr>
   </tbody>
 </table>
+<p>A UK stock with a beta of 1.0 is discounted at {{ pct(M.RF_UK + M.ERP) }}. The higher floor for {{ beta_floor_sectors|lower }} exists because measured betas for oil and mining companies often sit near zero as commodity prices drift away from the stock market. Without it, a miner would get a lower discount rate than a utility.</p>
+<p>The risk-free rates are set to the market 10-year yield at each quarterly review, using the spot rate. A move of 0.5 percentage points or more between reviews triggers an early update. The equity risk premium is never adjusted to offset a move in rates: that would be working back from the answer.</p>
 
-<h3>Sub-sector classification within financials</h3>
+<h2>The three models for non-financial companies</h2>
 
-<p>Book-value-anchored methods work well for capital-heavy traditional financials where balance sheet equity is a meaningful proxy for what the business owns. They break for asset-light, high-ROE specialists where the value sits in the brand, the underwriting discipline or the distribution model rather than the balance sheet. To deal with this, every financial-sector stock is classified into one of three sub-sectors and the book-anchored and earnings-anchored methods are blended in different proportions:</p>
+<h3>1. Discounted cash flow (DCF)</h3>
+<p>Free cash flow to shareholders, averaged over up to three years, grown at {{ pct(M.GROWTH_5Y) }} a year for five years and {{ pct(M.TERMINAL_GROWTH) }} a year after that, discounted back to today.</p>
+<ul>
+  <li><strong>Cash flow to shareholders.</strong> Operating cash flow less capital spending, less interest paid, plus interest received. The discount rate is a cost of equity, so the cash flow must be what is left for shareholders.</li>
+  <li><strong>Leases.</strong> For UK companies, lease repayments due in the next year are deducted. Under current accounting rules they sit outside operating cash flow, which would otherwise flatter retailers, airlines and other lease-heavy businesses.</li>
+  <li><strong>A bad year.</strong> If any of the three years is negative, the cash flow average is not used. Instead the model takes trailing earnings times a sector conversion ratio:
+    <table>
+      <thead><tr><th>Sector</th><th>Cash flow as a share of earnings</th></tr></thead>
+      <tbody>
+      {% for sec, ratio in fcf_conversion %}
+        <tr><td>{{ sec }}</td><td>{{ pct(ratio) }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    Other sectors have no fallback, so no DCF. {{ M.SKIP_FALLBACK_DCF_SECTORS|sort|join(", ") }} never uses the fallback: mining earnings at a cycle low say nothing useful about long-run cash flow.</li>
+</ul>
+<p>The DCF is the most sensitive of the three. One percentage point on the discount rate can move it by 20 to 30%. Treat it as directional.</p>
 
+<h3>2. Dividend discount model (DDM)</h3>
+<p>Next year's dividend divided by the gap between the discount rate and {{ pct(M.TERMINAL_GROWTH) }} long-run dividend growth. No dividend, no value.</p>
+<p>The dividend comes from the declared annual rate where available, otherwise from the dividend yield or the trailing twelve months of payments. Where two sources disagree by more than {{ pct(M.DIV_CROSSCHECK - 1, 0) }}, the lower is used.</p>
+<p>The DDM is not used for {{ M.SKIP_DDM_SECTORS|sort|join(" or ") }}. Mining payouts follow commodity prices, and oil majors return much of their cash through buybacks, so a perpetuity on the cash dividend misstates both.</p>
+
+<h3>3. Earnings power value (EPV)</h3>
+<p>Earnings per share (forward if available, otherwise trailing) times {{ num(M.PE_MULTIPLE) }}, the long-run market average multiple.</p>
+<p><strong>The earnings check.</strong> EPV is dropped, not estimated, when trailing earnings are zero or negative, or when forward earnings are less than {{ num(M.EPS_GUARD_LOW) }}x or more than {{ num(M.EPS_GUARD_HIGH) }}x trailing. In both cases today's earnings are not a reliable guide to what the business earns in a normal year. Where the ratio sits within {{ pct(M.EPS_GUARD_BAND, 0) }} of either limit, the stock is tagged "Earnings check borderline", because a small change in forecasts could move it across the line.</p>
+
+<h2>How the models are blended</h2>
+<p>Each UK company is assigned to one of five business types, and each type has fixed weights:</p>
 <table>
-  <thead>
-    <tr><th>Sub-sector</th><th>Book weight</th><th>Earnings weight</th><th>Example</th></tr>
-  </thead>
+  <thead><tr><th>Business type</th><th>DCF</th><th>DDM</th><th>EPV</th><th>Default for</th></tr></thead>
   <tbody>
-    <tr><td>Capital-heavy traditional</td><td>80%</td><td>20%</td><td>Aviva</td></tr>
-    <tr><td>Mixed</td><td>50%</td><td>50%</td><td>NatWest</td></tr>
-    <tr><td>Asset-light specialist</td><td>20%</td><td>80%</td><td>Admiral</td></tr>
+  {% for name, w in archetypes %}
+    <tr><td>{{ name }}</td><td>{{ w.dcf }}%</td><td>{{ w.ddm }}%</td><td>{{ w.epv }}%</td><td>{{ (defaults[name] or ["Assigned per stock"])|join(", ") }}</td></tr>
+  {% endfor %}
   </tbody>
 </table>
+<p>A company can be assigned a different type from its sector default where its business warrants it. Weights are set in advance by business type because an equal-weight blend with outliers removed jumped about: in May 2026 one stock's target halved on a 4% move in a single input.</p>
+<p><strong>When a model is missing.</strong> If the DCF or EPV has no value, its weight moves to the other one. If the DDM is missing, the DCF and EPV share the whole blend. The DDM never picks up extra weight, so a dividend can never take over a valuation by default.</p>
+<p><strong>Dividend-led companies.</strong> For the yield-anchor type only, the DCF is capped at {{ M.YIELD_DCF_CAP }}x the higher of the DDM and EPV, so that a long cash flow projection cannot outweigh the dividend that actually sets value for these businesses.</p>
+<p><strong>Everything else.</strong> Unclassified and international stocks use an equal-weight average, with each model held within {{ M.WINSOR_FACTOR }}x of the median of the three. Values are held, not removed, so the target moves smoothly as inputs move.</p>
+<p><strong>Last resort.</strong> If no model produces a value, the target is the analyst consensus and the signal is tagged "Consensus".</p>
 
-<p>The earnings-anchored secondary uses normalised earnings per share, computed as a three-year average of underlying EPS with mark-to-market and one-off items excluded. If the normalisation breaks (negative or distorted recent EPS) the model falls back to the book method only and the ticker is flagged. The justified P/E used in the secondary is taken from a sub-sector lookup table published in the assumptions section below.</p>
+<h2>Financial companies</h2>
+<p>Cash flow models do not work for banks and insurers, because their operating cash flow is mostly customer money moving through the balance sheet. Banks, insurers and asset managers use a blend of up to three parts, all discounted at Ke:</p>
+<ul>
+  <li><strong>Book value</strong> (banks only): book value times a justified price-to-book of 1 + (ROE − Ke) ÷ (Ke − {{ pct(M.TERMINAL_GROWTH) }}), held between {{ num(M.PB_CLAMP_LOW) }}x and {{ num(M.PB_CLAMP_HIGH) }}x. A bank that earns more than its cost of equity is worth more than its book.</li>
+  <li><strong>Dividends:</strong> the cash dividend, grown at {{ pct(M.TERMINAL_GROWTH) }}. Buybacks are excluded. The profit that funds them is already counted in the other two parts, and treating a capital release as a permanent payout made almost every bank look like a Strong Buy.</li>
+  <li><strong>Earnings:</strong> earnings per share divided by Ke, with the same earnings check as EPV.</li>
+</ul>
+<table>
+  <thead><tr><th>Sub-sector</th><th>Book</th><th>Dividends</th><th>Earnings</th></tr></thead>
+  <tbody>
+  {% for sub, w in fin_weights %}
+    <tr><td>{{ sub }}</td><td>{{ (w.book ~ "%") if w.book else "Not used" }}</td><td>{{ w.ddm }}%</td><td>{{ w.ern }}%</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p>Insurers and asset managers get no book value part. Insurance accounting leaves future profit on existing policies out of equity, so book understates what an insurer owns, and an asset manager's value is not on its balance sheet at all.</p>
+<p>HSBC and Standard Chartered carry an extra {{ em_premium }} on Ke for emerging-market risk.</p>
+<ul>
+  <li><strong>Investment trusts and other closed-end vehicles:</strong> net asset value per share less a {{ pct(M.CEV_DISCOUNT) }} discount.</li>
+  <li><strong>Private equity and alternatives:</strong> book value times {{ num(M.PE_ALT_BOOK_MULTIPLE) }}.</li>
+  <li><strong>Exchanges and capital markets:</strong> EBITDA times {{ num(M.CM_EV_EBITDA) }}, less net debt, per share.</li>
+  <li><strong>Other financial services:</strong> an equal-weight average of the dividend model, earnings divided by Ke, and a residual income value.</li>
+</ul>
+<p>{{ excluded|join(" and ") }} are not published. The flat {{ pct(M.CEV_DISCOUNT) }} discount misleads for both: Pershing Square has traded around 40% below its net asset value for years, and 3i usually trades near or above it. They will return when the method uses each trust's own long-run discount.</p>
 
-<h2>The blend</h2>
-
-<p>Once each applicable model has produced a number, the framework reduces them to a single Target Price using two steps.</p>
-
-<p><strong>Step one is outlier removal.</strong> Any model value that lands more than three times above or below the median of the others is excluded. This catches the case where one model has clearly broken: a DCF coming in at 25p for a 500p stock, or an EPV running away because of a tech-sector P/E. The threshold is symmetric, so a model that is too low gets removed as readily as one that is too high.</p>
-
-<p><strong>Step two is an equal-weight average.</strong> All surviving model values are given the same weight. There is no attempt to weight by historical accuracy or analyst confidence. The models are treated as three independent estimates of the same underlying number, and their disagreement is itself information.</p>
-
-<p>The blended Target Price is then divided by the current market price to produce the Daley Value Ratio (DVR). That ratio drives the signal.</p>
+<h2>Currency</h2>
+<p>Many UK-listed companies report in dollars or euros. Earnings, cash flows, book values and dividends are converted from the reporting currency to sterling before any model runs, so a dollar of Shell's earnings is never treated as a pound.</p>
 
 <h2>The signal</h2>
-
-<p>Five signals, set by where the DVR falls:</p>
-
 <table>
-  <thead>
-    <tr><th>Signal</th><th>Value ratio</th><th>Meaning</th></tr>
-  </thead>
+  <thead><tr><th>Signal</th><th>Daley Value Ratio</th><th>Meaning</th></tr></thead>
   <tbody>
-    <tr><td><span class="signal sb">Strong Buy</span></td><td>1.25 or higher</td><td>Target is at least 25% above current price</td></tr>
-    <tr><td><span class="signal b">Buy</span></td><td>1.10 to 1.24</td><td>Target is 10-24% above current price</td></tr>
-    <tr><td><span class="signal fv">Fair Value</span></td><td>0.90 to 1.09</td><td>Within 10% of current price either way</td></tr>
-    <tr><td><span class="signal s">Sell</span></td><td>0.75 to 0.89</td><td>Target is 10-25% below current price</td></tr>
-    <tr><td><span class="signal ss">Strong Sell</span></td><td>Below 0.75</td><td>Target is 25%+ below current price</td></tr>
+    <tr><td><span class="signal sb">Strong Buy</span></td><td>{{ '%.2f'|format(M.STRONG_BUY) }} or higher</td><td>Target at least {{ pct(M.STRONG_BUY - 1, 0) }} above the price</td></tr>
+    <tr><td><span class="signal b">Buy</span></td><td>{{ '%.2f'|format(M.BUY) }} to {{ '%.2f'|format(M.STRONG_BUY - 0.01) }}</td><td>Target {{ pct(M.BUY - 1, 0) }} to {{ pct(M.STRONG_BUY - 1, 0) }} above the price</td></tr>
+    <tr><td><span class="signal fv">Fair Value</span></td><td>{{ '%.2f'|format(M.FAIR) }} to {{ '%.2f'|format(M.BUY - 0.01) }}</td><td>Within about 10% either way</td></tr>
+    <tr><td><span class="signal s">Sell</span></td><td>{{ '%.2f'|format(M.SELL) }} to {{ '%.2f'|format(M.FAIR - 0.01) }}</td><td>Target {{ pct(1 - M.FAIR, 0) }} to {{ pct(1 - M.SELL, 0) }} below the price</td></tr>
+    <tr><td><span class="signal ss">Strong Sell</span></td><td>Below {{ '%.2f'|format(M.SELL) }}</td><td>Target more than {{ pct(1 - M.SELL, 0) }} below the price</td></tr>
   </tbody>
 </table>
-
-<p>The thresholds put a 10% band of "close enough" around the current price. Inside that band, the model is not telling you anything actionable. Outside it, the size of the gap is itself the signal: a Strong Buy is more than just a Buy, and the model is committing to that view.</p>
-
-<h2>Where the model can see, and where it can't</h2>
-
-<p>I am open about what this framework does and does not do. A signal generated here is a starting point for research, not the end of it.</p>
-
-<p><strong>What the model sees:</strong> the company's reported earnings, dividends, cash flows, balance sheet, sector classification, and current market price. It values each stock against its own fundamentals, on the same set of rules every other stock in the universe is valued against. That consistency is the point.</p>
-
-<p><strong>What the model does not see:</strong> the quality of the management team, the durability of the competitive moat, the regulatory or geopolitical risks specific to the business, the credibility of forward guidance, or anything that requires judgement rather than calculation. These matter enormously, and I write about them in the deep dives. But they don't appear in the numbers on this page.</p>
-
-<p><strong>Where the model is least reliable:</strong></p>
-
+<p>A signal is a reason to look closer, not a decision. Three tags show where the evidence is thin:</p>
 <ul>
-  <li><strong>Mining and commodity traders</strong> (Glencore, Anglo American, Rio Tinto). Free cash flow is cyclical, dividends are variable, and reported earnings can swing on a single year of commodity prices. Treat signals here as low confidence and lean on analyst consensus and sector multiples instead.</li>
-  <li><strong>Pre-profit growth stocks.</strong> If there are no earnings and no dividend, two of the three models go silent and the EPV is doing all the work. The framework was not built for this and the signal will reflect that.</li>
-  <li><strong>Companies in transition.</strong> Spin-offs, large acquisitions, and major restructurings all break the assumption that historical financials predict future ones. The model will value the past; the price is reacting to the future.</li>
-  <li><strong>Recent demergers and unusual capital structures.</strong> Companies that have just demerged, listed, or gone through a major recapitalisation may not have three clean years of underlying earnings to feed the normalisation rule. Where this happens the framework falls back to a shorter base or, if that is not reliable either, to the book method only. The signal is still produced but its confidence is lower, and the article on each name will say so explicitly.</li>
+  <li><strong>1 model:</strong> the target rests on a single model, so nothing cross-checks it.</li>
+  <li><strong>Consensus:</strong> no model produced a value and the target is the analyst consensus.</li>
+  <li><strong>Caution</strong> (tracker table): the signal could flip on a small change. The earnings check is borderline, the forward view disagrees, or a Strong Buy depends on one model alone.</li>
+  <li><strong>Ticker pages</strong> list every check, including where removing one model alone would move a Strong Sell out of its band. For a Strong Sell this usually means a small dividend, which is the strict value lens at work rather than a fragile signal.</li>
 </ul>
+<p><strong>The forward view.</strong> Where the earnings check has dropped a stock's earnings model, the ticker page also shows what the same model gives if consensus earnings forecasts arrive. It is a recovery case, shown for context. It never changes the signal.</p>
+<p><strong>What the price assumes.</strong> For companies with a DCF, the ticker page shows the five-year cash flow growth that today's price implies, against the model's {{ pct(M.GROWTH_5Y) }}. A Strong Sell on a company priced for 30% a year growth tells you about the expectations, not necessarily that the business is poor.</p>
+<p>A valuation older than {{ stale_days }} days is not published.</p>
 
 <h2>The assumptions, written down</h2>
-
-<p>The framework runs on a set of hardcoded inputs. They are reviewed quarterly and updated when they drift far enough to affect the answers. As of the latest review:</p>
-
 <table>
   <tbody>
-    <tr><td>UK risk-free rate (10-year gilt)</td><td>4.9%</td></tr>
-    <tr><td>US risk-free rate (10-year Treasury)</td><td>4.5%</td></tr>
-    <tr><td>Equity risk premium</td><td>5.0%</td></tr>
-    <tr><td>Beta clamp range</td><td>0.5 to 2.5</td></tr>
-    <tr><td>Five-year FCF growth assumption (DCF)</td><td>5.0%</td></tr>
-    <tr><td>Terminal growth rate (DCF and DDM)</td><td>2.5%</td></tr>
-    <tr><td>Normalised P/E multiple (EPV)</td><td>15x</td></tr>
-    <tr><td>Forward P/E cap (EPV)</td><td>22.5x</td></tr>
-    <tr><td>Outlier filter (blend)</td><td>median ÷ 3 to median × 3</td></tr>
-    <tr><td>EPS normalisation window (financials)</td><td>3-year underlying average</td></tr>
+    <tr><td>Risk-free rate, UK / US</td><td>{{ pct(M.RF_UK) }} / {{ pct(M.RF_US) }}</td></tr>
+    <tr><td>Equity risk premium</td><td>{{ pct(M.ERP) }}</td></tr>
+    <tr><td>Beta range, and floor for {{ beta_floor_sectors|lower }}</td><td>{{ num(M.BETA_FLOOR_DEFAULT) }} to {{ num(M.BETA_CAP) }}; {{ beta_floor }}</td></tr>
+    <tr><td>Five-year growth (DCF)</td><td>{{ pct(M.GROWTH_5Y) }}</td></tr>
+    <tr><td>Long-run growth (DCF and dividends)</td><td>{{ pct(M.TERMINAL_GROWTH) }}</td></tr>
+    <tr><td>Earnings multiple (EPV)</td><td>{{ num(M.PE_MULTIPLE) }}x</td></tr>
+    <tr><td>Earnings check</td><td>Forward ÷ trailing between {{ num(M.EPS_GUARD_LOW) }}x and {{ num(M.EPS_GUARD_HIGH) }}x; borderline within {{ pct(M.EPS_GUARD_BAND, 0) }}</td></tr>
+    <tr><td>Dividend-led DCF cap</td><td>{{ M.YIELD_DCF_CAP }}x the higher of DDM and EPV</td></tr>
+    <tr><td>Equal-weight blend range</td><td>{{ M.WINSOR_FACTOR }}x either side of the median</td></tr>
+    <tr><td>Bank justified price-to-book</td><td>{{ num(M.PB_CLAMP_LOW) }}x to {{ num(M.PB_CLAMP_HIGH) }}x</td></tr>
+    <tr><td>Emerging-market premium (HSBC, Standard Chartered)</td><td>{{ em_premium }}</td></tr>
+    <tr><td>Investment trust discount to NAV</td><td>{{ pct(M.CEV_DISCOUNT) }}</td></tr>
+    <tr><td>Exchanges, EV / EBITDA</td><td>{{ num(M.CM_EV_EBITDA) }}x</td></tr>
   </tbody>
 </table>
+<p>The same growth rates and multiple apply to every stock. They are reviewed once a year; the risk-free rates every quarter.</p>
 
-<h3>Justified P/E by sub-sector (financials)</h3>
+<h2>Where the model is weakest</h2>
+<ul>
+  <li><strong>Growth companies.</strong> Flat {{ pct(M.GROWTH_5Y) }} growth and a {{ num(M.PE_MULTIPLE) }}x multiple make high-return growers look expensive. Read their signals alongside what the price assumes.</li>
+  <li><strong>Miners and commodity traders.</strong> Cash flow swings, the dividend model is off, and earnings move with commodity prices. Many sit on one model. Low confidence; use sector multiples and consensus alongside.</li>
+  <li><strong>Utilities.</strong> Heavy investment often pushes them onto the earnings-based cash flow fallback. The dividend model is the most reliable part.</li>
+  <li><strong>Property companies.</strong> They are valued as dividend-led businesses. A net asset value method would suit them better.</li>
+  <li><strong>Depleting assets.</strong> An oil field does not grow at {{ pct(M.TERMINAL_GROWTH) }} for ever, and decommissioning costs are not treated as debt.</li>
+  <li><strong>Insurers.</strong> Underwriting quality and embedded value are not in the model.</li>
+  <li><strong>Data.</strong> Everything comes from public market data, which sometimes changes or disappears without notice.</li>
+  <li><strong>Judgement.</strong> The model knows nothing about management, competitive position, regulation or politics. The deep dives on Substack cover those.</li>
+</ul>
 
-<p>The earnings-anchored secondary method multiplies the normalised EPS by a justified P/E specific to the sub-sector. These are the multiples currently in use:</p>
-
-<table>
-  <thead>
-    <tr><th>Sub-sector</th><th>Sector</th><th>Justified P/E</th></tr>
-  </thead>
+<h2>Change log</h2>
+<table class="changelog">
+  <thead><tr><th>Date</th><th>Change</th></tr></thead>
   <tbody>
-    <tr><td>Capital-heavy traditional</td><td>Banks</td><td>9x</td></tr>
-    <tr><td>Mixed</td><td>Banks</td><td>11x</td></tr>
-    <tr><td>Capital-heavy traditional</td><td>General Insurance</td><td>10x</td></tr>
-    <tr><td>Mixed</td><td>General Insurance</td><td>13x</td></tr>
-    <tr><td>Asset-light specialist</td><td>General Insurance</td><td>14x</td></tr>
-    <tr><td>Capital-heavy traditional</td><td>Life Insurance</td><td>10x</td></tr>
-    <tr><td>Mixed</td><td>Life Insurance</td><td>12x</td></tr>
-    <tr><td>Capital-heavy traditional</td><td>Asset Management</td><td>10x</td></tr>
-    <tr><td>Mixed</td><td>Asset Management</td><td>12x</td></tr>
-    <tr><td>Asset-light specialist</td><td>Asset Management</td><td>13x</td></tr>
+    <tr><td>9 Nov 2026</td><td>"Earnings check borderline" tag added for stocks whose forward and trailing earnings sit within 10% of the earnings check limits. No targets or signals changed. Website rebuilt to match the methodology in full, including the financial models on ticker pages.</td></tr>
+    <tr><td>6 Nov 2026</td><td>Quarterly review: UK risk-free rate 5.0% to 5.4%, US 4.6% to 4.9%, set to market. Median UK target fell 3.5%. Ten signals moved down one band; none moved up.</td></tr>
+    <tr><td>3 Nov 2026</td><td>Financials rebuilt on one automatic blend of book value (banks), dividends and earnings, weighted by sub-sector, with buybacks excluded. It replaced the hand-set justified P/E tables. Lloyds moved from 0.81 (Sell) to 1.14 (Buy); Aviva from 0.46 (Strong Sell) to 0.99 (Fair Value); Prudential from 0.94 (Fair Value) to 0.61 (Strong Sell).</td></tr>
+    <tr><td>27 Oct 2026</td><td>Lease repayments deducted from UK cash flows. Forward view and caution tags added. Signals resting on one model are tagged rather than capped at Buy or Sell.</td></tr>
+    <tr><td>15 Oct 2026</td><td>Investment trust net asset values converted from the reporting currency.</td></tr>
+    <tr><td>14 Oct 2026</td><td>EPV formula corrected. Before this date it tracked the share price, which pulled targets towards the market. Also added the earnings check, moved the DCF to cash flow after interest, and converted earnings and cash flows from the reporting currency.</td></tr>
+    <tr><td>22 Jul 2026</td><td>Exchange multiple cut from 22x to 16x EBITDA, because 22x put the whole sector on Strong Buy.</td></tr>
+    <tr><td>21 Jul 2026</td><td>Risk-free rates set to market (UK 5.0%, US 4.6%). Investment trusts moved to the net asset value method.</td></tr>
+    <tr><td>14 May 2026</td><td>Beta floor of 1.10 for energy and mining. Dividend model dropped for energy.</td></tr>
+    <tr><td>12 May 2026</td><td>Fixed weights by business type replaced the equal-weight blend with outlier removal.</td></tr>
   </tbody>
 </table>
-
-<p>The multiples are calibrated against historical sector medians and current market levels. They are reviewed annually and adjusted when long-run averages drift far enough to matter.</p>
-
-<p>Every change to these inputs is logged with a reason and an effect on at least one example stock. That log is the audit trail behind the numbers you see on this site.</p>
 
 <h2>Not financial advice</h2>
+<p>The signals on this site are a systematic starting point for research. They take no account of management quality, competitive position, regulation or any of the judgements that turn a number into an investment decision. Always do your own research before acting on any signal here.</p>
+<p>The live tracker is on the <a href="index.html">homepage</a>. The deep dives behind individual signals are on <a href="{{ 'https://daleyvaluations.substack.com' }}">Substack</a>. The live portfolio, with real positions, is on <a href="https://www.etoro.com/people/dalkent13">eToro</a>.</p>
 
-<blockquote>
-<p>The signals on this site are a systematic, data-driven starting point for investment research. They do not account for management quality, competitive position, regulatory risk, or any of the qualitative judgements that separate a working thesis from a number on a screen. Always do your own research before acting on any signal you see here.</p>
-</blockquote>
+<p class="stamp">Matches methodology version {{ version }}. The methodology is updated whenever the model changes, and the change log above records each change.</p>
 
-<p>For the live tracker covering all 114 stocks, see the <a href="/">homepage</a>. For the deep-dive analysis behind individual signals, the weekly articles are at <a href="https://dalkent13.substack.com">dalkent13.substack.com</a>. To follow the live portfolio with real positions and entry prices, see my <a href="https://www.etoro.com/people/dalkent13">eToro profile</a>.</p>
-
-<footer>
-  <p><strong>Daley Valuations</strong> is an independent equity research site by Neil Daley, PhD, CFA. Twenty years in institutional finance, now applied to public markets in plain English.</p>
-  <p class="stamp">Last reviewed: 30 April 2026. The methodology is a living document and is updated when the underlying assumptions change.</p>
-  <p class="stamp small"><strong>Recent change (2026-04-30):</strong> the financial-sector framework was upgraded to add an earnings-anchored secondary method. Previously every financial-sector stock was valued purely on a book-value-anchored model, which produced aggressive Sell signals for asset-light, high-ROE specialists where book value is not the right anchor. The new framework classifies each financial-sector stock into one of three sub-sectors (capital-heavy traditional, mixed, asset-light specialist) and blends a book-anchored primary with an earnings-anchored secondary in 80/20, 50/50 or 20/80 proportions. Backtest moved Admiral from a Strong Sell at DVR 0.41 to Fair Value at roughly DVR 0.96. Banks and capital-heavy traditional insurers were largely unchanged.</p>
-</footer>
-
-</div>
-</body>
-</html>
+</article>
